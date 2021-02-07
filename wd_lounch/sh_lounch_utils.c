@@ -6,16 +6,16 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/06 20:32:03 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 19:39:09 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./sh_lounch.h"
 
-void	sh_execvpes(t_exec *s)
+int		sh_execvpes(t_exec *s)
 {
-	//ft_execvpe(s->argv[0], s->argv, s->envp);
-	execvp(s->argv[0], s->argv);
+	return (ft_execvpe(s->argv[0], s->argv, s->envp));
+	//execvp(s->argv[0], s->argv);
 }
 
 int		ft_perror(char *string)
@@ -25,6 +25,7 @@ int		ft_perror(char *string)
 	ft_putstr_fd(string, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(a_errno), 2);
+	ft_putstr_fd("\n", 2);
 	return (-1);
 }
 
@@ -40,4 +41,11 @@ void	sh_dup_close(int old_fd, int new_fd)
 		ft_perror("minishell");
 		exit(1);
 	}
+}
+
+t_builtin_f	builtin_table(t_exec *com)
+{
+	//if (ft_strcmp(com->argv[0], "echo"))
+	//	return (builtin_echo);
+	return (NULL);
 }

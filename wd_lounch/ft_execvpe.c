@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/02 16:04:54 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 20:15:57 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,21 @@ int		ft_execvpe(const char *file, char *const *argv, char *const *envp)
 	char	*env_path;
 	char	*sep;
 	char	buf[PATH_MAX + 1];
-	int		eacces;
+	bool	eacces;
 
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
-	env_path = ft_strdup("PATH");
+	env_path = ft_strdup("/bin:/sbin:/usr/bin:/usr/sbin");
 	sep = env_path;
-	while(!*sep)
+	eacces = false;
+	while(*sep)
 	{
 		if (!(sep = ft_strchr(env_path, ':')))
 			sep = ft_strchr(env_path, 0);
 		if (!make_path(buf, env_path, sep, file))
 			execve(buf, argv, envp);
 		if (errno == EACCES)
-			eacces = 1;
+			eacces = true;
 		env_path = sep + 1;
 	}
 	if (eacces)

@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/06 20:32:16 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 19:37:20 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,19 @@ typedef	struct	s_exec //pipe単位のデータ?
 	int		fd_out;
 }				t_exec;
 
+typedef int (*t_builtin_f)(t_exec *);
+
 char	**g_envp;
 
 int		sh_lounch(t_list *execlist);
 int		ft_execvpe(const char *file, char *const *argv, char *const *envp);
 
+t_builtin_f	builtin_table(t_exec *com);
+
 /*
  * utiles
  */
-void	sh_execvpes(t_exec *s);
+int		sh_execvpes(t_exec *s);
 int		ft_perror(char *string);
 void	sh_dup_close(int old_fd, int new_fd);
 

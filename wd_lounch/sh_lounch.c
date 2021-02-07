@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 19:01:26 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 19:40:24 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,21 @@
 
 void	sh_lounch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
 {
-		if (prev_pipe)
-			sh_dup_close(prev_pipe, 0);
-		if (exec_param->fd_in != 0)
-			sh_dup_close(exec_param->fd_in, 0);
-		if (has_next)
-			sh_dup_close(pipefd[1], 1);
-		if (exec_param->fd_out != 1)
-			sh_dup_close(exec_param->fd_out, 1);
-		if (is_builtin(exec_param))
-			exit(builtin_table(exec_param));
-		sh_execvpes(exec_param);
-		ft_perror("minishell");
-		exit(1);
+	t_builtin_f	builtin_function;
+
+	if (prev_pipe)
+		sh_dup_close(prev_pipe, 0);
+	if (exec_param->fd_in != 0)
+		sh_dup_close(exec_param->fd_in, 0);
+	if (has_next)
+		sh_dup_close(pipefd[1], 1);
+	if (exec_param->fd_out != 1)
+		sh_dup_close(exec_param->fd_out, 1);
+	if ((builtin_function = builtin_table(exec_param)))
+		exit(builtin_function(exec_param));
+	sh_execvpes(exec_param);
+	ft_perror("minishell");
+	exit(1);
 }
 
 int		sh_process_manager(t_list *execlist, int prev_pipe)
@@ -56,8 +58,10 @@ int		sh_process_manager(t_list *execlist, int prev_pipe)
 
 int		sh_lounch(t_list *execlist)
 {
-	if (is_builtin(execlist->content) && ft_lstsize(execlist) == 1)
-		builtin_table(execlist->content);
+	t_builtin_f	builtin_function;
+
+	if ((builtin_function = builtin_table(execlist->content)))
+		return(builtin_function(execlist->content));
 	sh_process_manager(execlist, 0);
 	return (0);
 }
