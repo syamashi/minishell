@@ -3,92 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   sh_lounch.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
+/*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/27 13:32:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/01/30 14:34:18 by syamashi         ###   ########.fr       */
+/*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
+/*   Updated: 2021/02/01 15:39:49 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	check_list_size(t_commands *lists)
+void	sh_execvpes(t_exec *s)
 {
-	int		tmp_size;
+	ft_execvpe(s->argv[0], s->argv, s->envp);
+}
 
-	tmp_size = ft_lstsize(lists->com);
-	if (ft_lstsize(lists->args) != tmp_size)
-		return (-1);
-	if (ft_lstsize(lists->input) != tmp_size)
-		return (-1);
-	if (ft_lstsize(lists->output) != tmp_size)
-		return (-1);
+void	ft_perror(char *string)
+{
+	int	a_errno = errno;
+
+	ft_putstr_fd(string, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(a_errno), 2);
+}
+
+void	sh_dup_close(int old_fd, int new_fd)
+{
+	if (dup2(old_fd, new_fd) < 0)
+	{
+		ft_perror("minishell");
+		exit(1);
+	}
+	if (close(old_fd) < 0)
+	{
+		ft_perror("minishell");
+		exit(1);
+	}
+}
+
+
+int		sh_lounch_process(t_list *execlist, int prev_pipe)
+{
+	pid_t	cpid;
+	int		status;
+	int		pipefd[2];
+	t_exec	*exec_param;
+
+	exec_param = execlist->content;
+	if (execlist->next)
+	{
+		if (pipe(pipefd) < 0)
+		{
+			strerror("minishell");
+			return (-1);
+		}
+	}
+	cpid = fork();
+	if (cpid == 0)
+	{
+		if (prev_pipe)
+			sh_dup_close(prev_pipe, 0);
+		if (((t_exec *)(execlist->content))->fd_in != 0)
+		{
+			dup2(((t_exec *)(execlist->content))->fd_in, 0);
+			close(((t_exec *)(execlist->content))->fd_in);
+		}
+		if (ft_lstsize(execlist) > 1)
+		{
+			dup2(pipefd[1], 1);
+			close(pipefd[1]);
+		}
+		if (((t_exec *)(execlist->content))->fd_in != 1)
+		{
+			dup2(((t_exec *)(execlist->content))->fd_out, 1);
+			close(((t_exec *)(execlist->content))->fd_out);
+		}
+		sh_execvpes(execlist->content);
+		perror("minishell");
+		exit(1);
+	}
+	waitpid(cpid, &status, 0);
+	if (ft_lstsize(execlist) > 1)
+		sh_lounch_process(execlist->next, pipefd[0]);
 	return (0);
 }
 
-static	int (*builtin_search(char *command))()
+int		sh_lounch(t_list *execlist)
 {
-	if (!ft_strcmp(command, "echo"))
-		return (sh_echo);
-	if (!ft_strcmp(command, "cd"))
-		return (sh_cd);
-	if (!ft_strcmp(command, "env"))
-		return (sh_env);
-	if (!ft_strcmp(command, "export"))
-		return (sh_export);
-	if (!ft_strcmp(command, "unset"))
-		return (sh_unset);
-	if (!ft_strcmp(command, "exit"))
-		return (sh_exit);
-	return (NULL);
+	/*
+	 * if (check_builtin(execlist) && ft_lstsize(execlist) == 1)
+	 *	exec_builtin(execlist->content);
+	 */
+
+
+	return (0);
+
 }
 
-static void	rec(t_commands *commands)
-{
-	pid_t	pid;
-	int		status;
-	int		(*builtin)();
-
-	dup2((intptr_t)commands->input->content, STDIN_FILENO);
-	dup2((intptr_t)commands->input->content, STDOUT_FILENO);
-	if (commands->com->next)
-	{
-		commands_pop(commands);
-		pid = fork();
-		if (pid)
-			rec(commands);
-		wait(&status);
-		if ((intptr_t)commands->input->content != STDIN_FILENO)
-			close((intptr_t)commands->input->content);
-		if ((intptr_t)commands->output->content != STDOUT_FILENO)
-			close((intptr_t)commands->output->content);
-		commands_clear(commands);
-	}
-	if ((builtin = builtin_search(commands->com->content)))
-		sh_exit(builtin);
-	ft_execvpe(argv[0], argv, envp);
-	//error message
-	sh_exit(-1);
-}
-
-int			sh_lounch(t_commands *commands)
-{
-	pid_t	pid;
-	int		status;
-	int		(*builtin)();
-
-	if (check_list_size(commands) < 0)
-		return (-1);
-	if (!commands->com->next && (builtin = builtin_search(commands->com->content)))
-		return (builtin(commands));
-	pid = fork();
-	if (pid)
-		rec(commands);
-	wait(&status);
-	if ((intptr_t)commands->input->content != STDIN_FILENO)
-		close((intptr_t)commands->input->content);
-	if ((intptr_t)commands->output->content != STDOUT_FILENO)
-		close((intptr_t)commands->output->content);
-	commands_clear(commands);
-	return (WEXITSTATUS(status));
-}

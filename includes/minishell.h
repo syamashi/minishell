@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/01/31 18:16:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/01 14:38:05 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ typedef struct	s_dict
 	char *value;
 }				t_dict;
 
+
+char	**g_envp;
+
+
 void
 minishell(char **envp);
 int		sh_exit();
@@ -112,4 +116,7 @@ int	ft_error(char *str, int i);
 int ft_syntax_error(char *str, int i);
 int ft_avoid_error(char *str, int i);
 int ft_exit_error(char *str, int i);
+
+
+
 #endif
