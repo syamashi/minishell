@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 19:37:20 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 20:30:04 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,22 @@
 # include <sys/wait.h>
 # include <sys/types.h>
 
-# include "../libft/libft.h"
+# include "../includes/minishell.h"
 
 # define PATH_MAX 255
 
-typedef	struct	s_exec //pipe単位のデータ?
-{
-	char	**argv;//読み込みながら作る
-	char	**envp;
-	int		fd_in; //リダイレクトで数値変更
-	int		fd_out;
-}				t_exec;
+/*
+ * typedef	struct	s_exec //pipe単位のデータ?
+ * {
+ * 	char	**argv;//読み込みながら作る
+ * 	char	**envp;
+ * 	int		fd_in; //リダイレクトで数値変更
+ * 	int		fd_out;
+ * }				t_exec;
+ */
 
 typedef int (*t_builtin_f)(t_exec *);
 
-char	**g_envp;
 
 int		sh_lounch(t_list *execlist);
 int		ft_execvpe(const char *file, char *const *argv, char *const *envp);

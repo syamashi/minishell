@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/01/30 18:29:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/07 20:34:50 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void	minishell(char **envp)
 		signal(SIGINT, sh_inthandler);
 		all_free(&store, NULL);
 		g_intflag = 0;
-		if (r = sh_prompt(&store, &env)) //ctrl+D exitする可能性ある
+		if ((r = sh_prompt(&store, &env))) //ctrl+D exitする可能性ある
 			continue;
 		semi = store;
 		while (semi)
@@ -178,7 +178,7 @@ void	minishell(char **envp)
 				exlist = exlist->next;
 			}
 			ft_putstr("\n");
-			//	sh_lounch(); // < pipe単位にlistにした、t_execを渡す。
+			sh_lounch(semi->content); // < pipe単位にlistにした、t_execを渡す。
 			semi = semi->next;
 		}
 	}

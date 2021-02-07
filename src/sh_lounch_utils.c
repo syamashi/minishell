@@ -6,11 +6,11 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 19:39:09 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 20:27:08 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./sh_lounch.h"
+#include "../includes/sh_lounch.h"
 
 int		sh_execvpes(t_exec *s)
 {

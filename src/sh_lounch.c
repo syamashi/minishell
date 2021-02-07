@@ -6,42 +6,32 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/01 15:39:49 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/07 20:26:56 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../includes/sh_lounch.h"
 
-void	sh_execvpes(t_exec *s)
+void	sh_lounch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
 {
-	ft_execvpe(s->argv[0], s->argv, s->envp);
+	t_builtin_f	builtin_function;
+
+	if (prev_pipe)
+		sh_dup_close(prev_pipe, 0);
+	if (exec_param->fd_in != 0)
+		sh_dup_close(exec_param->fd_in, 0);
+	if (has_next)
+		sh_dup_close(pipefd[1], 1);
+	if (exec_param->fd_out != 1)
+		sh_dup_close(exec_param->fd_out, 1);
+	if ((builtin_function = builtin_table(exec_param)))
+		exit(builtin_function(exec_param));
+	sh_execvpes(exec_param);
+	ft_perror("minishell");
+	exit(1);
 }
 
-void	ft_perror(char *string)
-{
-	int	a_errno = errno;
-
-	ft_putstr_fd(string, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(a_errno), 2);
-}
-
-void	sh_dup_close(int old_fd, int new_fd)
-{
-	if (dup2(old_fd, new_fd) < 0)
-	{
-		ft_perror("minishell");
-		exit(1);
-	}
-	if (close(old_fd) < 0)
-	{
-		ft_perror("minishell");
-		exit(1);
-	}
-}
-
-
-int		sh_lounch_process(t_list *execlist, int prev_pipe)
+int		sh_process_manager(t_list *execlist, int prev_pipe)
 {
 	pid_t	cpid;
 	int		status;
@@ -49,53 +39,30 @@ int		sh_lounch_process(t_list *execlist, int prev_pipe)
 	t_exec	*exec_param;
 
 	exec_param = execlist->content;
-	if (execlist->next)
-	{
-		if (pipe(pipefd) < 0)
-		{
-			strerror("minishell");
-			return (-1);
-		}
-	}
-	cpid = fork();
+	if (execlist->next && pipe(pipefd) < 0)
+		return (ft_perror("minishell"));
+	if ((cpid = fork()) < 0)
+		return (ft_perror("minishell"));
 	if (cpid == 0)
-	{
-		if (prev_pipe)
-			sh_dup_close(prev_pipe, 0);
-		if (((t_exec *)(execlist->content))->fd_in != 0)
-		{
-			dup2(((t_exec *)(execlist->content))->fd_in, 0);
-			close(((t_exec *)(execlist->content))->fd_in);
-		}
-		if (ft_lstsize(execlist) > 1)
-		{
-			dup2(pipefd[1], 1);
-			close(pipefd[1]);
-		}
-		if (((t_exec *)(execlist->content))->fd_in != 1)
-		{
-			dup2(((t_exec *)(execlist->content))->fd_out, 1);
-			close(((t_exec *)(execlist->content))->fd_out);
-		}
-		sh_execvpes(execlist->content);
-		perror("minishell");
-		exit(1);
-	}
-	waitpid(cpid, &status, 0);
-	if (ft_lstsize(execlist) > 1)
-		sh_lounch_process(execlist->next, pipefd[0]);
+		sh_lounch_child(exec_param, pipefd, prev_pipe, (execlist->next != NULL));
+	if (waitpid(cpid, &status, 0) < 0)
+		return (ft_perror("minishell"));
+	if (prev_pipe && close(prev_pipe) < 0)
+		return (ft_perror("minishell"));
+	if (execlist->next && close(pipefd[1]) < 0)
+		return (ft_perror("minishell"));
+	if (execlist->next)
+		sh_process_manager(execlist->next, pipefd[0]);
 	return (0);
 }
 
 int		sh_lounch(t_list *execlist)
 {
-	/*
-	 * if (check_builtin(execlist) && ft_lstsize(execlist) == 1)
-	 *	exec_builtin(execlist->content);
-	 */
+	t_builtin_f	builtin_function;
 
-
+	if ((builtin_function = builtin_table(execlist->content)))
+		return(builtin_function(execlist->content));
+	sh_process_manager(execlist, 0);
 	return (0);
-
 }
 
