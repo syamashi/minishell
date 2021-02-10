@@ -30,15 +30,16 @@ CFLAGS = -g -O0
 
 all : $(NAME)
 
-$(OBJDIR)%.o : $(SRCDIR)%.c
+$(OBJDIR)%.o : $(SRCDIR)%.c obj
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)
 	# echo @ : $@
 	# echo ^ : $^
-	mkdir -p obj
 	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
+obj   :
+	mkdir -p obj
 clean :
 	rm -f $(OBJS)
 
