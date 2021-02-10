@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew1_util.c                                   :+:      :+:    :+:   */
+/*   parse1_util.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:50:00 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/07 02:53:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:05:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack)
 {

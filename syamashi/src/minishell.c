@@ -6,11 +6,13 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 14:21:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:18:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
+#include "../includes/debug.h"
 
 sig_atomic_t	g_intflag;
 
@@ -38,41 +40,6 @@ char	*ft_lstjoin(t_list *lst)
 	return (str);
 }
 
-/*char	*sh_prompt()
-{
-	char	*line;
-	t_list	*store;
-	int		ret;
-
-	store = NULL;
-	signal(SIGINT, sh_inthandler);
-	ft_putstr("minishell > ");
-	while ((ret = get_next_line(0, &line)) == 0)
-	{
-		if (g_intflag)
-			ft_lstclear(&store, free);
-		g_intflag = 0;
-		if (!store && !ft_strcmp(line, ""))
-		{
-			free(line);
-			ft_lstclear(&store, free);
-			exit(0);
-		}
-		ft_lstadd_back(&store, ft_lstnew(line));
-	}
-	ft_putstr(line);
-	signal(SIGINT, SIG_DFL);
-	if (g_intflag)
-		ft_lstclear(&store, free);
-	g_intflag = 0;
-	//if (ret < 0)
-		//sh_error();
-	ft_lstadd_back(&store, ft_lstnew(line));
-	line = ft_lstjoin(store);
-	ft_lstclear(&store, free);
-	return (line);
-}*/
-
 static	int	line_free(char **line, int i)
 {
 	if (line)
@@ -82,7 +49,6 @@ static	int	line_free(char **line, int i)
 	}
 	return (i);
 }
-
 
 int	sh_prompt(char **line)
 {
@@ -112,103 +78,6 @@ int	sh_prompt(char **line)
 		exit(ft_error("", 1));
 	free(tmp);
 	return (0);
-}
-
-void	ast_debug(t_list *ast)
-{
-	t_list *str;
-	t_list *dir;
-	char	*line;
-	int		type;
-	int ast_cnt = 0;
-	while (ast)
-	{
-		printf("-----ast[%d]-----\n", ast_cnt++);
-		str = ((t_leaf *)ast->content)->str;
-		dir = ((t_leaf*)ast->content)->dir;
-		int str_cnt = 0;
-		int dir_cnt = 0;
-//	printf("strsize:%d, dirsize:%d\n", ft_lstsize(str), ft_lstsize(dir));
-		while (str)
-		{
-			printf("str[%d]:", str_cnt);
-			line = ((t_pack *)str->content)->line;
-			type = ((t_pack *)str->content)->type;
-				printf("[%10s][%2d]\n", line, type);
-			str_cnt++;
-			str = str->next;
-		}
-		while (dir)
-		{
-			printf("dir[%d]:", dir_cnt);
-			line = ((t_pack *)dir->content)->line;
-			type = ((t_pack *)dir->content)->type;
-			printf("[%10s][%2d]\n", line, type);
-			dir_cnt++;
-			dir = dir->next;
-		}
-		ast = ast->next;
-	}
-}
-
-void	debug(t_list *store)
-{
-	t_list *top;
-	t_list *packs;
-	char *line;
-	int type;
-
-	top = store;
-	int top_cnt = 0;
-	while (top)
-	{
-		printf("store[%d]:\n", top_cnt);
-		packs = top->content;
-		while (packs){
-			line = ((t_pack *)packs->content)->line;
-			type = ((t_pack *)packs->content)->type;
-			printf("[%10s][%2d]\n", line, type);
-			packs = packs->next;
-		}
-		printf("\n");
-		top = top->next;
-		top_cnt++;
-	}
-}
-
-void	exlist_debug(t_list *exlist)
-{
-	t_list *top;
-	t_exec *ex;
-
-	top = exlist;
-	int top_cnt = 0;
-	while (top)
-	{
-		printf("-----exlist[%d]-----\n", top_cnt);
-		ex = (t_exec *)top->content;
-		int j = -1;
-		printf("argv  :{");
-		while (ex->argv[++j])
-		{
-			printf("%s",ex->argv[j]);
-			if (ex->argv[j+1])	printf(", ");
-		}
-		printf("}\n");
-/*		printf("envp[]:");
-		j = -1;
-		while (ex->envp[++j])
-		{
-			printf("[%s]",ex->envp[j]);
-			if (ex->envp[j+1])	printf(",");
-		}
-		printf("\n");
-*/		printf("fd_in :%d\n", ex->fd_in);
-		printf("fd_out:%d\n", ex->fd_out);
-		printf("error_flag:%d\n", ex->error_flag);
-		top = top->next;
-		top_cnt++;
-	}
 }
 
 void	minishell(char **envp)
@@ -258,28 +127,3 @@ void	minishell(char **envp)
 //		debug(store);
 	}
 }
-
-/*		while (semi)
-		{
-			int j = 0;
-			t_list *exlist = (t_list*)semi->content;
-			while (exlist)
-			{
-				printf("---exlist[%d]---\n", j++);
-				printf("argv[");
-				int i=0;
-				while (((t_exec*)exlist->content)->argv[i]){
-					printf("\"%s\"", ((t_exec*)exlist->content)->argv[i++]);
-					if (((t_exec*)exlist->content)->argv[i])
-						printf(",");
-				}
-				printf("]\n");
-				printf("fd_in:%d\n", ((t_exec*)exlist->content)->fd_in);
-				printf("fd_out:%d\n", ((t_exec*)exlist->content)->fd_out);
-				exlist = exlist->next;
-			}
-			ft_putstr("\n");
-			//	sh_lounch(); // < pipe単位にlistにした、t_execを渡す。
-			semi = semi->next;
-		}
-*/

@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew3_storediv.c                               :+:      :+:    :+:   */
+/*   parse3_storediv.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 19:42:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 02:33:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	store_div(t_list **store)
 {

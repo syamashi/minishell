@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew2_syntaxcheck.c                            :+:      :+:    :+:   */
+/*   parse2_syntaxcheck.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 02:12:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:05:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 int	is_dir(int n)
 {

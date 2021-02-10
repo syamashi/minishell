@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew4_envexpand.c                              :+:      :+:    :+:   */
+/*   parse4_envexpand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/09 15:47:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 int env_retadd(t_list **env, char **new, int ret)
 {

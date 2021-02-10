@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/28 02:04:32 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 15:28:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:56 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ bash-3.2$ echo $?
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-/*
+#include "../includes/parse.h"
+
 static int	get_exitnum(const char *nptr)
 {
 	char		*str;
@@ -95,4 +96,3 @@ int	solve_exit(t_list *pack, t_list **packs, t_list **env)
 	all_free(NULL, packs, env);
 	exit(ret);
 }
-*/

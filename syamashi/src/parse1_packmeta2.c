@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew1_packmeta2.c                              :+:      :+:    :+:   */
+/*   parse1_packmeta2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:43 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/09 21:11:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:05:48 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	token_escape(t_pack **pack, t_list **list, t_token *t)
 {

@@ -6,11 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/03 14:59:40 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 int ft_error(char *str, int	i)
 {

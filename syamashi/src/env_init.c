@@ -6,11 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 14:07:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:54:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 static void	env_error(char *str, t_dict **map, t_list **env)
 {

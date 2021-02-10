@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew7_exinit.c                                 :+:      :+:    :+:   */
+/*   parse7_exinit.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 14:57:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:21 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	ex_def(t_exec **ex, const t_list *ast, t_list **env)
 {

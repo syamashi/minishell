@@ -15,8 +15,8 @@ SRCS = main.c\
 		parse6_ast.c\
 		parse7_exinit.c\
 		putout_error.c\
-		solve_exit.c\
-		util.c
+		util.c\
+		debug.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)

@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew6_ast.c                                    :+:      :+:    :+:   */
+/*   parse6_ast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 01:33:38 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/09 14:33:27 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	ast_add(t_list **ast, t_leaf **leaf)
 {

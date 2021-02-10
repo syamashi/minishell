@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew5_trim.c                                   :+:      :+:    :+:   */
+/*   parse5_trim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/09 14:24:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:12 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 /*    prev    mov      mov->n  mov->n->n
 **    [space] [str]    [str]   [space]

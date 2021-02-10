@@ -1,21 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew1_pack.c                                   :+:      :+:    :+:   */
+/*   parse1_pack.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:17:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/09 13:14:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:20:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_quote(char c)
-{
-	return (c == '\'' || c == '"');
-}
+#include "../includes/parse.h"
 
 void	add_space(t_pack **pack, t_list **list)
 {

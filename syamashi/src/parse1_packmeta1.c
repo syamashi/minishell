@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsenew1_packmeta1.c                              :+:      :+:    :+:   */
+/*   parse1_packmeta1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/04 18:14:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:05:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 void	token_pipe(t_pack **pack, t_list **list, t_token *t)
 {
