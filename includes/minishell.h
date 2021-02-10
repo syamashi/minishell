@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 20:31:03 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:37:32 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,20 @@ typedef enum	e_errno
 	FEW_ARG
 }	t_errno;
 
-typedef struct	s_commands
+typedef	struct	s_exec
 {
-	t_list	*com;
-	t_list	*args;
-	t_list	*input;
-	t_list	*output;
-}	t_commands;
-
-typedef	struct	s_exec //pipe単位のデータ?
-{
-	char	**argv;//読み込みながら作る
+	char	**argv;
 	char	**envp;
-	int		fd_in; //リダイレクトで数値変更
+	int		fd_in;
 	int		fd_out;
-	int		echo_option;
+	bool	error_flag;
 }				t_exec;
+
+typedef struct s_leaf
+{
+	t_list	*str;
+	t_list	*dir;
+}				t_leaf;
 
 typedef struct s_pack
 {
@@ -71,51 +69,13 @@ typedef struct	s_dict
 	char *value;
 }				t_dict;
 
-char	**g_envp;
-
 void	minishell(char **envp);
-int		sh_lounch(t_list *execlist);
-
+int		sh_prompt(char **line);
+int		sh_launch(t_list *exlist);
 int		sh_exit();
 int		sh_echo(char **argv);
 int		sh_cd(char **argv);
 int		sh_env(char **argv);
 int		sh_export(char **argv);
 int		sh_unset(char **argv);
-
-void 	pack_free(void *ptr);
-void 	packs_free(t_list **packs);
-void 	env_free(void *ptr);
-void	all_free(t_list **lst, t_list **env);
-int		is_space(char c);
-int		is_meta(char c);
-int		new_pack(t_pack **pack);
-int		pack_join(t_pack **pack, char *str, int len);
-int		pack_add(t_pack **pack, t_list **list, int type);
-int		token_pipe(t_pack **pack, t_list **list, t_token *t, int type);
-int		token_and(t_pack **pack, t_list **list, t_token *t, int type);
-int		token_redirect_l(t_pack **pack, t_list **list, t_token *t, int type);
-int		token_redirect_r(t_pack **pack, t_list **list, t_token *t, int type);
-int		token_escape(t_pack **pack, t_list **list, t_token *t);
-int		token_squote(t_pack **pack, t_list **list, t_token *t);
-int		token_dquote(t_pack **pack, t_list **list, t_token *t);
-void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
-int		init_env(char **envp, t_list **env);
-int		divide_semicolon(t_list **lines, char *line);
-int		expand_env(t_list **store, t_list **env);
-
-int solve_exit(t_list *semi, t_list **packs, t_list **env);
-
-int get_exec(t_list **store, t_list **packs);
-void exlist_free(void *ptr);
-void def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
-int packed(t_list **packs, t_list **lines);
-int meta_check(t_list **packs);
-int	ft_error(char *str, int i);
-int ft_syntax_error(char *str, int i);
-int ft_avoid_error(char *str, int i);
-int ft_exit_error(char *str, int i);
-
-
-
 #endif

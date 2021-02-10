@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/01/30 18:11:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:00:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void pack_free(void *ptr)
 {
-//	printf("[packfree] %s\n", ((t_pack *)(ptr))->line);
-	free(((t_pack *)(ptr))->line);
-	((t_pack *)ptr)->line = NULL;
+//	printf("[packfree] %s\n", ((t_pack*)ptr)->line);
+	free(((t_pack*)ptr)->line);
+	((t_pack*)ptr)->line = NULL;
 	free(ptr);
 	ptr = NULL;
 }
@@ -44,40 +44,88 @@ void env_free(void *ptr)
 	ptr = NULL;
 }
 
-void exlist_free(void *ptr)
+void	store_free(t_list **store)
 {
-	int	i;
-
-	i = 0;
-	while (((t_exec *)ptr)->argv[i])
+	t_list	*packs;
+	t_list	*tmp;
+	
+	while (*store)
 	{
-//		printf("[exlist_free] argv[%d]:%s\n", i, (((t_exec *)ptr)->argv[i]));
-		free(((t_exec *)ptr)->argv[i]);
-		((t_exec *)ptr)->argv[i++] = NULL;
+		packs = (*store)->content;
+		tmp = (*store)->next;
+		ft_lstclear(&packs, pack_free);
+		free(*store);
+		*store = tmp;
 	}
-	free(((t_exec *)ptr)->argv);
+}
+
+void	ast_free(t_list **ast)
+{
+	t_list	*packs;
+	t_list	*tmp;
+	
+	while (*ast)
+	{
+		tmp = (*ast)->next;
+		packs = ((t_leaf*)(*ast)->content)->dir;
+		ft_lstclear(&packs, pack_free);
+		packs = ((t_leaf*)(*ast)->content)->str;
+		ft_lstclear(&packs, pack_free);
+		ft_lstdelone(*ast, free);
+		*ast = NULL;
+		*ast = tmp;
+	}
+}
+
+void	ex_free(void *ptr)
+{
+	t_exec	*ex;
+	int		i;
+
+	i = -1;
+	ex = (t_exec *)ptr;
+	while (ex->argv[++i])
+	{
+		free(ex->argv[i]);
+		ex->argv[i] = NULL;
+	}
+	i = -1;
+	while (ex->envp[++i])
+	{
+		free(ex->envp[i]);
+		ex->envp[i] = NULL;
+	}
+	free(ex->argv);
+	free(ex->envp);
 	free(ptr);
 	ptr = NULL;
 }
 
-void all_free(t_list **store, t_list **env)
+/*void	exlist_free(t_list **exlist)
 {
-	t_list *tmp;
-
-//	get_next_line(-1, NULL);
-//	printf("[all_free]\n");
-	if (store)
+	t_list	*tmp;
+	
+	while (*exlist)
 	{
-		while (*store)
-		{
-			ft_lstclear((t_list**)&(*store)->content, exlist_free);
-			tmp = (*store)->next;
-			ft_lstdelone(*store, free);
-			*store = tmp;
-		}
-		*store = NULL;
+		tmp = (*exlist)->next;
+		ft_lstdelone(*exlist, ex_free);
+		*exlist = tmp;
 	}
-	if (env)
-		ft_lstclear(env, env_free);
-//	printf("[all_free]end\n");
+}
+*/
+void all_free(char **line, t_list **store, t_list **ast, t_list **exlist)
+{
+	if (line)
+	{
+		free(*line);
+		*line = NULL;
+	}
+	if (store)
+		store_free(store);
+	if (ast)
+		ast_free(ast);
+	if (exlist)
+		ft_lstclear(exlist, ex_free);
+	//	if (env)
+	//		ft_lstclear(env, env_free);
 }

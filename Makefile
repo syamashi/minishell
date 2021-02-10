@@ -2,23 +2,24 @@ NAME = minishell
 SRCDIR = ./src/
 SRCS = main.c\
 		minishell.c\
-		init_env.c\
+		env_init.c\
 		all_free.c\
-		parse1_semicolon.c\
-		parse2_env.c\
-		parse3_pack.c\
-		parse3_packmeta1.c\
-		parse3_packmeta2.c\
-		parse3_packutil.c\
-		parse4_checksyntax.c\
-		parse5_exec.c\
+		parse1_pack.c\
+		parse1_packmeta1.c\
+		parse1_packmeta2.c\
+		parse1_util.c\
+		parse2_syntaxcheck.c\
+		parse3_storediv.c\
+		parse4_envexpand.c\
+		parse5_trim.c\
+		parse6_ast.c\
+		parse7_exinit.c\
 		putout_error.c\
-		solve_exit.c\
 		util.c\
-		sh_lounch.c\
-		sh_lounch_utils.c\
-		ft_execvpe.c
-
+		debug.c\
+		sh_launch.c\
+		sh_launch_utils.c\
+		ft_execvpe.c\
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)

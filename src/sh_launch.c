@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_lounch.c                                        :+:      :+:    :+:   */
+/*   sh_launch.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 20:26:56 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:34:11 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/sh_lounch.h"
+#include "../includes/sh_launch.h"
 
-void	sh_lounch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
+void	sh_launch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
 {
 	t_builtin_f	builtin_function;
 
@@ -44,7 +44,7 @@ int		sh_process_manager(t_list *execlist, int prev_pipe)
 	if ((cpid = fork()) < 0)
 		return (ft_perror("minishell"));
 	if (cpid == 0)
-		sh_lounch_child(exec_param, pipefd, prev_pipe, (execlist->next != NULL));
+		sh_launch_child(exec_param, pipefd, prev_pipe, (execlist->next != NULL));
 	if (waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("minishell"));
 	if (prev_pipe && close(prev_pipe) < 0)
@@ -56,7 +56,7 @@ int		sh_process_manager(t_list *execlist, int prev_pipe)
 	return (0);
 }
 
-int		sh_lounch(t_list *execlist)
+int		sh_launch(t_list *execlist)
 {
 	t_builtin_f	builtin_function;
 

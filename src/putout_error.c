@@ -6,11 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/01/30 11:57:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:06:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
 int ft_error(char *str, int	i)
 {
@@ -21,7 +22,7 @@ int ft_error(char *str, int	i)
 
 int	ft_syntax_error(char *str, int i)
 {
-	ft_putstr("bash: syntax error near unexpected token '");
+	ft_putstr("minishell: syntax error near unexpected token '");
 	ft_putstr(str);
 	ft_putstr("'");
 	ft_putstr("\n");
@@ -30,11 +31,20 @@ int	ft_syntax_error(char *str, int i)
 
 int	ft_avoid_error(char *str, int i)
 {
-	ft_putstr("∑(´；□；｀)oops... '");
+	static int cnt;
+
+	ft_putstr("minishell: ");
+	if (cnt%3 == 0)
+		ft_putstr("（ﾟﾛﾟ）oops '");
+	if (cnt%3 == 1)
+		ft_putstr("(　ﾟдﾟ)oops '");
+	if (cnt%3 == 2)
+		ft_putstr("( Д)　゜゜oops '");
 	ft_putstr(str);
 	ft_putstr("'");
 	ft_putstr(" is now developing...");
 	ft_putstr("\n");
+	cnt++;
 	return (i);
 }
 

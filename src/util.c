@@ -6,30 +6,42 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/01/31 20:57:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 16:21:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include "../includes/parse.h"
 
-int		is_space(char c)
+int	is_space(char c)
 {
-	if (c == ' ' || c == '\t' || c == '\n'
-	|| c == '\v' || c == '\f' || c == '\r')
-		return (1);
-	return (0);
+	return (c == ' ' || c == '\t');
 }
 
-int		is_meta(char c)
+int	is_quote(char c)
 {
-	if (c == '\'' ||
-		c == '\"' ||
-		c == '\\' ||
-		c == '&' ||
-		c == '<' ||
-		c == '>' ||
-		c == '|' ||
-		c == '$')
-		return (1);
-	return (0);
+	return (c == '\'' || c == '"');
+}
+
+int	is_meta(char c)
+{
+	return (c == '\'' ||
+			c == '\"' ||
+			c == '&' ||
+			c == '<' ||
+			c == '>' ||
+			c == '|' ||
+			c == '\\' ||
+			c == ';');
+}
+
+int	is_envmeta(char c)
+{
+	return (c == '\'' ||
+			c == '\"' ||
+			c == '&' ||
+			c == '<' ||
+			c == '>' ||
+			c == '|' ||
+			c == ';');
 }

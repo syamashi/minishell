@@ -6,11 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/07 20:27:45 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/10 17:38:44 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/sh_lounch.h"
+#include "../includes/sh_launch.h"
 
 static int	make_path(char *buf, const char *path, const char *sep,
 		const char *file)
