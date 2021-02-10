@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/08 12:22:13 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:21:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef	struct	s_exec //pipe単位のデータ?
 	char	**envp;
 	int		fd_in; //リダイレクトで数値変更
 	int		fd_out;
+	bool	error_flag;
 }				t_exec;
 
 typedef struct s_leaf
@@ -106,7 +107,7 @@ int		sh_unset(char **argv);
 void 	pack_free(void *ptr);
 void 	packs_free(t_list **packs);
 void 	env_free(void *ptr);
-void all_free(char **line, t_list **store, t_list **ast);
+void all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
 int is_space(char c);
 int		is_meta(char c);
 void	new_pack(t_pack **pack);
@@ -122,12 +123,11 @@ void	token_dquote(t_pack **pack, t_list **list, t_token *t);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 int		env_init(char **envp, t_list **env);
 int		divide_semicolon(t_list **lines, char *line);
-int		env_expand(t_list **store, t_list **env, int r);
+void	env_expand(t_list **packs, t_list **env, int r);
 
 int solve_exit(t_list *semi, t_list **packs, t_list **env);
 
 int get_exec(t_list **store, t_list **packs);
-void exlist_free(void *ptr);
 void def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 t_list	*packed(char *line);
 int	input_check(t_list *store);
@@ -142,5 +142,9 @@ int is_envmeta(char c);
 void store_div(t_list **store);
 int is_dir(int n);
 void	packs_trim(t_list **packs);
-void exlist_init(const t_list *ast, t_list **exlist);
+void exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r);
+void ast_init(t_list **ast, t_list **packs);
+void	quote_del(t_list **packs);
+void	strs_join(t_list **packs);
+void exlist_debug(t_list *exlist);
 #endif

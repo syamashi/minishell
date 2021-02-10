@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 01:30:10 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 15:00:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,6 @@ void env_free(void *ptr)
 	ptr = NULL;
 }
 
-void exlist_free(void *ptr)
-{
-	int	i;
-
-	i = 0;
-	while (((t_exec *)ptr)->argv[i])
-	{
-//		printf("[exlist_free] argv[%d]:%s\n", i, (((t_exec *)ptr)->argv[i]));
-		free(((t_exec *)ptr)->argv[i]);
-		((t_exec *)ptr)->argv[i++] = NULL;
-	}
-	free(((t_exec *)ptr)->argv);
-	free(ptr);
-	ptr = NULL;
-}
-
 void	store_free(t_list **store)
 {
 	t_list	*packs;
@@ -93,7 +77,43 @@ void	ast_free(t_list **ast)
 	}
 }
 
-void all_free(char **line, t_list **store, t_list **ast)
+void	ex_free(void *ptr)
+{
+	t_exec	*ex;
+	int		i;
+
+	i = -1;
+	ex = (t_exec *)ptr;
+	while (ex->argv[++i])
+	{
+		free(ex->argv[i]);
+		ex->argv[i] = NULL;
+	}
+	i = -1;
+	while (ex->envp[++i])
+	{
+		free(ex->envp[i]);
+		ex->envp[i] = NULL;
+	}
+	free(ex->argv);
+	free(ex->envp);
+	free(ptr);
+	ptr = NULL;
+}
+
+/*void	exlist_free(t_list **exlist)
+{
+	t_list	*tmp;
+	
+	while (*exlist)
+	{
+		tmp = (*exlist)->next;
+		ft_lstdelone(*exlist, ex_free);
+		*exlist = tmp;
+	}
+}
+*/
+void all_free(char **line, t_list **store, t_list **ast, t_list **exlist)
 {
 	if (line)
 	{
@@ -104,6 +124,8 @@ void all_free(char **line, t_list **store, t_list **ast)
 		store_free(store);
 	if (ast)
 		ast_free(ast);
-//	if (env)
-//		ft_lstclear(env, env_free);
+	if (exlist)
+		ft_lstclear(exlist, ex_free);
+	//	if (env)
+	//		ft_lstclear(env, env_free);
 }

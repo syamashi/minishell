@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:43 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/07 14:30:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/09 21:11:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,19 @@ void	token_squote(t_pack **pack, t_list **list, t_token *t)
 	t->j = t->i + 1;
 }
 
+
+/*
+**  ESC in DQUOTE work 4chars { \"$` } only
+*/
+
+bool	is_dqoteesc(const char *line, const int i)
+{
+	return (!ft_strncmp(line + i, "\\\\", 2) ||
+			!ft_strncmp(line + i, "\\\"", 2) ||
+			!ft_strncmp(line + i, "\\$", 2) ||
+			!ft_strncmp(line + i, "\\`", 2));
+}
+
 void	token_dquote(t_pack **pack, t_list **list, t_token *t)
 {
 	pack_join(pack, "\"", 1);
@@ -55,7 +68,7 @@ void	token_dquote(t_pack **pack, t_list **list, t_token *t)
 	pack_add(pack, list, STR);
 	t->j = t->i + 1;
 	while (t->line[++t->i] && t->line[t->i] != '"')
-		if (t->line[t->i] == '\\')
+		if (is_dqoteesc(t->line, t->i))
 		{
 			if (t->i != t->j)
 			{

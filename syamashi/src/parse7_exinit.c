@@ -6,49 +6,38 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 15:41:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 14:57:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void ex_free(t_exec **ex)
-{
-//	printf("[ex_free] %s\n", ((t_pack *)(ptr))->line);
-	char **tmp;
-
-	tmp = (*ex)->argv;
-	while (tmp)
-	{
-		tmp = (*ex)->argv + 1;
-		free((*ex)->argv);
-		(*ex)->argv = NULL;
-	}
-	free(*ex);
-	*ex = NULL;
-}
-
-void	ex_def(t_exec **ex, const t_list *ast)
+void	ex_def(t_exec **ex, const t_list *ast, t_list **env)
 {
 	int argc;
-	int	i;
+	int envc;
+	int i;
 
 	argc = ft_lstsize(((t_leaf*)ast->content)->str);
-	
-	printf("[ex_def] argc:%d\n", argc);
+	envc = ft_lstsize(*env);
 	if (!(*ex = (t_exec *)malloc(sizeof(t_exec))))
 		exit(ft_error("minishell: malloc failed", 1));
 	if (!((*ex)->argv = (char **)malloc(sizeof(char *) * (argc + 1))))
 		exit(ft_error("minishell: malloc failed", 1));
+	if (!((*ex)->envp = (char **)malloc(sizeof(char *) * (envc + 1))))
+		exit(ft_error("minishell: malloc failed", 1));
 	i = -1;
 	while (++i <= argc)
 		(*ex)->argv[i] = NULL;
-	(*ex)->envp = NULL;
+	i = -1;
+	while (++i <= envc)
+		(*ex)->envp[i] = NULL;
 	(*ex)->fd_in = 0;
 	(*ex)->fd_out = 1;
+	(*ex)->error_flag = false;
 }
 
-void	argv_init(t_exec **ex, const t_list *str)
+void	argv_init(t_exec **ex, t_list *str)
 {
 	t_list	*mov;
 	int		i;
@@ -58,43 +47,145 @@ void	argv_init(t_exec **ex, const t_list *str)
 	while (mov)
 	{
 		++i;
-		if (!((*ex)->argv[i] = ft_strdup(((t_pack *)str->content)->line)))
+		if (!((*ex)->argv[i] = ft_strdup(((t_pack *)mov->content)->line)))
 			exit(ft_error("", 1));
 		mov = mov->next;
 	}
 }
 
-void direnv_expand
+void	envp_init(t_exec **ex, t_list **env)
+{
+	char	*key;
+	char	*value;
+	t_list	*mov;
+	char	*line;
+	int		i;
+
+	mov = *env;
+	i = -1;
+	while (mov)
+	{
+		key = ((t_dict *)mov->content)->key;
+		if (!(line = ft_strjoin(key, "=")))
+			exit(ft_error("", 1));
+		value = ((t_dict *)mov->content)->value;
+		if (!((*ex)->envp[++i] = ft_strjoin(line, value)))
+			exit(ft_error("", 1));
+		free(line);
+		line = NULL;
+		mov = mov->next;
+	}
+}
+
+/*
+** 1. open ENV
+** 2. del ESC
+** 3. del QUOTES
+** 4. ft_strtrim
+** 5. ambiguous check
+*/
+
+void	filename_make(char **filename, char *src, t_list **env, int *r)
+{
+	int		i;
+	int		j;
+	t_list	*packs;
+	char	*tmp;
+
+	packs = ft_strtoken(src);
+	env_expand(&packs, env, *r);
+	quote_del(&packs);
+	strs_join(&packs);
+	if (!(*filename = ft_strdup(((t_pack *)packs->content)->line)))
+		exit(ft_error("", 1));
+	ft_lstclear(&packs, pack_free);
+	tmp = *filename;
+	*filename = ft_strtrim(*filename, " \t");
+	free(tmp);
+	tmp = NULL;
+}
 
 int	dir_error(char *filename, int n)
 {
-	ft_putstr_fd("minishell: ");
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(filename, 2);
-	ft_putstr_fd(": ambiguous redirect\n");
+	ft_putstr_fd(": ambiguous redirect\n", 2);
 	return (n);
 }
 
-void	fd_controller(t_exec **ex, const t_list *dir)
+bool	ambiguous_check(const char *filename)
 {
-	t_list *mov;
+	int i;
+
+	i = -1;
+	while (filename[++i])
+	{
+		if (filename[i] == ' ')
+			return (true);
+	}
+	return (false);
+}
+
+void	fd_error(char *str, int fd)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
+	errno = 0;
+}
+
+void	fdin_change(t_exec **ex, const int n, char* filename)
+{
+	if (errno)
+	{
+		fd_error(filename, 2);
+		(*ex)->error_flag = true;
+	}
+	if ((*ex)->fd_in != 0)
+		close((*ex)->fd_in);
+	(*ex)->fd_in = n;
+}
+
+void	fdout_change(t_exec **ex, const int n, char* filename)
+{
+	if (errno)
+	{
+		fd_error(filename, 2);
+		(*ex)->error_flag = true;
+	}
+	if ((*ex)->fd_out != 1)
+		close((*ex)->fd_out);
+	(*ex)->fd_out = n;
+}
+
+void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
+{
+	t_list	*mov;
 	int		type;
 	char	*filename;
 
 	mov = dir;
-	while (mov)
+	while (mov && !(*ex)->error_flag)
 	{
 		type = ((t_pack *)mov->content)->type;
-		direnv_expand(&filename, ((t_pack *)mov->content)->line)
-		if (ambiguous_check(filename, ex))
+		mov = mov->next;
+		filename_make(&filename, ((t_pack *)mov->content)->line, env, r);
+		if (ambiguous_check(filename))
 		{
-			dir_error(((t_pack *)mov->content)->line);
-		};
-		if (type == RDIR)
-		{
-			if ((*ex)->fd_out != 1)
-				close(fd_out);
+			*r = dir_error(((t_pack *)mov->content)->line, 1);
+			(*ex)->error_flag = true;
+			fdin_change(ex, 0, filename);
+			fdout_change(ex, 1, filename);
 		}
-		//ambiguous error
+		else if (type == RDIR)
+			fdout_change(ex, open(filename, O_WRONLY|O_CREAT|O_TRUNC, 0666), filename);
+		else if (type == RRDIR)
+			fdout_change(ex, open(filename, O_WRONLY|O_CREAT|O_APPEND, 0666), filename);
+		else if (type == LDIR)
+			fdin_change(ex, open(filename, O_RDONLY), filename);
+		free(filename);
 		mov = mov->next;
 	}
 }
@@ -114,21 +205,23 @@ void	fd_controller(t_exec **ex, const t_list *dir)
 **   -fd_out
 */
 
-void	exlist_init(const t_list *ast, t_list **exlist)
+void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r)
 {
 	t_list	*mov;
 	t_exec	*ex;
 	t_list	*new;
-	t_list	*exlist;
 
 	mov = ast;
-	exlist = NULL;
+	*exlist = NULL;
 	while (mov)
 	{
-		ex_def(&ex, mov);
-		argv_init(ex, ((t_leaf *)ast->content)->str);
-		fd_controller(ex, ((t_leaf *)ast->content)->dir);
-		ft_lstadd_back(&exlist, ex);
+		ex_def(&ex, mov, env);
+		argv_init(&ex, ((t_leaf *)mov->content)->str);
+		envp_init(&ex, env);
+		fd_controller(&ex, ((t_leaf *)mov->content)->dir, env, r);
+		if (!(new = ft_lstnew(ex)))
+			exit(ft_error("", 1));
+		ft_lstadd_back(exlist, new);
 		mov = mov->next;
 	}
 }

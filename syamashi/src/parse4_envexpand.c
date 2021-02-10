@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 02:33:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/09 15:47:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void repack(t_list **prev, t_list **mov, t_list **packs)
 ** not expand SQUOTE, ESC, and after DIR. 
 */
 
-int env_expand(t_list **packs, t_list **env, int r)
+void	env_expand(t_list **packs, t_list **env, int r)
 {
 	t_list	*mov;
 	t_list	*prev;
@@ -252,5 +252,4 @@ int env_expand(t_list **packs, t_list **env, int r)
 			pre_type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
 	}
-	return (0);
 }

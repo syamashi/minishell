@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 02:32:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/09 14:24:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,22 @@ void	quote_del(t_list **packs)
 	t_list	*mov;
 	t_list	*prev;
 	int		type;
+	bool	dir_flag;
 
 	prev = NULL;
 	mov = *packs;
+	dir_flag = false;
 	while (mov)
 	{
 		type = ((t_pack *)mov->content)->type;
-		if (type == SQUOTE || type == DQUOTE)
+		if (is_dir(type))
+		{
+			dir_flag = true;
+			mov = mov->next;
+		}
+		else if (dir_flag && type == SPACE)
+			dir_flag = false;
+		if (!dir_flag && (type == SQUOTE || type == DQUOTE))
 			pack_del(&prev, &mov, packs);
 		else
 		{
@@ -91,6 +100,15 @@ void	quote_del(t_list **packs)
 			mov = mov->next;
 		}
 	}
+}
+
+int		is_join(int type)
+{
+	return (type == STR ||
+			type == SSTR ||
+			type == ESC ||
+			type == SQUOTE ||
+			type == DQUOTE);
 }
 
 void	strs_join(t_list **packs)
@@ -107,10 +125,10 @@ void	strs_join(t_list **packs)
 	while (mov)
 	{
 		type = ((t_pack *)mov->content)->type;
-		if ((type == STR || type == SSTR || type == ESC) && mov->next)
+		if (is_join(type) && mov->next)
 		{
 			ntype = ((t_pack *)mov->next->content)->type;
-			if (ntype == STR || ntype == SSTR || type == ESC)
+			if (is_join(ntype))
 			{
 				pack_marge(&prev, &mov, packs, pre_type);
 				continue;
@@ -146,6 +164,7 @@ void	space_del(t_list **packs)
 
 /*
 **	types = {STR, DIRS, SPACE, QUOTES, PIPE, SSTR}
+**  after DIRS, NOT del QUOTES
 */
 
 void	packs_trim(t_list **packs)

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/08 15:40:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/10 14:21:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,41 @@ void	debug(t_list *store)
 	}
 }
 
+void	exlist_debug(t_list *exlist)
+{
+	t_list *top;
+	t_exec *ex;
+
+	top = exlist;
+	int top_cnt = 0;
+	while (top)
+	{
+		printf("-----exlist[%d]-----\n", top_cnt);
+		ex = (t_exec *)top->content;
+		int j = -1;
+		printf("argv  :{");
+		while (ex->argv[++j])
+		{
+			printf("%s",ex->argv[j]);
+			if (ex->argv[j+1])	printf(", ");
+		}
+		printf("}\n");
+/*		printf("envp[]:");
+		j = -1;
+		while (ex->envp[++j])
+		{
+			printf("[%s]",ex->envp[j]);
+			if (ex->envp[j+1])	printf(",");
+		}
+		printf("\n");
+*/		printf("fd_in :%d\n", ex->fd_in);
+		printf("fd_out:%d\n", ex->fd_out);
+		printf("error_flag:%d\n", ex->error_flag);
+		top = top->next;
+		top_cnt++;
+	}
+}
+
 void	minishell(char **envp)
 {
 	char	*line;
@@ -184,6 +219,7 @@ void	minishell(char **envp)
 	t_list	*top;
 	t_list	*ast;
 	t_list	*exlist;
+	t_list	*extop;
 	int		r;
 
 	env = NULL;
@@ -196,7 +232,7 @@ void	minishell(char **envp)
 	while (1)
 	{
 		signal(SIGINT, sh_inthandler);
-		all_free(&line, &store, &ast);
+		all_free(&line, &store, &ast, &exlist);
 		g_intflag = 0;
 		if (sh_prompt(&line))
 			continue;
@@ -211,14 +247,13 @@ void	minishell(char **envp)
 			env_expand((t_list**)&top->content, &env, r);
 			packs_trim((t_list **)&top->content);
 			ast_init(&ast, (t_list**)&top->content);
-			ast_debug(ast);
-			exlist_init(ast, &exlist);
-/*			// lineを受けて、astを作る。環境変数を開く、t_exec, argvが入る
-			// parseの中で、
-			r = sh_launch(exlist); //環境変数の更新もここでするかな
-*/
+//			debug(store);
+//			ast_debug(ast);
+			exlist_init(ast, &exlist, &env, &r);
+			exlist_debug(exlist);
+//			r = sh_launch(exlist);
 			top = top->next;
-			all_free(NULL, NULL, &ast);
+			all_free(NULL, NULL, &ast, &exlist);
 		}
 //		debug(store);
 	}

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:17:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/08 02:25:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/09 13:14:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,19 @@ t_list	*pack_end(t_pack **pack, t_list **list)
 	return (*list);
 }
 
+/*
+**  {|, &, <, >, \, ', ", ;}
+**  after
+**  
+*/
+
 t_list	*ft_strtoken(char *line)
 {
 	t_token	t;
 	t_list	*list;
 	t_pack	*pack;
 
-	def_strtoken(&t, &list, &line, &pack); //pack作る
+	def_strtoken(&t, &list, &line, &pack);
 	while (line[++t.i])
 	{
 		if (is_space(line[t.i]))
