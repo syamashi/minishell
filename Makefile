@@ -20,6 +20,7 @@ SRCS = main.c\
 		sh_launch.c\
 		sh_launch_utils.c\
 		ft_execvpe.c\
+		sh_prompt.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)
@@ -35,7 +36,8 @@ $(OBJDIR)%.o : $(SRCDIR)%.c
 $(NAME) : $(OBJS)
 	# echo @ : $@
 	# echo ^ : $^
-	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft 
+	mkdir -p obj
+	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
 clean :
 	rm -f $(OBJS)

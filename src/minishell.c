@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 17:35:41 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:01:47 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 #include "../includes/parse.h"
 #include "../includes/debug.h"
 
+/*
 sig_atomic_t	g_intflag;
+
 
 void	sh_inthandler()
 {
@@ -79,6 +81,7 @@ int	sh_prompt(char **line)
 	free(tmp);
 	return (0);
 }
+*/
 
 void	minishell(char **envp)
 {
@@ -100,10 +103,10 @@ void	minishell(char **envp)
 	env_init(envp, &env);
 	while (1)
 	{
-		signal(SIGINT, sh_inthandler);
+	//	signal(SIGINT, sh_inthandler);
 		all_free(&line, &store, &ast, &exlist);
-		g_intflag = 0;
-		if (sh_prompt(&line))
+	//	g_intflag = 0;
+		if (!(line = sh_prompt()))
 			continue;
 		store = ft_lstnew(ft_strtoken(line));
 		if (r = input_check(store->content))

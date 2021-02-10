@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 17:37:32 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/10 18:05:37 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define STR_OPT_LN "-n"
 # define EM_TOO_MANY_ARG "too many arg"
 # define MINISHELL "minishell :"
+# define PROMPT_NAME "minishell > "
 
 typedef enum	e_errno
 {
@@ -69,13 +70,18 @@ typedef struct	s_dict
 	char *value;
 }				t_dict;
 
+sig_atomic_t	g_intflag;
+
 void	minishell(char **envp);
-int		sh_prompt(char **line);
+char	*sh_prompt();
 int		sh_launch(t_list *exlist);
-int		sh_exit();
+
+
+/*
 int		sh_echo(char **argv);
 int		sh_cd(char **argv);
 int		sh_env(char **argv);
 int		sh_export(char **argv);
 int		sh_unset(char **argv);
+*/
 #endif
