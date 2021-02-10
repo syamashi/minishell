@@ -6,29 +6,42 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:09 by ewatanab          #+#    #+#             */
-/*   Updated: 2020/09/09 17:16:08 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/08 15:33:31 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int		ft_echo(char **argv)
+bool	echo_nflag_parse(char *arg)
 {
+	if (*argv++ != '-')
+		return (false);
+	while (*argv++ == 'n')
+		;
+	if (*argv)
+		return (false);
+	return (true);
+}
+
+int		ft_echo(t_exec *com)
+{
+	char	**argv;
 	bool	opt_n;
 
+	argv = com->argv;
 	if (!argv)
 		return (-1);
 	opt_n = false;
-	if (*argv && !ft_strcmp(*argv, STR_OPT_LN))
-		opt_n = true;
+	while ((opt_n |= echo_nflag_parse(*argv)))
+		argv++;
 	while (*argv)
 	{
-		ft_putstr((*argv)++);
+		ft_putstr_fd((*argv)++, com->fd_out);
 		if (*argv)
-			ft_putchar(' ');
+			ft_putchar_fd(' ', com->fd_out);
 	}
 	if (!opt_n)
-		ft_putchar('\n');
+		ft_putchar_fd('\n', com->fd_out);
 	return (0);
 }
 

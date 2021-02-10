@@ -6,19 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/08 15:40:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/08 17:23:55 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-sig_atomic_t	g_intflag;
-
-void	sh_inthandler()
-{
-	ft_putstr("\nminishell > ");
-	g_intflag = 1;
-}
 
 char	*ft_lstjoin(t_list *lst)
 {
@@ -38,40 +31,6 @@ char	*ft_lstjoin(t_list *lst)
 	return (str);
 }
 
-/*char	*sh_prompt()
-{
-	char	*line;
-	t_list	*store;
-	int		ret;
-
-	store = NULL;
-	signal(SIGINT, sh_inthandler);
-	ft_putstr("minishell > ");
-	while ((ret = get_next_line(0, &line)) == 0)
-	{
-		if (g_intflag)
-			ft_lstclear(&store, free);
-		g_intflag = 0;
-		if (!store && !ft_strcmp(line, ""))
-		{
-			free(line);
-			ft_lstclear(&store, free);
-			exit(0);
-		}
-		ft_lstadd_back(&store, ft_lstnew(line));
-	}
-	ft_putstr(line);
-	signal(SIGINT, SIG_DFL);
-	if (g_intflag)
-		ft_lstclear(&store, free);
-	g_intflag = 0;
-	//if (ret < 0)
-		//sh_error();
-	ft_lstadd_back(&store, ft_lstnew(line));
-	line = ft_lstjoin(store);
-	ft_lstclear(&store, free);
-	return (line);
-}*/
 
 static	int	line_free(char **line, int i)
 {
