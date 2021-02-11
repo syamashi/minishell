@@ -6,21 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:50:00 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 14:46:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:44:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack)
-{
-	t->line = *line;
-	t->i = -1;
-	*pack = NULL;
-	new_pack(pack);
-	*list = NULL;
-}
 
 void	new_pack(t_pack **pack)
 {
@@ -73,4 +64,3 @@ void	pack_stradd(t_pack **pack, t_list **list, t_token *t)
 		t->j = t->i;
 	}
 }
-

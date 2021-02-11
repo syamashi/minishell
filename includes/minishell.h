@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/11 12:41:54 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:25:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ sig_atomic_t	g_intflag;
 void	minishell(char **envp);
 char	*sh_prompt();
 int		sh_launch(t_minishell *m_sh, t_list *exlist);
-
 
 /*
 int		sh_echo(char **argv);

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 14:40:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:39:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,18 @@
 # define SSTR 16
 
 void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
+void 	pack_free(void *ptr);
+void 	packs_free(t_list **packs);
+void 	env_free(void *ptr);
+void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
+void	ast_free(t_list **ast);
+
 int		env_init(char **envp, t_list **env);
 t_list	*ft_strtoken(char *line);
 int		input_check(t_list *store);
 void	store_div(t_list **store);
 void	env_expand(t_list **packs, t_list **env, int r);
 void	packs_trim(t_list **packs);
-void 	pack_free(void *ptr);
-void 	packs_free(t_list **packs);
-void 	env_free(void *ptr);
-void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
 void	new_pack(t_pack **pack);
 void	pack_join(t_pack **pack, char *str, int len);
 void	pack_add(t_pack **pack, t_list **list, int type);

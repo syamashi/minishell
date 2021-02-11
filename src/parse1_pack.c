@@ -6,12 +6,21 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:17:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 14:48:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:45:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
+
+void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack)
+{
+	t->line = *line;
+	t->i = -1;
+	*pack = NULL;
+	new_pack(pack);
+	*list = NULL;
+}
 
 void	token_meta(t_pack **pack, t_list **list, t_token *t, char c)
 {

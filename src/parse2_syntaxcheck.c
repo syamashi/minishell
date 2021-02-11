@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:05:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:56:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int is_bonus(int n)
 			n == AND ||
 			n == DAND);
 }
-
 
 void	check_quote(int type, int *quote_flag)
 {
@@ -76,11 +75,11 @@ int	is_skip(const int type)
 **  8. ESC EOF BLOCK
 */
 
-static int	syntax_check(t_list *list)
+int	syntax_check(t_list *list)
 {
 	char	*line;
-	int		type;
 	char	*pre_line;
+	int		type;
 	int		pre_type;
 	int		quote_flag;
 
@@ -109,8 +108,7 @@ static int	syntax_check(t_list *list)
 	return (0);
 }
 
-
-static int	avoid_check(t_list *list)
+int	avoid_check(t_list *list)
 {
 	char	*line;
 	int		type;
