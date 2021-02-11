@@ -38,8 +38,9 @@ $(NAME) : $(OBJS)
 	# echo ^ : $^
 	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
-obj   :
+obj :
 	mkdir -p obj
+
 clean :
 	rm -f $(OBJS)
 
