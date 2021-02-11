@@ -6,39 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 16:56:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 20:57:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-int	is_dir(int n)
-{
-	return (n == RDIR ||
-			n == RRDIR ||
-			n == LDIR ||
-			n == LLDIR ||
-			n == LLLDIR);
-}
-
-int	is_metatype(int n)
-{
-	return (n == PIPE ||
-			n == DPIPE ||
-			n == AND ||
-			n == DAND ||
-			n == SCOLON);
-}
-
-int is_bonus(int n)
-{
-	return (n == LLDIR ||
-			n == LLLDIR ||
-			n == DPIPE ||
-			n == AND ||
-			n == DAND);
-}
 
 void	check_quote(int type, int *quote_flag)
 {
@@ -54,7 +27,7 @@ void	set_preinfo(int *type, int *pre_type, char **line, char **pre_line)
 	*pre_line = *line;
 }
 
-int	is_skip(const int type)
+bool	isnot_cmd(const int type)
 {
 	return (type == SPACE ||
 			type == SQUOTE ||
@@ -95,7 +68,7 @@ int	syntax_check(t_list *list)
 			return (ft_syntax_error(line, 258));
 		if (is_dir(pre_type) && is_dir(type))
 			return (ft_syntax_error(line, 258));
-		if (!is_skip(type))
+		if (!isnot_cmd(type))
 			set_preinfo(&type, &pre_type, &line, &pre_line);
 		list = list->next;
 	}

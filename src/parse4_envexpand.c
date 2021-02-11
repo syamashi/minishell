@@ -6,19 +6,19 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 14:47:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:20:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-int env_retadd(t_list **env, char **new, int ret)
+void env_retadd(t_minishell *m_sh, char **new)
 {
 	char	*value;
 	char	*tmp;
 
-	if (!(value = ft_itoa(ret)))
+	if (!(value = ft_itoa(m_sh->exit_status)))
 		exit(ft_error("minishell: malloc failed", 1));
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
@@ -29,10 +29,19 @@ int env_retadd(t_list **env, char **new, int ret)
 	value = NULL;
 }
 
-void	empty_key(char **new)
+/*
+**    $ = $
+**  $'' = null
+**  $"" = null
+**  $\\ = $\ 
+*/
+
+void	empty_key(char **new, t_list *mov)
 {
 	char	*tmp;
-	
+
+	if (mov->next && is_quote(((t_pack *)mov->next->content)->type))
+		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
 		exit(ft_error("minishell: malloc failed", 1));
@@ -40,7 +49,7 @@ void	empty_key(char **new)
 	tmp = NULL;
 }
 
-void	env_add(t_list **env, char *key, char **new)
+void env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
 {
 	t_list	*pos;
 	char	*tmp;
@@ -50,8 +59,8 @@ void	env_add(t_list **env, char *key, char **new)
 
 	len = ft_strlen(key);
 	if (len == 0)
-		return (empty_key(new));
-	pos = *env;
+		return (empty_key(new, mov));
+	pos = m_sh->env_list;
 	while (pos)
 	{
 		dkey = ((t_dict *)pos->content)->key;
@@ -68,7 +77,7 @@ void	env_add(t_list **env, char *key, char **new)
 	}
 }
 
-void	env_join(char **new, t_list **env, t_token *t, int r)
+void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh)
 {
 	char	*key;
 	char	*tmp;
@@ -81,9 +90,9 @@ void	env_join(char **new, t_list **env, t_token *t, int r)
 	if (!(key = ft_substr(t->line, t->j, t->i - t->j)))
 		exit(ft_error("minishell: malloc failed", 1));
 	if (!ft_strncmp(key, "?", 2))
-		env_retadd(env, new, r);
+		env_retadd(m_sh, new);
 	else
-		env_add(env, key, new);
+		env_add(m_sh, mov, key, new);
 	free(key);
 	key = NULL;
 	t->j = t->i--;
@@ -114,7 +123,7 @@ static void	def_env(t_token *t, char *line, char **new)
 		exit(ft_error("minishell: malloc failed", 1));
 }
 
-void	env_solve(char **line, t_list **env, int r)
+void	env_solve(char **line, t_list *mov, t_minishell *m_sh)
 {
 	char	*new;
 	t_token t;
@@ -125,7 +134,7 @@ void	env_solve(char **line, t_list **env, int r)
 		if ((*line)[t.i] != '$')
 			continue;
 		pre_join(&new, &t);
-		env_join(&new, env, &t, r);
+		env_join(&new, mov, &t, m_sh);
 	}
 	if (t.j != t.i)
 		pre_join(&new, &t);
@@ -134,29 +143,17 @@ void	env_solve(char **line, t_list **env, int r)
 	*line = new;
 }
 
-static int	is_skip(int type, int *pre_type, int *quote_flag)
+bool	is_skip(int type, int *pre_type, int *quote_flag)
 {
 	if (type == SQUOTE)
 		*quote_flag ^= 1;
 	if (type == DQUOTE)
 		*quote_flag ^= 2;
 	if (*quote_flag == 1 || type != STR)
-		return (1);
+		return (true);
 	if (is_dir(*pre_type))
-		return (1);
-	return (0);
-}
-
-static t_list	*pack_end(t_pack **pack, t_list **list)
-{
-	if (*pack)
-	{
-		free((*pack)->line);
-		(*pack)->line = NULL;
-	}
-	free(*pack);
-	*pack = NULL;
-	return (*list);
+		return (true);
+	return (false);
 }
 
 t_list *space_strtoken(char *line)
@@ -215,7 +212,7 @@ void repack(t_list **prev, t_list **mov, t_list **packs)
 **  3. NOT SQUOTE
 */
 
-void	env_expand(t_list **packs, t_list **env, int r)
+void	env_expand(t_list **packs, t_minishell *m_sh)
 {
 	t_list	*mov;
 	t_list	*prev;
@@ -232,7 +229,7 @@ void	env_expand(t_list **packs, t_list **env, int r)
 		type = ((t_pack *)mov->content)->type;
 		if (!is_skip(type, &pre_type, &quote_flag))
 		{
-			env_solve(&((t_pack *)mov->content)->line, env, r);
+			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
 			if (quote_flag != 2)
 				repack(&prev, &mov, packs);
 			pre_type = type;

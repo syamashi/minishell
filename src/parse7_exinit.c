@@ -6,21 +6,21 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 11:20:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 20:54:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	ex_def(t_exec **ex, const t_list *ast, t_list **env)
+void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
 {
 	int argc;
 	int envc;
 	int i;
 
 	argc = ft_lstsize(((t_leaf*)ast->content)->str);
-	envc = ft_lstsize(*env);
+	envc = ft_lstsize(env);
 	if (!(*ex = (t_exec *)malloc(sizeof(t_exec))))
 		exit(ft_error("minishell: malloc failed", 1));
 	if (!((*ex)->argv = (char **)malloc(sizeof(char *) * (argc + 1))))
@@ -54,7 +54,7 @@ void	argv_init(t_exec **ex, t_list *str)
 	}
 }
 
-void	envp_init(t_exec **ex, t_list **env)
+void	envp_init(t_exec **ex, t_list *env)
 {
 	char	*key;
 	char	*value;
@@ -62,7 +62,7 @@ void	envp_init(t_exec **ex, t_list **env)
 	char	*line;
 	int		i;
 
-	mov = *env;
+	mov = env;
 	i = -1;
 	while (mov)
 	{
@@ -86,7 +86,7 @@ void	envp_init(t_exec **ex, t_list **env)
 ** 5. ambiguous check
 */
 
-void	filename_make(char **filename, char *src, t_list **env, int *r)
+void	filename_make(char **filename, char *src, t_minishell *m_sh)
 {
 	int		i;
 	int		j;
@@ -94,7 +94,7 @@ void	filename_make(char **filename, char *src, t_list **env, int *r)
 	char	*tmp;
 
 	packs = ft_strtoken(src);
-	env_expand(&packs, env, *r);
+	env_expand(&packs, m_sh);
 	quote_del(&packs);
 	strs_join(&packs);
 	if (!(*filename = ft_strdup(((t_pack *)packs->content)->line)))
@@ -134,20 +134,20 @@ char	*key_get(char *line)
 **  $$ = $null + $null
 */
 
-char	*value_get(char	*key, t_list **env, int *r)
+char	*value_get(char	*key, t_minishell *m_sh)
 {
 	int		len;
 	t_list	*mov;
 	char	*dkey;
 	
 	if (!ft_strncmp(key, "?", 2))
-		return (ft_itoa(*r));
+		return (ft_itoa(m_sh->exit_status));
 	else
 	{
 		len = ft_strlen(key);
 		if (len == 0)
 			return (ft_strdup(""));
-		mov = *env;
+		mov = m_sh->env_list;
 		while (mov)
 		{
 			dkey = ((t_dict *)mov->content)->key;
@@ -175,7 +175,7 @@ bool	envcheck_solve(char **value)
 	return (false);
 }
 
-bool	redirect_envcheck(char *line, t_list **env, int *r)
+bool	redirect_envcheck(char *line, t_minishell *m_sh)
 {
 	int 	i;
 	char	*key;
@@ -188,7 +188,7 @@ bool	redirect_envcheck(char *line, t_list **env, int *r)
 		{
 			if (!(key = key_get(line + i + 1)))
 				exit(ft_error("", 1));
-			if (!(value = value_get(key, env, r)))
+			if (!(value = value_get(key, m_sh)))
 				exit(ft_error("", 1));
 			free(key);
 			if (envcheck_solve(&value))
@@ -202,7 +202,7 @@ bool	redirect_envcheck(char *line, t_list **env, int *r)
 	return (false);
 }
 
-bool	ambiguous_check(char *str, t_list **env, int *r)
+bool	ambiguous_check(char *str, t_minishell *m_sh)
 {
 	t_list	*packs;
 	t_list	*mov;
@@ -215,7 +215,7 @@ bool	ambiguous_check(char *str, t_list **env, int *r)
 	{
 		line = ((t_pack *)mov->content)->line;
 		type = ((t_pack *)mov->content)->type;
-		if (type == STR && redirect_envcheck(line, env, r))
+		if (type == STR && redirect_envcheck(line, m_sh))
 		{
 			ft_lstclear(&packs, pack_free);
 			return (true);
@@ -250,7 +250,7 @@ void	fdout_change(t_exec **ex, const int n, char* filename)
 	(*ex)->fd_out = n;
 }
 
-void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
+void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 {
 	t_list	*mov;
 	int		type;
@@ -261,15 +261,15 @@ void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
 	{
 		type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
-		if (ambiguous_check(((t_pack *)mov->content)->line, env, r))
+		if (ambiguous_check(((t_pack *)mov->content)->line, m_sh))
 		{
-			*r = dir_error(((t_pack *)mov->content)->line, 1);
+			m_sh->exit_status = dir_error(((t_pack *)mov->content)->line, 1);
 			(*ex)->error_flag = true;
 			fdin_change(ex, 0, "");
 			fdout_change(ex, 1, "");
 			break;
 		}
-		filename_make(&filename, ((t_pack *)mov->content)->line, env, r);
+		filename_make(&filename, ((t_pack *)mov->content)->line, m_sh);
 		if (type == RDIR)
 			fdout_change(ex, open(filename, O_WRONLY|O_CREAT|O_TRUNC, 0666), filename);
 		else if (type == RRDIR)
@@ -297,7 +297,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
 **   -errorflag
 */
 
-void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r)
+void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
 {
 	t_list	*mov;
 	t_exec	*ex;
@@ -307,10 +307,10 @@ void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r)
 	*exlist = NULL;
 	while (mov)
 	{
-		ex_def(&ex, mov, env);
+		ex_def(&ex, mov, m_sh->env_list);
 		argv_init(&ex, ((t_leaf *)mov->content)->str);
-		envp_init(&ex, env);
-		fd_controller(&ex, ((t_leaf *)mov->content)->dir, env, r);
+		envp_init(&ex, m_sh->env_list);
+		fd_controller(&ex, ((t_leaf *)mov->content)->dir, m_sh);
 		if (!(new = ft_lstnew(ex)))
 			exit(ft_error("", 1));
 		ft_lstadd_back(exlist, new);

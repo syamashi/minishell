@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 16:39:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:14:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		env_init(char **envp, t_list **env);
 t_list	*ft_strtoken(char *line);
 int		input_check(t_list *store);
 void	store_div(t_list **store);
-void	env_expand(t_list **packs, t_list **env, int r);
+void	env_expand(t_list **packs, t_minishell *m_sh);
 void	packs_trim(t_list **packs);
 void	new_pack(t_pack **pack);
 void	pack_join(t_pack **pack, char *str, int len);
@@ -59,7 +59,6 @@ void	token_dquote(t_pack **pack, t_list **list, t_token *t);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 int		env_init(char **envp, t_list **env);
 int		divide_semicolon(t_list **lines, char *line);
-void	env_expand(t_list **packs, t_list **env, int r);
 int		solve_exit(t_list *semi, t_list **packs, t_list **env);
 int		get_exec(t_list **store, t_list **packs);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
@@ -69,18 +68,24 @@ void	token_semi(t_pack **pack, t_list **list, t_token *t);
 void	token_doll(t_pack **pack, t_list **list, t_token *t);
 void	store_div(t_list **store);
 void	packs_trim(t_list **packs);
-void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r);
+void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh);
 void	ast_init(t_list **ast, t_list **packs);
 void	quote_del(t_list **packs);
 void	strs_join(t_list **packs);
 
 void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
 void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
-int		is_space(char c);
-int		is_meta(char c);
-int		is_keyend(char c);	
-int		is_envmeta(char c);
-int		is_dir(int n);
+t_list	*pack_end(t_pack **pack, t_list **list);
+
+bool	is_space(char c);
+bool	is_meta(char c);
+bool	is_keyend(char c);	
+bool	is_envmeta(char c);
+bool	is_dir(int n);
+bool	is_quote(int n);
+bool	is_dir(int n);
+bool	is_metatype(int n);
+bool	is_bonus(int n);
 
 int		ft_syntax_error(char *str, int i);
 int		ft_avoid_error(char *str, int i);
