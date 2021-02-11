@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:43 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:05:48 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:46:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,19 @@ void	token_escape(t_pack **pack, t_list **list, t_token *t)
 
 void	token_squote(t_pack **pack, t_list **list, t_token *t)
 {
-	pack_join(pack, "'", 1);
-	pack_add(pack, list, SQUOTE);
-	pack_join(pack, "", 0);
-	pack_add(pack, list, STR);
+	pack_metaadd(pack, list, "'", SQUOTE);
+	pack_metaadd(pack, list, "", STR);
 	t->i++;
 	t->j = t->i;
 	while (t->line[t->i] != '\'' && t->line[t->i])
 		t->i++;
-	if (t->i != t->j)
-	{
-		pack_join(pack, t->line + t->j, t->i - t->j);
-		pack_add(pack, list, SSTR);
-	}
+	pack_stradd(pack, list, t);
 	if (t->line[t->i] == '\'')
-	{
-		pack_join(pack, "'", 1);
-		pack_add(pack, list, SQUOTE);
-	}
+		pack_metaadd(pack, list, "'", SQUOTE);
 	if (!t->line[t->i])
 		t->i--;
 	t->j = t->i + 1;
 }
-
 
 /*
 **  ESC in DQUOTE work 4chars { \"$` } only
@@ -63,45 +53,19 @@ bool	is_dqoteesc(const char *line, const int i)
 
 void	token_dquote(t_pack **pack, t_list **list, t_token *t)
 {
-	pack_join(pack, "\"", 1);
-	pack_add(pack, list, DQUOTE);
-	pack_join(pack, "", 0);
-	pack_add(pack, list, STR);
+	pack_metaadd(pack, list, "\"", DQUOTE);
+	pack_metaadd(pack, list, "", STR);
 	t->j = t->i + 1;
 	while (t->line[++t->i] && t->line[t->i] != '"')
 		if (is_dqoteesc(t->line, t->i))
 		{
-			if (t->i != t->j)
-			{
-				pack_join(pack, t->line + t->j, t->i - t->j);
-				pack_add(pack, list, STR);
-				t->j = t->i;
-			}
+			pack_stradd(pack, list, t);
 			token_escape(pack, list, t);
 		}
-	if (t->i != t->j)
-	{
-		pack_join(pack, t->line + t->j, t->i - t->j);
-		pack_add(pack, list, STR);
-	}
+	pack_stradd(pack, list, t);
 	if (t->line[t->i] == '"')
-	{
-		pack_join(pack, "\"", 1);
-		pack_add(pack, list, DQUOTE);
-	}
+		pack_metaadd(pack, list, "\"", DQUOTE);
 	if (!t->line[t->i])
 		t->i--;
 	t->j = t->i + 1;
 }
-
-
-/*void	token_doll(t_pack **pack, t_list **list, t_token *t)
-{
-	t->j = t->i;
-	while (!is_space(t->line[t->i]) && !is_envmeta(t->line[t->i]) && t->line[t->i])
-		t->i++;
-	pack_join(pack, t->line + t->j, t->i - t->j);
-	pack_add(pack, list, DOLL);
-	t->j = t->i--;
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:50:00 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:05:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:46:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,3 +57,20 @@ void	pack_add(t_pack **pack, t_list **list, int type)
 	ft_lstadd_back(list, new);
 	new_pack(pack);
 }
+
+void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type)
+{
+	pack_join(pack, str, ft_strlen(str));
+	pack_add(pack, list, type);
+}
+
+void	pack_stradd(t_pack **pack, t_list **list, t_token *t)
+{
+	if (t->j != t->i)
+	{
+		pack_join(pack, t->line + t->j, t->i - t->j);
+		pack_add(pack, list, STR);
+		t->j = t->i;
+	}
+}
+

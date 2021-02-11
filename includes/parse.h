@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 12:27:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:40:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void	ast_init(t_list **ast, t_list **packs);
 void	quote_del(t_list **packs);
 void	strs_join(t_list **packs);
 
-void	add_space(t_pack **pack, t_list **list);
+void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
+void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
 int		is_space(char c);
 int		is_meta(char c);
 int		is_keyend(char c);	

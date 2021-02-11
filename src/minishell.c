@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/11 12:26:06 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 13:01:24 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ void	minishell(char **envp)
 			env_expand((t_list**)&top->content, &env, r);
 			packs_trim((t_list **)&top->content);
 			ast_init(&ast, (t_list**)&top->content);
-//			debug(store);
-//			ast_debug(ast);
+			debug(store);
+			ast_debug(ast);
 			exlist_init(ast, &exlist, &env, &r);
 			exlist_debug(exlist);
 			sh_launch(exlist);

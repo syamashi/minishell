@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 11:41:23 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:47:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ t_list *space_strtoken(char *line)
 	while (line[++t.i])
 	{
 		if (is_space(line[t.i]))
-			add_space(&pack, &list);
+			pack_metaadd(&pack, &list, " ", SPACE);
 		while (is_space(line[t.i]) && line[t.i])
 			t.i++;
 		t.j = t.i;
