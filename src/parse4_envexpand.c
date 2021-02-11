@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:06:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 11:41:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,6 @@ void	env_add(t_list **env, char *key, char **new)
 		}
 		pos = pos->next;
 	}
-}
-
-int is_keyend(char c)
-{
-	return (is_space(c) ||
-			c == '$' ||
-			c == '\0');
 }
 
 void	env_join(char **new, t_list **env, t_token *t, int r)
@@ -166,12 +159,6 @@ static t_list	*pack_end(t_pack **pack, t_list **list)
 	return (*list);
 }
 
-static void	add_space(t_pack **pack, t_list **list)
-{
-	pack_join(pack, " ", 1);
-	pack_add(pack, list, SPACE);
-}
-
 t_list *space_strtoken(char *line)
 {
 	t_token	t;
@@ -222,8 +209,10 @@ void repack(t_list **prev, t_list **mov, t_list **packs)
 }
 
 /*
-** STR only expand env.
-** not expand SQUOTE, ESC, and after DIR. 
+**  only below will expand
+**  1. STR
+**  2. pre_type != DIRS
+**  3. NOT SQUOTE
 */
 
 void	env_expand(t_list **packs, t_list **env, int r)
@@ -249,7 +238,7 @@ void	env_expand(t_list **packs, t_list **env, int r)
 			pre_type = type;
 		}
 		prev = mov;
-		if (((t_pack *)mov->content)->type != SPACE)
+		if (mov->next && ((t_pack*)mov->next->content)->type == SPACE)
 			pre_type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
 	}

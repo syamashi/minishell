@@ -6,12 +6,21 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 19:42:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:06:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 12:00:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
+
+/*
+**            semi               semi
+** store[0]     -     store[1]     -     store[2]
+**           CMD
+**  -packs[0] - packs[1] -
+**   -line       -line
+**   -type       -type
+*/
 
 void	store_div(t_list **store)
 {

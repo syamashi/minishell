@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 23:02:23 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 11:20:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,27 +114,116 @@ int	dir_error(char *filename, int n)
 	return (n);
 }
 
-bool	ambiguous_check(const char *filename)
+/*
+** $abc
+** start read "abc"
+*/
+
+char	*key_get(char *line)
 {
 	int i;
 
-	i = -1;
-	while (filename[++i])
+	i = 0;
+	while (!is_keyend(line[i]))
+		i++;
+	return (ft_substr(line, 0, i));
+}
+
+/*
+**  $option is not supported.
+**  $$ = $null + $null
+*/
+
+char	*value_get(char	*key, t_list **env, int *r)
+{
+	int		len;
+	t_list	*mov;
+	char	*dkey;
+	
+	if (!ft_strncmp(key, "?", 2))
+		return (ft_itoa(*r));
+	else
 	{
-		if (filename[i] == ' ')
+		len = ft_strlen(key);
+		if (len == 0)
+			return (ft_strdup(""));
+		mov = *env;
+		while (mov)
+		{
+			dkey = ((t_dict *)mov->content)->key;
+			if (!ft_strncmp(key, dkey, len + 1))
+				return (ft_strdup(((t_dict *)mov->content)->value));
+			mov = mov->next;
+		}
+	}
+	return (ft_strdup(""));
+}
+
+bool	envcheck_solve(char **value)
+{
+	char	*tmp;
+	int		i;
+
+	tmp = *value;
+	if (!(*value = ft_strtrim(*value, " \t")))
+		exit(ft_error("", 1));
+	free(tmp);
+	i = -1;
+	while ((*value)[++i])
+		if ((*value)[i] == ' ')
 			return (true);
+	return (false);
+}
+
+bool	redirect_envcheck(char *line, t_list **env, int *r)
+{
+	int 	i;
+	char	*key;
+	char	*value;
+
+	i = -1;
+	while (line[++i])
+	{
+		if (line[i] == '$')
+		{
+			if (!(key = key_get(line + i + 1)))
+				exit(ft_error("", 1));
+			if (!(value = value_get(key, env, r)))
+				exit(ft_error("", 1));
+			free(key);
+			if (envcheck_solve(&value))
+			{
+				free(value);
+				return (true);
+			}
+			free(value);
+		}
 	}
 	return (false);
 }
 
-void	fd_error(char *str, int fd)
+bool	ambiguous_check(char *str, t_list **env, int *r)
 {
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(errno), 2);
-	ft_putstr_fd("\n", 2);
-	errno = 0;
+	t_list	*packs;
+	t_list	*mov;
+	char	*line;
+	int		type;
+
+	packs = ft_strtoken(str);
+	mov = packs;
+	while (mov)
+	{
+		line = ((t_pack *)mov->content)->line;
+		type = ((t_pack *)mov->content)->type;
+		if (type == STR && redirect_envcheck(line, env, r))
+		{
+			ft_lstclear(&packs, pack_free);
+			return (true);
+		}
+		mov = mov->next;
+	}
+	ft_lstclear(&packs, pack_free);
+	return (false);
 }
 
 void	fdin_change(t_exec **ex, const int n, char* filename)
@@ -172,15 +261,16 @@ void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
 	{
 		type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
-		filename_make(&filename, ((t_pack *)mov->content)->line, env, r);
-		if (ambiguous_check(filename))
+		if (ambiguous_check(((t_pack *)mov->content)->line, env, r))
 		{
 			*r = dir_error(((t_pack *)mov->content)->line, 1);
 			(*ex)->error_flag = true;
-			fdin_change(ex, 0, filename);
-			fdout_change(ex, 1, filename);
+			fdin_change(ex, 0, "");
+			fdout_change(ex, 1, "");
+			break;
 		}
-		else if (type == RDIR)
+		filename_make(&filename, ((t_pack *)mov->content)->line, env, r);
+		if (type == RDIR)
 			fdout_change(ex, open(filename, O_WRONLY|O_CREAT|O_TRUNC, 0666), filename);
 		else if (type == RRDIR)
 			fdout_change(ex, open(filename, O_WRONLY|O_CREAT|O_APPEND, 0666), filename);
@@ -204,6 +294,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_list **env, int *r)
 **   -envp[]
 **   -fd_in
 **   -fd_out
+**   -errorflag
 */
 
 void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r)
@@ -226,97 +317,3 @@ void	exlist_init(t_list *ast, t_list **exlist, t_list **env, int *r)
 		mov = mov->next;
 	}
 }
-
-/*
-int pack_toexec(t_list **ast, t_list *pack)
-{
-	int		type;
-	char	*line;
-	t_exec	*ex;
-	t_list	*new;
-	t_list	*exlist;
-	int		i;
-
-	if (def_ex(&ex, pack))
-		return (1);
-//	printf("[pack_toexec] fd_out:%d\n", ex->fd_out);
-	exlist = NULL;
-	i = 0;
-	while (pack)
-	{
-		// astのlistにexのlistをつけていく
-		if (((t_pack *)pack->content)->type == 1) //pipe来たらnew ex
-		{
-			i = 0;
-			if (!(new = ft_lstnew(ex)))
-			{
-				ex_free(&ex);
-				ft_lstclear(&exlist, exlist_free);
-				return (ft_error("[pack_toexec] new malloc error", 1));
-			}
-			ft_lstadd_back(&exlist, new);
-			if (def_ex(&ex, pack->next))
-				return (1);
-			pack = pack->next;
-		}
-		else if (((t_pack *)pack->content)->type == 2)
-		{
-			if (!(ft_strncmp(((t_pack *)pack->content)->line, "<", 2)))
-			{
-				if (ex->fd_in != -1)
-					close(ex->fd_in);
-				ex->fd_in = open(((t_pack *)pack->next->content)->line, O_RDONLY);
-			}
-			if (!(ft_strncmp(((t_pack *)pack->content)->line, ">", 2)))
-			{
-				if (ex->fd_out != -1)
-					close(ex->fd_out);
-				ex->fd_out = open(((t_pack *)pack->next->content)->line, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-			}
-			if (!(ft_strncmp(((t_pack *)pack->content)->line, ">>", 3)))
-			{
-				if (ex->fd_out != -1)
-					close(ex->fd_out);
-				ex->fd_out = open(((t_pack *)pack->next->content)->line, O_WRONLY|O_CREAT|O_APPEND, 0666);
-			}
-			pack = pack->next->next;
-		} // リダイレクトきたらskip
-		else if (!(ft_strncmp(((t_pack *)pack->content)->line, "-n", 3))
-			&& ex->argv[0] //echoコマンドの直後なら
-			&& !(ft_strncmp(ex->argv[0], "echo", 5))
-			&& !ex->argv[1])
-		{
-			pack = pack->next;
-		}
-		else // string
-		{
-			if (!(ex->argv[i++] = ft_strdup(((t_pack *)pack->content)->line)))
-			{
-				ex_free(&ex);
-				ft_lstclear(&exlist, exlist_free);
-				return (ft_error("[pack_toexec] ex->argv[] malloc error", 1));
-			}
-//			printf("[pack_toexec] argv[%d]:%s\n", i-1, ex->argv[i-1]);
-			pack = pack->next;
-		}
-	}
-	if (!(new = ft_lstnew(ex)))
-	{
-		ex_free(&ex);
-		ft_lstclear(&exlist, exlist_free);
-		return (ft_error("[pack_toexec] new malloc error", 1));
-	}
-	ft_lstadd_back(&exlist, new);
-//	printf("[pack_toexec] exlistsize:%d\n", ft_lstsize(exlist));
-	if (!(new = ft_lstnew(exlist)))
-	{
-		ex_free(&ex);
-		ft_lstclear(&exlist, exlist_free);
-		return (ft_error("[pack_toexec] ft_lstnew(exlist) malloc error", 1));
-	}
-	ft_lstadd_back(ast, new);
-//	printf("[pack_toexec] fd_out:%d\n", ((t_exec*)new->content)->fd_out);
-	return (0);
-}
-*/
-
