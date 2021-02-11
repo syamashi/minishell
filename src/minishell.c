@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 18:01:47 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:26:20 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,119 +14,116 @@
 #include "../includes/parse.h"
 #include "../includes/debug.h"
 
-/*
-sig_atomic_t	g_intflag;
-
-
-void	sh_inthandler()
+void	ft_vlstclear(void *vlst_arg, void (*del)(void*))
 {
-	ft_putstr("\nminishell > ");
-	g_intflag = 1;
+	void	**vlst;
+	void	**it;
+
+	vlst = vlst_arg;
+	it = vlst;
+	while (*it)
+		del(*it++);
+	free(vlst);
 }
 
-char	*ft_lstjoin(t_list *lst)
+void	del_t_exec(void *exec_arg)
 {
-	char	*str;
-	char	*tmp;
+	t_exec	*exec;
 
-	if (!lst)
-		return (ft_strdup(""));
-	str = ft_strdup(lst->content);
-	while (lst->next)
-	{
-		tmp = ft_strjoin(str, lst->next->content);
-		free(str);
-		str = tmp;
-		lst = lst->next;
-	}
-	return (str);
+	exec = exec_arg;
+	ft_vlstclear(exec->argv, free);
+	ft_vlstclear(exec->envp, free);
+	free(exec);
 }
 
-static	int	line_free(char **line, int i)
+void	del_pack(void *pack_arg)
 {
-	if (line)
-	{
-		free(*line);
-		*line = NULL;
-	}
-	return (i);
+	t_pack *pack;
+
+	pack = pack_arg;
+	free(pack->line);
+	free(pack);
 }
 
-int	sh_prompt(char **line)
+void	del_command(void *pack_list_arg)
 {
-	int		ret;
-	char	*tmp;
+	t_list	*pack_list;
 
-	*line = NULL;
-	ft_putstr("minishell > ");
-	while ((ret = get_next_line(0, line)) <= 0)
-	{
-		if (ret == -1)
-		{
-			line_free(line, 1);
-			return (ft_error("minishell: [sh_prompt] GNL error", 1));
-		}
-		if (**line)
-		{
-			line_free(line, 1);
-			ft_error("minishell: not blank", 1);
-			return (1);
-		}
-		ft_putstr("exit\n");
-		exit(0);
-	}
-	tmp = *line;
-	if (!(*line = ft_strtrim(*line, " \t")))
-		exit(ft_error("", 1));
-	free(tmp);
-	return (0);
+	pack_list = pack_list_arg;
+	ft_lstclear(&pack_list, del_pack);
 }
-*/
 
-void	minishell(char **envp)
+void	sh_init(t_minishell *m_sh, char **envp)
 {
-	char	*line;
+	m_sh->env_list = NULL;
+	env_init(envp, &(m_sh->env_list));
+}
+
+t_list	*div_commands(t_minishell *m_sh, char *line)
+{
 	t_list	*store;
-	t_list	*env;
-	t_list	*top;
-	t_list	*ast;
-	t_list	*exlist;
-	t_list	*extop;
-	int		r;
 
-	env = NULL;
-	line = NULL;
-	store = NULL;
+	store = ft_lstnew(ft_strtoken(line));
+	if ((m_sh->exit_status = input_check(store->content)))
+		return (NULL);
+	store_div(&store); // storeをlist化
+	return (store);
+}
+
+// why recieve double pointer list???????
+t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
+{
+	t_list	*ex_list;
+	t_list	*ast;
+	t_list	*env;
+
 	ast = NULL;
-	exlist = NULL;
-	r = 0;
-	env_init(envp, &env);
+	ex_list = NULL;
+	env = m_sh->env_list;
+	env_expand((t_list**)pack_list, &env, m_sh->exit_status);
+	packs_trim((t_list **)pack_list);
+	ast_init(&ast, (t_list**)pack_list);
+		//debug(store);
+		ast_debug(ast);
+	exlist_init(ast, &ex_list, &env, &(m_sh->exit_status));
+	exlist_debug(ex_list);
+	return (ex_list);
+}
+
+/*
+ * void	minishell(char **envp);
+ *
+ * # list types
+ * t_list<t_list<t_pack>>	commands, tmp;
+ *   intermediate products of command
+ * t_list<t_exec>			ex_list;
+ *
+ * all error should be handled in each function called this function
+ * 	execpt parse error in div_commands
+ */
+
+void	minishell(char	**envp)
+{
+	t_minishell	mini_sh;
+	char		*line;
+	t_list		*commands;
+	t_list		*tmp;
+	t_list		*ex_list;
+
+	sh_init(&mini_sh, envp);
 	while (1)
 	{
-	//	signal(SIGINT, sh_inthandler);
-		all_free(&line, &store, &ast, &exlist);
-	//	g_intflag = 0;
-		if (!(line = sh_prompt()))
-			continue;
-		store = ft_lstnew(ft_strtoken(line));
-		if (r = input_check(store->content))
-			continue;
-		store_div(&store); // storeをlist化
-		top = store;
-		while (top)
+		line = sh_prompt(&mini_sh);
+		commands = div_commands(&mini_sh, line);
+		free(line);
+		while (commands)
 		{
-//			update_env(); //環境変数の更新。 export内で更新までするかな
-			env_expand((t_list**)&top->content, &env, r);
-			packs_trim((t_list **)&top->content);
-			ast_init(&ast, (t_list**)&top->content);
-//			debug(store);
-//			ast_debug(ast);
-			exlist_init(ast, &exlist, &env, &r);
-			exlist_debug(exlist);
-			sh_launch(exlist);
-			top = top->next;
-			all_free(NULL, NULL, &ast, &exlist);
+			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
+			sh_launch(&mini_sh, ex_list);
+			ft_lstclear(&ex_list, del_t_exec);
+			tmp = commands->next;
+			ft_lstdelone(commands, del_command);
+			commands = tmp;
 		}
-//		debug(store);
 	}
 }

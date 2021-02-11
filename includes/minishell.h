@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 18:05:37 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/11 12:41:54 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,17 @@ typedef struct	s_dict
 	char *value;
 }				t_dict;
 
+typedef struct	s_minishell
+{
+	t_list	*env_list;
+	int		exit_status;
+}				t_minishell;
+
 sig_atomic_t	g_intflag;
 
 void	minishell(char **envp);
 char	*sh_prompt();
-int		sh_launch(t_list *exlist);
+int		sh_launch(t_minishell *m_sh, t_list *exlist);
 
 
 /*

@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/10 17:34:11 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:43:40 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	sh_launch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_ne
 	exit(1);
 }
 
-int		sh_process_manager(t_list *execlist, int prev_pipe)
+int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 {
 	pid_t	cpid;
 	int		status;
@@ -47,22 +47,25 @@ int		sh_process_manager(t_list *execlist, int prev_pipe)
 		sh_launch_child(exec_param, pipefd, prev_pipe, (execlist->next != NULL));
 	if (waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("minishell"));
+	m_sh->exit_status = WEXITSTATUS(status);
 	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("minishell"));
 	if (execlist->next && close(pipefd[1]) < 0)
 		return (ft_perror("minishell"));
 	if (execlist->next)
-		sh_process_manager(execlist->next, pipefd[0]);
+		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	return (0);
 }
 
-int		sh_launch(t_list *execlist)
+int		sh_launch(t_minishell *m_sh, t_list *execlist)
 {
 	t_builtin_f	builtin_function;
 
 	if ((builtin_function = builtin_table(execlist->content)))
 		return(builtin_function(execlist->content));
-	sh_process_manager(execlist, 0);
+	signal(SIGINT, SIG_IGN);
+	sh_process_manager(m_sh, execlist, 0);
+	signal(SIGINT, SIG_DFL);
 	return (0);
 }
 
