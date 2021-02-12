@@ -8,12 +8,18 @@ SRCS = main.c\
 		parse1_packmeta1.c\
 		parse1_packmeta2.c\
 		parse1_util.c\
-		parse2_syntaxcheck.c\
+		parse2_inputcheck.c\
+		parse2_inputcheck_syntax.c\
 		parse3_storediv.c\
 		parse4_envexpand.c\
+		parse4_envexpand2_envjoin.c\
+		parse4_envexpand3_repack.c\
 		parse5_trim.c\
+		parse5_trim2_quotedel.c\
 		parse6_ast.c\
 		parse7_exinit.c\
+		parse7_exinit2_fdcontrol.c\
+		parse7_exinit3_ambiguouscheck.c\
 		putout_error.c\
 		util.c\
 		debug.c\

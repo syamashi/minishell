@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 21:14:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 01:49:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define ESC 15
 # define SSTR 16
 
-void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
 void 	pack_free(void *ptr);
 void 	packs_free(t_list **packs);
 void 	env_free(void *ptr);
@@ -42,7 +41,6 @@ void	ast_free(t_list **ast);
 
 int		env_init(char **envp, t_list **env);
 t_list	*ft_strtoken(char *line);
-int		input_check(t_list *store);
 void	store_div(t_list **store);
 void	env_expand(t_list **packs, t_minishell *m_sh);
 void	packs_trim(t_list **packs);
@@ -63,7 +61,9 @@ int		solve_exit(t_list *semi, t_list **packs, t_list **env);
 int		get_exec(t_list **store, t_list **packs);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 t_list	*packed(char *line);
-int		input_check(t_list *store);
+
+int		syntax_check(t_list *list, t_minishell *m_sh);
+int		input_check(t_list *store, t_minishell *m_sh);
 void	token_semi(t_pack **pack, t_list **list, t_token *t);
 void	token_doll(t_pack **pack, t_list **list, t_token *t);
 void	store_div(t_list **store);
@@ -77,6 +77,18 @@ void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
 void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
 t_list	*pack_end(t_pack **pack, t_list **list);
 
+
+void	env_solve(char **line, t_list *mov, t_minishell *m_sh);
+void	repack(t_list **prev, t_list **mov, t_list **packs);
+void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh);
+
+void	pack_del(t_list **prev, t_list **mov, t_list **packs);
+
+void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh);
+bool	ambiguous_check(char *str, t_minishell *m_sh, t_exec **ex);
+void	fdin_set(t_exec **ex, const int n, char *path);
+void	fdout_set(t_exec **ex, const int n, char *path);
+
 bool	is_space(char c);
 bool	is_meta(char c);
 bool	is_keyend(char c);	
@@ -86,11 +98,14 @@ bool	is_quote(int n);
 bool	is_dir(int n);
 bool	is_metatype(int n);
 bool	is_bonus(int n);
+bool	isnot_cmd(const int type);
+bool	is_cmd(int type);
+void	packinfo_get(char **line, int *type, const t_list *mov);
 
 int		ft_syntax_error(char *str, int i);
 int		ft_avoid_error(char *str, int i);
 int		ft_exit_error(char *str, int i);
 int		ft_error(char *str, int i);
 void	fd_error(char *str, int fd);
-
+int		dir_error(char *path, int n);
 #endif

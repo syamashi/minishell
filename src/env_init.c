@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 01:38:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:35:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	init_map(t_dict **map, t_list **env, char **envp)
 		env_error("[init_env] (*map)->value malloc failed", map, env);
 }
 
-void envtest(t_list **env)
+void	envtest(t_list **env)
 {
 	t_dict	*map;
 	t_list	*new;
