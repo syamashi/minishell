@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:28:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:11:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ bool	is_bonus(int n)
 			n == AND ||
 			n == DAND);
 }
+
+bool	isnot_cmd(const int type)
+{
+	return (type == SPACE ||
+			type == SQUOTE ||
+			type == DQUOTE);
+}
+
 
 /*
 ** $abc

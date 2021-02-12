@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse2_syntaxcheck.c                               :+:      :+:    :+:   */
+/*   parse2_inputchecksyntax.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:59:18 by syamashi         ###   ########.fr       */
+/*   Created: 2021/02/12 13:15:31 by syamashi          #+#    #+#             */
+/*   Updated: 2021/02/12 13:15:47 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,6 @@ void	set_preinfo(int *type, int *pre_type, char **line, char **pre_line)
 	*pre_type = (*type == SCOLON) ? -1 : *type;
 	*pre_line = *line;
 }
-
-bool	isnot_cmd(const int type)
-{
-	return (type == SPACE ||
-			type == SQUOTE ||
-			type == DQUOTE);
-}
-
-/*
-**  check dirs{<, >, >>} and metas{|, ;}
-**  1. first meta OUT
-**  2. meta meta OUT
-**  3. dir meta OUT
-**  4. dir dir OUT
-**  5. dir EOF OUT
-**
-**  block newline
-**  6. open quote BLOCK
-**  7. | EOF BLOCK
-**  8. ESC EOF BLOCK
-*/
 
 int	endline_check(int quote_flag, int pre_type, char *pre_line, t_minishell *m_sh)
 {
@@ -83,27 +62,4 @@ int	syntax_check(t_list *list, t_minishell *m_sh)
 		list = list->next;
 	}
 	return (endline_check(quote_flag, pre_type, pre_line, m_sh));
-}
-
-int	avoid_check(t_list *list, t_minishell *m_sh)
-{
-	char	*line;
-	int		type;
-	
-	while (list)
-	{
-		line = ((t_pack *)(list->content))->line;
-		type = ((t_pack *)(list->content))->type;
-		list = list->next;
-		if (is_bonus(type))
-			return (m_sh->exit_status = ft_avoid_error(line, 1));
-	}
-	return (0);
-}
-
-int	input_check(t_list *store, t_minishell *m_sh)
-{
-	if (!store)
-		return (0);
-	return (syntax_check(store, m_sh) || avoid_check(store, m_sh));
 }

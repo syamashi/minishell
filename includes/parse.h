@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:58:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:12:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		get_exec(t_list **store, t_list **packs);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 t_list	*packed(char *line);
 
+int		syntax_check(t_list *list, t_minishell *m_sh);
 int		input_check(t_list *store, t_minishell *m_sh);
 void	token_semi(t_pack **pack, t_list **list, t_token *t);
 void	token_doll(t_pack **pack, t_list **list, t_token *t);
@@ -85,6 +86,7 @@ bool	is_quote(int n);
 bool	is_dir(int n);
 bool	is_metatype(int n);
 bool	is_bonus(int n);
+bool	isnot_cmd(const int type);
 
 int		ft_syntax_error(char *str, int i);
 int		ft_avoid_error(char *str, int i);
