@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:57:13 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 01:47:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ bool	isnot_cmd(const int type)
 			type == DQUOTE);
 }
 
+bool	is_cmd(int type)
+{
+	return (type == STR ||
+			is_dir(type));
+}
 /*
 ** $abc
 ** start read "abc"

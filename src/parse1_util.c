@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:50:00 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:19:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 01:50:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ void	pack_add(t_pack **pack, t_list **list, int type)
 
 void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type)
 {
+	t_list	*new;
+
+	if (type == SPACE)
+	{
+		new = ft_lstlast(*list);
+		if (((t_pack *)new->content)->type == SPACE)
+			return ;
+	}
 	pack_join(pack, str, ft_strlen(str));
 	pack_add(pack, list, type);
 }

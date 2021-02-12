@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 14:10:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 01:41:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,8 @@ void	minishell(char	**envp)
 	sh_init(&mini_sh, envp);
 	while (1)
 	{
-		line = sh_prompt(&mini_sh);
+		if (!(line = sh_prompt(&mini_sh)))
+			continue ;
 		commands = div_commands(&mini_sh, line);
 		free(line);
 		while (commands)

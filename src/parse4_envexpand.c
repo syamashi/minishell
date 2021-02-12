@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse4_envexpand1.c                                :+:      :+:    :+:   */
+/*   parse4_envexpand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:52:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 01:51:56 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ void	env_solve(char **line, t_list *mov, t_minishell *m_sh)
 
 bool	is_cmdstr(int type, int *pre_type, int *quote_flag)
 {
-	if (type == SQUOTE)
+	if (type == SQUOTE && *quote_flag != 2)
 		*quote_flag ^= 1;
-	if (type == DQUOTE)
+	if (type == DQUOTE && *quote_flag != 1)
 		*quote_flag ^= 2;
 	if (*quote_flag == 1 || type != STR)
 		return (false);
@@ -101,8 +101,8 @@ void	env_expand(t_list **packs, t_minishell *m_sh)
 			pre_type = type;
 		}
 		prev = mov;
-		if (mov->next && ((t_pack*)mov->next->content)->type == SPACE)
-			pre_type = ((t_pack *)mov->content)->type;
+		if (is_cmd(type) && mov->next && ((t_pack*)mov->next->content)->type == SPACE)
+			pre_type = type;
 		mov = mov->next;
 	}
 }
