@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:12:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:53:12 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ void	strs_join(t_list **packs);
 void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
 void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
 t_list	*pack_end(t_pack **pack, t_list **list);
+
+
+void	env_solve(char **line, t_list *mov, t_minishell *m_sh);
+void	repack(t_list **prev, t_list **mov, t_list **packs);
+void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh);
 
 bool	is_space(char c);
 bool	is_meta(char c);

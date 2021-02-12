@@ -6,21 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 19:42:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:10:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:16:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-/*
-**            semi               semi
-** store[0]     -     store[1]     -     store[2]
-**           CMD
-**  -packs[0] - packs[1] -
-**   -line       -line
-**   -type       -type
-*/
 
 void	scolon_del(t_list **packs, t_list **top, t_list **prev)
 {
@@ -39,6 +30,15 @@ void	scolon_del(t_list **packs, t_list **top, t_list **prev)
 		(*prev)->next = NULL;
 	*prev = NULL;
 }
+
+/*
+**            semi               semi
+** store[0]     -     store[1]     -     store[2]
+**           CMD
+**  -packs[0] - packs[1] -
+**   -line       -line
+**   -type       -type
+*/
 
 void	store_div(t_list **store)
 {

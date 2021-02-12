@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 14:45:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:57:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,5 @@ void	token_semi(t_pack **pack, t_list **list, t_token *t)
 {
 	pack_metaadd(pack, list, " ", SPACE);
 	pack_metaadd(pack, list, ";", SCOLON);
-	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }

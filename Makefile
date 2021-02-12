@@ -9,9 +9,11 @@ SRCS = main.c\
 		parse1_packmeta2.c\
 		parse1_util.c\
 		parse2_inputcheck.c\
-		parse2_inputchecksyntax.c\
+		parse2_inputcheck_syntax.c\
 		parse3_storediv.c\
-		parse4_envexpand.c\
+		parse4_envexpand1.c\
+		parse4_envexpand2_envjoin.c\
+		parse4_envexpand3_repack.c\
 		parse5_trim.c\
 		parse6_ast.c\
 		parse7_exinit.c\
