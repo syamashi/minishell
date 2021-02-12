@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:00:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:47:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ bool	isnot_cmd(const int type)
 **  8. ESC EOF BLOCK
 */
 
+int	endline_check(int quote_flag, char *pre_line, int pre_type, t_minishell *m_sh)
+{
+	if (quote_flag)
+		return (m_sh->exit_status = ft_avoid_error("open quote", 1));
+	if (is_dir(pre_type))
+		return (m_sh->exit_status = ft_syntax_error("newline", 258));
+	if (pre_type == PIPE || (pre_type == ESC && !*pre_line))
+		return (m_sh->exit_status = ft_avoid_error("multiline", 1));
+	return (0);
+}
+
 int	syntax_check(t_list *list, t_minishell *m_sh)
 {
 	char	*line;
@@ -56,7 +67,6 @@ int	syntax_check(t_list *list, t_minishell *m_sh)
 	int		pre_type;
 	int		quote_flag;
 
-	pre_line = ((t_pack *)(list->content))->line;
 	pre_type = -1;
 	quote_flag = 0;
 	while (list)
@@ -72,13 +82,7 @@ int	syntax_check(t_list *list, t_minishell *m_sh)
 			set_preinfo(&type, &pre_type, &line, &pre_line);
 		list = list->next;
 	}
-	if (quote_flag)
-		return (m_sh->exit_status = ft_avoid_error("open quote", 1));
-	if (is_dir(pre_type))
-		return (m_sh->exit_status = ft_syntax_error("newline", 258));
-	if (pre_type == PIPE || (pre_type == ESC && !*pre_line))
-		return (m_sh->exit_status = ft_avoid_error("multiline", 1));
-	return (0);
+	return (endline_check(quote_flag, pre_type, pre_line, m_sh));
 }
 
 int	avoid_check(t_list *list, t_minishell *m_sh)
