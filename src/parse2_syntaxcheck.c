@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 20:57:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:00:12 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	isnot_cmd(const int type)
 **  8. ESC EOF BLOCK
 */
 
-int	syntax_check(t_list *list)
+int	syntax_check(t_list *list, t_minishell *m_sh)
 {
 	char	*line;
 	char	*pre_line;
@@ -65,23 +65,23 @@ int	syntax_check(t_list *list)
 		type = ((t_pack *)(list->content))->type;
 		check_quote(type, &quote_flag);
 		if ((pre_type == -1 || is_dir(pre_type) || is_metatype(pre_type)) && is_metatype(type))
-			return (ft_syntax_error(line, 258));
+			return (m_sh->exit_status = ft_syntax_error(line, 258));
 		if (is_dir(pre_type) && is_dir(type))
-			return (ft_syntax_error(line, 258));
+			return (m_sh->exit_status = ft_syntax_error(line, 258));
 		if (!isnot_cmd(type))
 			set_preinfo(&type, &pre_type, &line, &pre_line);
 		list = list->next;
 	}
 	if (quote_flag)
-		return (ft_avoid_error("open quote", 1));
+		return (m_sh->exit_status = ft_avoid_error("open quote", 1));
 	if (is_dir(pre_type))
-		return (ft_syntax_error("newline", 258));
+		return (m_sh->exit_status = ft_syntax_error("newline", 258));
 	if (pre_type == PIPE || (pre_type == ESC && !*pre_line))
-		return (ft_avoid_error("multiline", 1));
+		return (m_sh->exit_status = ft_avoid_error("multiline", 1));
 	return (0);
 }
 
-int	avoid_check(t_list *list)
+int	avoid_check(t_list *list, t_minishell *m_sh)
 {
 	char	*line;
 	int		type;
@@ -92,20 +92,14 @@ int	avoid_check(t_list *list)
 		type = ((t_pack *)(list->content))->type;
 		list = list->next;
 		if (is_bonus(type))
-			return (ft_avoid_error(line, 1));
+			return (m_sh->exit_status = ft_avoid_error(line, 1));
 	}
 	return (0);
 }
 
-int	input_check(t_list *store)
+int	input_check(t_list *store, t_minishell *m_sh)
 {
-	int r;
-
 	if (!store)
 		return (0);
-	if (r = syntax_check(store))
-		return (r);
-	if (r = avoid_check(store))
-		return (r);
-	return (r);
+	return (syntax_check(store, m_sh) || avoid_check(store, m_sh));
 }

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 21:14:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 11:59:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	ast_free(t_list **ast);
 
 int		env_init(char **envp, t_list **env);
 t_list	*ft_strtoken(char *line);
-int		input_check(t_list *store);
 void	store_div(t_list **store);
 void	env_expand(t_list **packs, t_minishell *m_sh);
 void	packs_trim(t_list **packs);
@@ -63,7 +62,8 @@ int		solve_exit(t_list *semi, t_list **packs, t_list **env);
 int		get_exec(t_list **store, t_list **packs);
 void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
 t_list	*packed(char *line);
-int		input_check(t_list *store);
+
+int		input_check(t_list *store, t_minishell *m_sh);
 void	token_semi(t_pack **pack, t_list **list, t_token *t);
 void	token_doll(t_pack **pack, t_list **list, t_token *t);
 void	store_div(t_list **store);
