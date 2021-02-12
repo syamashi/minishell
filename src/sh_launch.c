@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 11:56:50 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/12 13:28:44 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	sh_launch_child(t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pi
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
 
+	signal(SIGINT, SIG_DFL);
 	exec_param = exlist->content;
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0);
