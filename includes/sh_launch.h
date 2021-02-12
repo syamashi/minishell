@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 11:47:01 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/12 13:01:14 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include "../includes/minishell.h"
 
 # define PATH_MAX 255
+# define F_ECHO_OPT_N (1 << 0)
 
 /*
  * typedef	struct	s_exec //pipe単位のデータ?
@@ -44,7 +45,6 @@ typedef int (*t_builtin_f)(t_minishell *, t_exec *);
 int		sh_launch(t_minishell *m_sh, t_list *execlist);
 int		ft_execvpe(const char *file, char *const *argv, char *const *envp);
 
-t_builtin_f	builtin_table(t_exec *com);
 
 /*
  * utiles
@@ -52,5 +52,11 @@ t_builtin_f	builtin_table(t_exec *com);
 int		sh_execvpes(t_exec *s);
 int		ft_perror(char *string);
 void	sh_dup_close(int old_fd, int new_fd);
+t_builtin_f	builtin_table(t_exec *com);
+
+/*
+ * builtin functions
+ */
+int		sh_echo(t_minishell *m_sh, t_exec *exec);
 
 #endif
