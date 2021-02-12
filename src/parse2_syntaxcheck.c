@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:47:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:59:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	isnot_cmd(const int type)
 **  8. ESC EOF BLOCK
 */
 
-int	endline_check(int quote_flag, char *pre_line, int pre_type, t_minishell *m_sh)
+int	endline_check(int quote_flag, int pre_type, char *pre_line, t_minishell *m_sh)
 {
 	if (quote_flag)
 		return (m_sh->exit_status = ft_avoid_error("open quote", 1));

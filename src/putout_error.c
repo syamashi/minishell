@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:47:36 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:58:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_avoid_error(char *str, int i)
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("'", 2);
 	ft_putstr_fd(" is now developing...", 2);
-	ft_putstr_ft("\n", 2);
+	ft_putstr_fd("\n", 2);
 	cnt++;
 	return (i);
 }

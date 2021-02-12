@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 12:29:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:58:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@
 # define ESC 15
 # define SSTR 16
 
-void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
 void 	pack_free(void *ptr);
 void 	packs_free(t_list **packs);
 void 	env_free(void *ptr);
