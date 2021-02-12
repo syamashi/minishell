@@ -6,13 +6,13 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 11:34:50 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/12 11:49:07 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-void	sh_launch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
+void	sh_launch_child(t_minishell *m_sh, t_exec *exec_param, int *pipefd, int prev_pipe, bool has_next)
 {
 	t_builtin_f	builtin_function;
 
@@ -27,7 +27,7 @@ void	sh_launch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_ne
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
-		exit(builtin_function(exec_param));
+		exit(builtin_function(m_sh, exec_param));
 	sh_execvpes(exec_param);
 	ft_perror("minishell");
 	exit(1);
@@ -46,7 +46,7 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	if ((cpid = fork()) < 0)
 		return (ft_perror("minishell"));
 	if (cpid == 0)
-		sh_launch_child(exec_param, pipefd, prev_pipe, (execlist->next != NULL));
+		sh_launch_child(m_sh, exec_param, pipefd, prev_pipe, (execlist->next != NULL));
 	if (waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("minishell"));
 	m_sh->exit_status = WEXITSTATUS(status);

@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/11 12:39:46 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/12 11:47:01 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
  * }				t_exec;
  */
 
-typedef int (*t_builtin_f)(t_exec *);
+typedef int (*t_builtin_f)(t_minishell *, t_exec *);
 
 
 int		sh_launch(t_minishell *m_sh, t_list *execlist);
