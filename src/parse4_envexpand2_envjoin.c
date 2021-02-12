@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:52:47 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:39:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void env_retadd(t_minishell *m_sh, char **new)
+void	env_retadd(t_minishell *m_sh, char **new)
 {
 	char	*value;
 	char	*tmp;
@@ -33,7 +33,7 @@ void env_retadd(t_minishell *m_sh, char **new)
 **    $ = $
 **  $'' = null
 **  $"" = null
-**  $\\ = $\ 
+**  $\\ = $\
 */
 
 void	empty_key(char **new, t_list *mov)
@@ -49,7 +49,7 @@ void	empty_key(char **new, t_list *mov)
 	tmp = NULL;
 }
 
-void env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
+void	env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
 {
 	t_list	*pos;
 	char	*tmp;
@@ -71,7 +71,7 @@ void env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
 			if (!(*new = ft_strjoin(*new, value)))
 				exit(ft_error("[env_join] new malloc error", 1));
 			free(tmp);
-			break;
+			break ;
 		}
 		pos = pos->next;
 	}

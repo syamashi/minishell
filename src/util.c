@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:34:47 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:57:13 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ bool	isnot_cmd(const int type)
 			type == DQUOTE);
 }
 
-
 /*
 ** $abc
 ** start read "abc"
@@ -114,7 +113,7 @@ char	*value_get(char	*key, t_minishell *m_sh)
 	int		len;
 	t_list	*mov;
 	char	*dkey;
-	
+
 	if (!ft_strncmp(key, "?", 2))
 		return (ft_itoa(m_sh->exit_status));
 	else
@@ -132,4 +131,10 @@ char	*value_get(char	*key, t_minishell *m_sh)
 		}
 	}
 	return (ft_strdup(""));
+}
+
+void	packinfo_get(char **line, int *type, const t_list *mov)
+{
+	*line = ((t_pack *)(mov)->content)->line;
+	*type = ((t_pack *)(mov)->content)->type;
 }

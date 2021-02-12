@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 13:15:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:37:40 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@ int	avoid_check(t_list *list, t_minishell *m_sh)
 {
 	char	*line;
 	int		type;
-	
+
 	while (list)
 	{
-		line = ((t_pack *)(list->content))->line;
-		type = ((t_pack *)(list->content))->type;
+		packinfo_get(&line, &type, list);
 		list = list->next;
 		if (is_bonus(type))
 			return (m_sh->exit_status = ft_avoid_error(line, 1));

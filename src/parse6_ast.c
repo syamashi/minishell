@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 01:33:38 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:06:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:52:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void	dir_add(t_list **mov, t_leaf **leaf)
 		pack_join(&pack, line, ft_strlen(line));
 		pack->type = ((t_pack*)((*mov)->content))->type;
 		if (!(new = ft_lstnew(pack)))
-			exit(ft_error("",1));
+			exit(ft_error("", 1));
 		ft_lstadd_back(&(*leaf)->dir, new);
 		if (i == 1)
-			break;
+			break ;
 		*mov = (*mov)->next;
 	}
 }
@@ -64,14 +64,14 @@ void	str_add(t_list **mov, t_leaf **leaf)
 	pack_join(&pack, line, ft_strlen(line));
 	pack->type = ((t_pack*)((*mov)->content))->type;
 	if (!(new = ft_lstnew(pack)))
-		exit(ft_error("",1));
+		exit(ft_error("", 1));
 	ft_lstadd_back(&(*leaf)->str, new);
 }
 
-/*         pipe         pipe 
-** ast[0]   -   ast[1]   -   ast[2]
-**   -leaf->str   -leaf->str
-**   -leaf->dir   -leaf->dir
+/*
+**  ast[0] -(pipe)- ast[1] -(pipe)- ast[2]
+**  -leaf->str
+**  -leaf->dir
 */
 
 void	ast_init(t_list **ast, t_list **packs)

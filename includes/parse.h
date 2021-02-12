@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:53:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/12 18:53:10 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ void	env_solve(char **line, t_list *mov, t_minishell *m_sh);
 void	repack(t_list **prev, t_list **mov, t_list **packs);
 void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh);
 
+void	pack_del(t_list **prev, t_list **mov, t_list **packs);
+
+void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh);
+bool	ambiguous_check(char *str, t_minishell *m_sh, t_exec **ex);
+void	fdin_set(t_exec **ex, const int n, char *path);
+void	fdout_set(t_exec **ex, const int n, char *path);
+
 bool	is_space(char c);
 bool	is_meta(char c);
 bool	is_keyend(char c);	
@@ -92,11 +99,12 @@ bool	is_dir(int n);
 bool	is_metatype(int n);
 bool	is_bonus(int n);
 bool	isnot_cmd(const int type);
+void	packinfo_get(char **line, int *type, const t_list *mov);
 
 int		ft_syntax_error(char *str, int i);
 int		ft_avoid_error(char *str, int i);
 int		ft_exit_error(char *str, int i);
 int		ft_error(char *str, int i);
 void	fd_error(char *str, int fd);
-
+int		dir_error(char *path, int n);
 #endif
