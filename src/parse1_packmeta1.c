@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 19:01:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:05:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 14:45:43 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,72 +15,54 @@
 
 void	token_pipe(t_pack **pack, t_list **list, t_token *t)
 {
+	pack_metaadd(pack, list, " ", SPACE);
 	if (!(ft_strncmp(t->line + t->i, "||", 2)) && (++t->i))
-	{
-		pack_join(pack, "||", 2);
-		pack_add(pack, list, DPIPE);
-	}
+		pack_metaadd(pack, list, "||", DPIPE);
 	else
-	{
-		pack_join(pack, "|", 1);
-		pack_add(pack, list, PIPE);
-	}
+		pack_metaadd(pack, list, "|", PIPE);
+	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }
 
 void	token_and(t_pack **pack, t_list **list, t_token *t)
 {
+	pack_metaadd(pack, list, " ", SPACE);
 	if (!(ft_strncmp(t->line + t->i, "&&", 2)) && (++t->i))
-	{
-		pack_join(pack, "&&", 2);
-		pack_add(pack, list, DAND);
-	}
+		pack_metaadd(pack, list, "&&", DAND);
 	else
-	{
-		pack_join(pack, "&", 1);
-		pack_add(pack, list, AND);
-	}
+		pack_metaadd(pack, list, "&", AND);
+	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }
 
 void	token_redirect_l(t_pack **pack, t_list **list, t_token *t)
 {
+	pack_metaadd(pack, list, " ", SPACE);
 	if (!(ft_strncmp(t->line + t->i, "<<<", 3)) && (t->i += 2))
-	{
-		pack_join(pack, "<<<", 3);
-		pack_add(pack, list, LLLDIR);
-	}
+		pack_metaadd(pack, list, "<<<", LLLDIR);
 	else if (!(ft_strncmp(t->line + t->i, "<<", 2)) && ++t->i)
-	{
-		pack_join(pack, "<<", 2);
-		pack_add(pack, list, LLDIR);
-	}
+		pack_metaadd(pack, list, "<<", LLDIR);
 	else
-	{
-		pack_join(pack, "<", 1);
-		pack_add(pack, list, LDIR);
-	}
+		pack_metaadd(pack, list, "<", LDIR);
+	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }
 
 void	token_redirect_r(t_pack **pack, t_list **list, t_token *t)
 {
+	pack_metaadd(pack, list, " ", SPACE);
 	if (!(ft_strncmp(t->line + t->i, ">>", 2)) && ++t->i)
-	{
-		pack_join(pack, ">>", 2);
-		pack_add(pack, list, RRDIR);
-	}
+		pack_metaadd(pack, list, ">>", RRDIR);
 	else
-	{
-		pack_join(pack, ">", 1);
-		pack_add(pack, list, RDIR);
-	}
+		pack_metaadd(pack, list, ">", RDIR);
+	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }
 
 void	token_semi(t_pack **pack, t_list **list, t_token *t)
 {
-	pack_join(pack, ";", 1);
-	pack_add(pack, list, SCOLON);
+	pack_metaadd(pack, list, " ", SPACE);
+	pack_metaadd(pack, list, ";", SCOLON);
+	pack_metaadd(pack, list, " ", SPACE);
 	t->j = t->i + 1;
 }

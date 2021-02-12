@@ -42,7 +42,6 @@ $(NAME) : $(OBJS)
 dir_obj :
 	mkdir -p obj
 
-
 clean :
 	rm -f $(OBJS)
 

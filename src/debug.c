@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:40:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:19:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 21:07:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,25 +87,16 @@ void	ast_debug(t_list *ast)
 
 void	debug(t_list *store)
 {
-	t_list *top;
 	t_list *packs;
 	char *line;
 	int type;
 
-	top = store;
-	int top_cnt = 0;
-	while (top)
-	{
-		printf("store[%d]:\n", top_cnt);
-		packs = top->content;
-		while (packs){
-			line = ((t_pack *)packs->content)->line;
-			type = ((t_pack *)packs->content)->type;
-			printf("[%10s][%2d]\n", line, type);
-			packs = packs->next;
-		}
-		printf("\n");
-		top = top->next;
-		top_cnt++;
+	packs = store;
+	while (packs){
+		line = ((t_pack *)packs->content)->line;
+		type = ((t_pack *)packs->content)->type;
+		printf("[%10s][%2d]\n", line, type);
+		packs = packs->next;
 	}
+	printf("\n");
 }

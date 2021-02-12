@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:06:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:57:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,14 @@ int	ft_exit_error(char *str, int i)
 	ft_putstr(": numeric argument required");
 	ft_putstr("\n");
 	return (i);
+}
+
+void	fd_error(char *str, int fd)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putstr_fd("\n", 2);
+	errno = 0;
 }

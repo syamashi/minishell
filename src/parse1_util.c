@@ -6,21 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:50:00 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:05:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 20:02:10 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack)
-{
-	t->line = *line;
-	t->i = -1;
-	*pack = NULL;
-	new_pack(pack);
-	*list = NULL;
-}
 
 void	new_pack(t_pack **pack)
 {
@@ -56,4 +47,20 @@ void	pack_add(t_pack **pack, t_list **list, int type)
 		exit(ft_error("minishell: malloc failed", 1));
 	ft_lstadd_back(list, new);
 	new_pack(pack);
+}
+
+void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type)
+{
+	pack_join(pack, str, ft_strlen(str));
+	pack_add(pack, list, type);
+}
+
+void	pack_stradd(t_pack **pack, t_list **list, t_token *t)
+{
+	if (t->j != t->i)
+	{
+		pack_join(pack, t->line + t->j, t->i - t->j);
+		pack_add(pack, list, STR);
+		t->j = t->i;
+	}
 }

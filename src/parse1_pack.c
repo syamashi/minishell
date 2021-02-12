@@ -6,27 +6,25 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 16:17:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 16:20:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 20:59:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	add_space(t_pack **pack, t_list **list)
+void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack)
 {
-	pack_join(pack, " ", 1);
-	pack_add(pack, list, SPACE);
+	t->line = *line;
+	t->i = -1;
+	*pack = NULL;
+	new_pack(pack);
+	*list = NULL;
 }
 
 void	token_meta(t_pack **pack, t_list **list, t_token *t, char c)
 {
-	if (t->j != t->i)
-	{
-		pack_join(pack, t->line + t->j, t->i - t->j);
-		pack_add(pack, list, STR);
-		t->j = t->i;
-	}
+	pack_stradd(pack, list, t);
 	if (c == '|')
 		token_pipe(pack, list, t);
 	else if (c == '&')
@@ -59,8 +57,6 @@ t_list	*pack_end(t_pack **pack, t_list **list)
 
 /*
 **  {|, &, <, >, \, ', ", ;}
-**  after
-**  
 */
 
 t_list	*ft_strtoken(char *line)
@@ -73,7 +69,7 @@ t_list	*ft_strtoken(char *line)
 	while (line[++t.i])
 	{
 		if (is_space(line[t.i]))
-			add_space(&pack, &list);
+			pack_metaadd(&pack, &list, " ", SPACE);
 		while (is_space(line[t.i]) && line[t.i])
 			t.i++;
 		t.j = t.i;

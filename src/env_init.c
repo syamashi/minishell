@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 15:54:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 01:38:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,6 @@ int		env_init(char **envp, t_list **env)
 		ft_lstadd_back(env, new);
 		envp++;
 	}
-//	envtest(env);
+	envtest(env);
 	return (0);
 }

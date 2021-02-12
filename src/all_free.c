@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/10 15:00:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/11 16:39:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void packs_free(t_list **packs)
 	{
 		mov = (*packs)->next;
 		ft_lstclear((t_list**)&((*packs)->content), pack_free);
-		
 		*packs = mov;
 	}
 }
