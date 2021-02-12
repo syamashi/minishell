@@ -6,7 +6,7 @@
 /*   By: ewatanab <ewatanab@student.42tokyo.jp      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 10:54:37 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/12 11:34:50 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ void	sh_launch_child(t_exec *exec_param, int *pipefd, int prev_pipe, bool has_ne
 		sh_dup_close(pipefd[1], 1);
 	if (exec_param->fd_out != 1)
 		sh_dup_close(exec_param->fd_out, 1);
+	if (exec_param->error_flag)
+		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
 		exit(builtin_function(exec_param));
 	sh_execvpes(exec_param);
@@ -63,7 +65,7 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 
 	if ((builtin_function = builtin_table(execlist->content)))
 	{
-		m_sh->exit_status = builtin_function(execlist->content);
+		m_sh->exit_status = builtin_function(m_sh, execlist->content);
 		return (m_sh->exit_status);
 	}
 	signal(SIGINT, SIG_IGN);
