@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 14:01:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 19:53:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,15 @@ bool	is_cmd(int type)
 	return (type == STR ||
 			is_dir(type));
 }
+
+bool	is_esc(char c)
+{
+	return (c == '"' ||
+			c == '\\' ||
+			c == '`' ||
+			c == '$');
+}
+
 /*
 ** $abc
 ** start read "abc"

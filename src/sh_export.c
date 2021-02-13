@@ -6,33 +6,146 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 14:16:07 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 20:44:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/sh_launch.h"
 
+char	*make_outputvalue(char *value)
+{
+	char	*output;
+	char	*tmp;
+	char	*add;
+	int		i;
+	int		j;
+
+	if (!value)
+		return (NULL);
+	if (!(output = ft_strdup("=\"")))
+		exit(ft_error("", 1));
+	i = -1;
+	j = 0;
+	while (value[++i])
+	{
+		if (is_esc(value[i]))
+		{
+			if (i > j)
+			{
+				add = ft_substr(value, j, i - j);
+				tmp = output;
+				output = ft_strjoin(output, add);
+				free(tmp);
+				free(add);
+				j = i;
+			}
+			tmp = output;
+			output = ft_strjoin(output, "\\");
+			free(tmp);
+		}
+	}
+	if (i > j)
+	{
+		tmp = output;
+		output = ft_strjoin(output, value + j);
+		free(tmp);
+	}
+	tmp = output;
+	output = ft_strjoin(output, "\"");
+	free(tmp);
+	return (output);
+}
+
+char	*make_output(t_list *env)
+{
+	char	*output;
+	char	*tmp;
+	char	*key;
+	char	*value;
+
+	key = ((t_dict *)env->content)->key;
+	value = make_outputvalue(((t_dict *)env->content)->value);
+	output = ft_strdup("");
+	tmp = output;
+	output = ft_strjoin(output, "declare -x ");
+	free(tmp);
+	tmp = output;
+	output = ft_strjoin(output, key);
+	free(tmp);
+	if (value)
+	{
+		tmp = output;
+		output = ft_strjoin(output, value);
+		free(tmp);
+	}
+	return (output);
+}
+
 int	display_export(t_minishell *m_sh, int n)
 {
+	t_list	*env;
+	char	*output;
+
+	printf("[display_export]\n");
+	env = m_sh->env_list;
+	while (env)
+	{
+		output = make_output(env);
+		ft_putstr_fd(output, 1);
+		free(output);
+		ft_putstr_fd("\n", 1);
+		env = env->next;
+	}
 	return (n);
 }
 
 int	is_keyvalid(char *key)
 {
+	int i;
+
+	if (ft_isdigit(*key))
+		return (0);
+	i = -1;
+	while (key[++i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (0);
+	}
 	return (1);
 }
 
-void	invalid_key(char *argv, int *error_flag)
+void	invalid_key(char *argv, t_minishell *m_sh)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd("': not a valid identifier", 2);
 	ft_putstr_fd("\n", 2);
-	*error_flag |= 1;
+	m_sh->exit_status = 1;
 }
 
 void	export_envp(t_minishell *m_sh, char *key, char *value)
 {
+	t_list	*env;
+	t_list	*new;
+	t_dict	*dict;
+
+	env = m_sh->env_list;
+	if (!(dict = (t_dict *)malloc(sizeof(t_dict))))
+		exit(ft_error("", 1));
+	while (env)
+	{
+		if (!ft_strcmp(key, ((t_dict *)env->content)->key))
+		{
+			free(((t_dict *)env->content)->value);
+			((t_dict *)env->content)->value = value;
+			return ;
+		}
+		env = env->next;
+	}
+	dict->key = key;
+	dict->value = value;
+	new = ft_lstnew(dict);
+	ft_lstadd_back(&m_sh->env_list, new);
 	return;
 }
 
@@ -41,12 +154,10 @@ int	sh_export(t_minishell *m_sh, t_exec *exec)
 	char	**argv;
 	char	*key;
 	char	*value;
-	int		error_flag;
 	int		i;
 
 	argv = exec->argv + 1;
-	error_flag = 0;
-	if (!(argv))
+	if (!*argv)
 		return (display_export(m_sh, 0));
 	while (*argv)
 	{
@@ -61,12 +172,12 @@ int	sh_export(t_minishell *m_sh, t_exec *exec)
 			else
 				if (!(value = ft_strdup(*argv + i + 1)))
 					exit(ft_error("", 1));
-			printf("[sh_export] key:[%s], value[%s], i:%d\n", key, value, i);
+//			printf("[sh_export] key:[%s], value[%s], i:%d\n", key, value, i);
 			export_envp(m_sh, key, value);
 		}
 		else
-			invalid_key(*argv, &error_flag);
+			invalid_key(*argv, m_sh);
 		argv++;
 	}
-	return (error_flag);
+	return (0);
 }
