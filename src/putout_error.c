@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:54:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 14:01:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int		ft_error(char *str, int	i)
 {
 	ft_putstr_fd(str, 2);
-	ft_putstr_fd("\n", 2);	
+	ft_putstr_fd("\n", 2);
 	return (i);
 }
 

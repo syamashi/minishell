@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_launch.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 13:01:14 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/13 14:11:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/types.h>
 
 # include "../includes/minishell.h"
+# include "../includes/parse.h"
 
 # define PATH_MAX 255
 # define F_ECHO_OPT_N (1 << 0)
@@ -58,5 +59,6 @@ t_builtin_f	builtin_table(t_exec *com);
  * builtin functions
  */
 int		sh_echo(t_minishell *m_sh, t_exec *exec);
+int		sh_export(t_minishell *m_sh, t_exec *exec);
 
 #endif

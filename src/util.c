@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 01:47:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 14:01:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool	is_envmeta(char c)
 bool	is_keyend(char c)
 {
 	return (is_space(c) ||
+			c == '=' ||
 			c == '$' ||
 			c == '\0');
 }
