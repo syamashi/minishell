@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:54:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	envcheck_solve(char **value)
 
 	tmp = *value;
 	if (!(*value = ft_strtrim(*value, " \t")))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	free(tmp);
 	i = -1;
 	while ((*value)[++i])
@@ -41,9 +41,9 @@ bool	redirect_envcheck(char *line, t_minishell *m_sh)
 		if (line[i] == '$')
 		{
 			if (!(key = key_get(line + i + 1)))
-				exit(ft_error("", 1));
+				exit(ft_error("minishell: malloc failed", 1));
 			if (!(value = value_get(key, m_sh)))
-				exit(ft_error("", 1));
+				exit(ft_error("minishell: malloc failed", 1));
 			free(key);
 			if (envcheck_solve(&value))
 			{

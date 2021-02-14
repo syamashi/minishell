@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 01:49:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:09:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ bool	is_metatype(int n);
 bool	is_bonus(int n);
 bool	isnot_cmd(const int type);
 bool	is_cmd(int type);
+bool	is_esc(char c);
 void	packinfo_get(char **line, int *type, const t_list *mov);
 
 int		ft_syntax_error(char *str, int i);
@@ -108,4 +109,6 @@ int		ft_exit_error(char *str, int i);
 int		ft_error(char *str, int i);
 void	fd_error(char *str, int fd);
 int		dir_error(char *path, int n);
+
+t_list	*quick_sort_list(t_list *c);
 #endif

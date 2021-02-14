@@ -3,6 +3,7 @@ SRCDIR = ./src/
 SRCS = main.c\
 		minishell.c\
 		env_init.c\
+		env_sort.c\
 		all_free.c\
 		parse1_pack.c\
 		parse1_packmeta1.c\
@@ -27,7 +28,8 @@ SRCS = main.c\
 		sh_launch_utils.c\
 		ft_execvpe.c\
 		sh_prompt.c\
-		sh_echo.c
+		sh_echo.c\
+		sh_export.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)

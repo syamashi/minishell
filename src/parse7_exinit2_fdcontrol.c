@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 01:51:15 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	path_make(char **path, char *src, t_minishell *m_sh)
 	quote_del(&packs);
 	strs_join(&packs);
 	if (!(*path = ft_strdup(((t_pack *)packs->content)->line)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	ft_lstclear(&packs, pack_free);
 	tmp = *path;
 	*path = ft_strtrim(*path, " \t");

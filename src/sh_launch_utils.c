@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sh_launch_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 13:05:18 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/13 14:10:48 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,7 @@ t_builtin_f	builtin_table(t_exec *com)
 {
 	if (!ft_strcmp(com->argv[0], "echo"))
 		return (sh_echo);
+	if (!ft_strcmp(com->argv[0], "export"))
+		return (sh_export);
 	return (NULL);
 }
