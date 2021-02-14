@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/14 14:09:28 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 22:08:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	del_command(void *pack_list_arg)
 void	sh_init(t_minishell *m_sh, char **envp)
 {
 	m_sh->env_list = NULL;
+	m_sh->exit_status = 0;
 	env_init(envp, &(m_sh->env_list));
 	m_sh->env_list = quick_sort_list(m_sh->env_list);
 }
