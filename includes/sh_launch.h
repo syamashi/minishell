@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/14 17:18:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 22:07:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ t_builtin_f	builtin_table(t_exec *com);
 
 int		display_export(t_minishell *m_sh, int n);
 void	export_envp(t_minishell *m_sh, char *key, char *value);
+int		is_keyvalid(char *key);
+void	invalid_key(char *argv, int *is_invalid, char **key);
 /*
  * builtin functions
  */

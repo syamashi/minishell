@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 17:26:23 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 22:07:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,18 @@ int		is_keyvalid(char *key)
 	return (1);
 }
 
-void	invalid_key(char *argv, t_minishell *m_sh, char **key)
+void	invalid_key(char *argv, int *is_invalid, char **key)
 {
 	ft_putstr_fd("minishell: export: `", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd("': not a valid identifier", 2);
 	ft_putstr_fd("\n", 2);
-	m_sh->exit_status = 1;
-	free(*key);
-	*key = NULL;
+	*is_invalid = 1;
+	if (key)
+	{
+		free(*key);
+		*key = NULL;
+	}
 }
 
 int		sh_export(t_minishell *m_sh, t_exec *exec)
@@ -44,8 +47,10 @@ int		sh_export(t_minishell *m_sh, t_exec *exec)
 	char	*key;
 	char	*value;
 	int		i;
+	int		is_invalid;
 
 	argv = exec->argv + 1;
+	is_invalid = 0;
 	if (!*argv)
 		return (display_export(m_sh, 0));
 	while (*argv)
@@ -60,8 +65,8 @@ int		sh_export(t_minishell *m_sh, t_exec *exec)
 			export_envp(m_sh, key, value);
 		}
 		else
-			invalid_key(*argv, m_sh, &key);
+			invalid_key(*argv, &is_invalid, &key);
 		argv++;
 	}
-	return (0);
+	return (is_invalid);
 }
