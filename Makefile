@@ -3,6 +3,7 @@ SRCDIR = ./src/
 SRCS = main.c\
 		minishell.c\
 		env_init.c\
+		env_sort.c\
 		all_free.c\
 		parse1_pack.c\
 		parse1_packmeta1.c\

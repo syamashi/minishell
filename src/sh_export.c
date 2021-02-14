@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 20:44:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 15:17:13 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	display_export(t_minishell *m_sh, int n)
 	t_list	*env;
 	char	*output;
 
-	printf("[display_export]\n");
 	env = m_sh->env_list;
 	while (env)
 	{
@@ -123,6 +122,34 @@ void	invalid_key(char *argv, t_minishell *m_sh)
 	m_sh->exit_status = 1;
 }
 
+void	envlst_add(t_list **env, t_list *new)
+{
+	char	*newkey;
+	t_list	*mov;
+	t_list	*prev;
+
+	mov = *env;
+	prev = NULL;
+	newkey = ((t_dict *)new->content)->key;
+	while (mov)
+	{
+		if (ft_strcmp(newkey, ((t_dict *)(mov)->content)->key) < 0)
+		{
+			if (prev)
+			{
+				prev->next = new;
+				new->next = mov;
+			}
+			else
+				ft_lstadd_front(env, new);
+			return;
+		}
+		prev = mov;
+		mov = mov->next;
+	}
+	ft_lstadd_back(env, new);
+}
+
 void	export_envp(t_minishell *m_sh, char *key, char *value)
 {
 	t_list	*env;
@@ -136,8 +163,11 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 	{
 		if (!ft_strcmp(key, ((t_dict *)env->content)->key))
 		{
-			free(((t_dict *)env->content)->value);
-			((t_dict *)env->content)->value = value;
+			if (value)
+			{
+				free(((t_dict *)env->content)->value);
+				((t_dict *)env->content)->value = value;
+			}
 			return ;
 		}
 		env = env->next;
@@ -145,7 +175,7 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 	dict->key = key;
 	dict->value = value;
 	new = ft_lstnew(dict);
-	ft_lstadd_back(&m_sh->env_list, new);
+	envlst_add(&m_sh->env_list, new);
 	return;
 }
 

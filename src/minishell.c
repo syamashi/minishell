@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/13 01:54:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 14:09:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 {
 	m_sh->env_list = NULL;
 	env_init(envp, &(m_sh->env_list));
+	m_sh->env_list = quick_sort_list(m_sh->env_list);
 }
 
 t_list	*div_commands(t_minishell *m_sh, char *line)
