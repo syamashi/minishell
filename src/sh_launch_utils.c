@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/13 14:10:48 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 16:02:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,9 @@ t_builtin_f	builtin_table(t_exec *com)
 		return (sh_echo);
 	if (!ft_strcmp(com->argv[0], "export"))
 		return (sh_export);
+	if (!ft_strcmp(com->argv[0], "unset"))
+		return (sh_unset);
+	if (!ft_strcmp(com->argv[0], "env"))
+		return (sh_env);
 	return (NULL);
 }
