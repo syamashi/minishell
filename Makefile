@@ -29,7 +29,11 @@ SRCS = main.c\
 		ft_execvpe.c\
 		sh_prompt.c\
 		sh_echo.c\
-		sh_export.c
+		sh_export.c\
+		sh_export2_no_args.c\
+		sh_export3_any_args.c\
+		sh_env.c\
+		sh_unset.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)

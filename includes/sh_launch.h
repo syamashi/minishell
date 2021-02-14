@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/13 14:11:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 17:18:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,14 @@ int		ft_perror(char *string);
 void	sh_dup_close(int old_fd, int new_fd);
 t_builtin_f	builtin_table(t_exec *com);
 
+int		display_export(t_minishell *m_sh, int n);
+void	export_envp(t_minishell *m_sh, char *key, char *value);
 /*
  * builtin functions
  */
 int		sh_echo(t_minishell *m_sh, t_exec *exec);
 int		sh_export(t_minishell *m_sh, t_exec *exec);
+int		sh_unset(t_minishell *m_sh, t_exec *exec);
+int		sh_env(t_minishell *m_sh, t_exec *exec);
 
 #endif
