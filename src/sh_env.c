@@ -6,23 +6,23 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:05:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/14 22:34:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../includes/sh_launch.h"
 
-void	display_env(t_minishell *m_sh)
+void	display_env(t_minishell *m_sh, t_exec *ex)
 {
 	t_list	*mov;
 
 	mov = m_sh->env_list;
 	while (mov)
 	{
-		ft_putstr_fd(((t_dict *)mov->content)->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(((t_dict *)mov->content)->value, 1);
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd(((t_dict *)mov->content)->key, ex->fd_out);
+		ft_putstr_fd("=", ex->fd_out);
+		ft_putstr_fd(((t_dict *)mov->content)->value, ex->fd_out);
+		ft_putstr_fd("\n", ex->fd_out);
 		mov = mov->next;
 	}
 }
@@ -40,6 +40,6 @@ int		sh_env(t_minishell *m_sh, t_exec *exec)
 		return (127);
 	}
 	else
-		display_env(m_sh);
+		display_env(m_sh, exec);
 	return (0);
 }
