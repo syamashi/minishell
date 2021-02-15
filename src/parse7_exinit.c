@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 18:22:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 20:35:38 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void	all_close()
 	i = 2;
 	while (++i < 256)
 		close(i);
+	errno = 0;
 }
 
 void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
