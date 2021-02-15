@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 15:19:21 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 21:03:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int		ft_avoid_error(char *str, int i)
 
 int		ft_exit_error(char *str, int i)
 {
-	ft_putstr_fd("bash: exit: ", 2);
+	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": numeric argument required", 2);
 	ft_putstr_fd("\n", 2);
