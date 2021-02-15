@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/15 13:01:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 16:31:45 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
 	ast = NULL;
 	ex_list = NULL;
 //	debug(*pack_list);
-	env_expand((t_list **)pack_list, m_sh);
+	env_expand((t_list **)pack_list, m_sh, 0);
 	packs_trim((t_list **)pack_list);
 	ast_init(&ast, (t_list**)pack_list);
 	//ast_debug(ast);

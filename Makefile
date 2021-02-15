@@ -20,7 +20,7 @@ SRCS = main.c\
 		parse6_ast.c\
 		parse7_exinit.c\
 		parse7_exinit2_fdcontrol.c\
-		parse7_exinit3_ambiguouscheck.c\
+		parse7_exinit3_pathmake.c\
 		putout_error.c\
 		util.c\
 		debug.c\
@@ -46,7 +46,7 @@ CFLAGS = -g -O0
 
 all : $(NAME)
 
-$(OBJDIR)%.o : $(SRCDIR)%.c dir_obj
+$(OBJDIR)%.o : $(SRCDIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)

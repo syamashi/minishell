@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:36:27 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 17:07:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ static	void	prejoin(int *i, int *j, char *value, char **output)
 	free(tmp);
 	free(add);
 	*j = *i;
-}
-
-static	void	simplejoin(char **output, char *add)
-{
-	char	*tmp;
-
-	tmp = *output;
-	if (!(*output = ft_strjoin(*output, add)))
-		exit(ft_error("", 1));
-	free(tmp);
 }
 
 static	char	*make_outputvalue(char *value)
