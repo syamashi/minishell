@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 18:17:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,13 @@ void	fdout_set(t_exec **ex, const int n, char *path)
 	(*ex)->fd_out = n;
 }
 
-/*
-** 1. open ENV
-** 2. del ESC
-** 3. del QUOTES
-** 4. ft_strtrim
-** 5. ambiguous check
-*/
-
-void	path_make(char **path, char *src, t_minishell *m_sh)
+bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 {
-	int		i;
-	int		j;
-	t_list	*packs;
-	char	*tmp;
-
-	packs = ft_strtoken(src);
-	env_expand(&packs, m_sh);
-	quote_del(&packs);
-	strs_join(&packs);
-	if (!(*path = ft_strdup(((t_pack *)packs->content)->line)))
-		exit(ft_error("minishell: malloc failed", 1));
-	ft_lstclear(&packs, pack_free);
-	tmp = *path;
-	*path = ft_strtrim(*path, " \t");
-	free(tmp);
-	tmp = NULL;
+	m_sh->exit_status = dir_error(str, 1);
+	(*ex)->error_flag = true;
+	fdin_set(ex, 0, "");
+	fdout_set(ex, 1, "");
+	return (true);
 }
 
 void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
@@ -76,9 +57,10 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 	{
 		type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
-		if (ambiguous_check(((t_pack *)mov->content)->line, m_sh, ex))
-			break ;
-		path_make(&path, ((t_pack *)mov->content)->line, m_sh);
+		if (!(path = path_make(((t_pack *)mov->content)->line, m_sh)))
+			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
+				break;
+		errno = 0;
 		if (type == RDIR)
 			fdout_set(ex, open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666), path);
 		else if (type == RRDIR)

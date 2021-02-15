@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 14:09:06 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 18:05:38 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSE_H
 
 # include "../includes/minishell.h"
+# include "../includes/debug.h"
 
 # define STR 0
 # define RDIR 1
@@ -32,6 +33,7 @@
 # define DOLL 14
 # define ESC 15
 # define SSTR 16
+# define DUMMY 129
 
 void 	pack_free(void *ptr);
 void 	packs_free(t_list **packs);
@@ -42,7 +44,7 @@ void	ast_free(t_list **ast);
 int		env_init(char **envp, t_list **env);
 t_list	*ft_strtoken(char *line);
 void	store_div(t_list **store);
-void	env_expand(t_list **packs, t_minishell *m_sh);
+void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag);
 void	packs_trim(t_list **packs);
 void	new_pack(t_pack **pack);
 void	pack_join(t_pack **pack, char *str, int len);
@@ -85,9 +87,11 @@ void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh);
 void	pack_del(t_list **prev, t_list **mov, t_list **packs);
 
 void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh);
-bool	ambiguous_check(char *str, t_minishell *m_sh, t_exec **ex);
+bool	ambiguous_check(char **path);
 void	fdin_set(t_exec **ex, const int n, char *path);
 void	fdout_set(t_exec **ex, const int n, char *path);
+void	quoteflag_get(int type, int *quote_flag);
+char	*path_make(char *src, t_minishell *m_sh);
 
 bool	is_space(char c);
 bool	is_meta(char c);
@@ -100,9 +104,12 @@ bool	is_metatype(int n);
 bool	is_bonus(int n);
 bool	isnot_cmd(const int type);
 bool	is_cmd(int type);
+bool	is_cmdstr(int type, int *pre_type, int *quote_flag);
 bool	is_esc(char c);
 void	packinfo_get(char **line, int *type, const t_list *mov);
-
+void	simplejoin(char **output, char *add);
+char	*simpletrim(char *output, char *trim);
+bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex);
 int		ft_syntax_error(char *str, int i);
 int		ft_avoid_error(char *str, int i);
 int		ft_exit_error(char *str, int i);

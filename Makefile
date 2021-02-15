@@ -20,7 +20,7 @@ SRCS = main.c\
 		parse6_ast.c\
 		parse7_exinit.c\
 		parse7_exinit2_fdcontrol.c\
-		parse7_exinit3_ambiguouscheck.c\
+		parse7_exinit3_pathmake.c\
 		putout_error.c\
 		util.c\
 		debug.c\
@@ -33,7 +33,10 @@ SRCS = main.c\
 		sh_export2_no_args.c\
 		sh_export3_any_args.c\
 		sh_env.c\
-		sh_unset.c
+		sh_unset.c\
+		sh_cd.c\
+		sh_pwd.c\
+		sh_exit.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)
@@ -43,7 +46,7 @@ CFLAGS = -g -O0
 
 all : $(NAME)
 
-$(OBJDIR)%.o : $(SRCDIR)%.c dir_obj
+$(OBJDIR)%.o : $(SRCDIR)%.c dir_obj 
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)
@@ -51,7 +54,7 @@ $(NAME) : $(OBJS)
 	# echo ^ : $^
 	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
-dir_obj :
+:
 	mkdir -p obj
 
 clean :

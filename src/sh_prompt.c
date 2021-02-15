@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 14:34:47 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ char	*ft_lstjoin(t_list *lst)
 		lst = lst->next;
 	}
 	return (str);
-}
-
-void	sh_exit(int status)
-{
-	exit(0);
 }
 
 char	*line_validcheck(char **line)

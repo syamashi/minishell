@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 17:55:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 17:07:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ static	void	prejoin(int *i, int *j, char *value, char **output)
 	free(tmp);
 	free(add);
 	*j = *i;
-}
-
-static	void	simplejoin(char **output, char *add)
-{
-	char	*tmp;
-
-	tmp = *output;
-	if (!(*output = ft_strjoin(*output, add)))
-		exit(ft_error("", 1));
-	free(tmp);
 }
 
 static	char	*make_outputvalue(char *value)
@@ -85,7 +75,7 @@ static	char	*make_output(t_list *env)
 	return (output);
 }
 
-int				display_export(t_minishell *m_sh, int n)
+int				display_export(t_minishell *m_sh, t_exec *ex)
 {
 	t_list	*env;
 	char	*output;
@@ -94,10 +84,10 @@ int				display_export(t_minishell *m_sh, int n)
 	while (env)
 	{
 		output = make_output(env);
-		ft_putstr_fd(output, 1);
+		ft_putstr_fd(output, ex->fd_out);
 		free(output);
-		ft_putstr_fd("\n", 1);
+		ft_putstr_fd("\n", ex->fd_out);
 		env = env->next;
 	}
-	return (n);
+	return (0);
 }

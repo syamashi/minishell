@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 17:50:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 16:49:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ void	env_solve(char **line, t_list *mov, t_minishell *m_sh)
 
 bool	is_cmdstr(int type, int *pre_type, int *quote_flag)
 {
-	if (type == SQUOTE && *quote_flag != 2)
-		*quote_flag ^= 1;
-	if (type == DQUOTE && *quote_flag != 1)
-		*quote_flag ^= 2;
+	quoteflag_get(type, quote_flag);
 	if (*quote_flag == 1 || type != STR)
 		return (false);
 	if (is_dir(*pre_type))
@@ -78,7 +75,7 @@ bool	is_cmdstr(int type, int *pre_type, int *quote_flag)
 **  3. NOT SQUOTE
 */
 
-void	env_expand(t_list **packs, t_minishell *m_sh)
+void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 {
 	t_list	*mov;
 	t_list	*prev;
@@ -96,7 +93,7 @@ void	env_expand(t_list **packs, t_minishell *m_sh)
 		if (is_cmdstr(type, &pre_type, &quote_flag))
 		{
 			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
-			if (quote_flag == 0)
+			if (quote_flag == 0 && !pathflag)
 				repack(&prev, &mov, packs);
 			pre_type = type;
 		}

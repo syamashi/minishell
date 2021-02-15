@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:07:23 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 00:23:12 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,12 @@ int		sh_export(t_minishell *m_sh, t_exec *exec)
 	argv = exec->argv + 1;
 	is_invalid = 0;
 	if (!*argv)
-		return (display_export(m_sh, 0));
+		return (display_export(m_sh, exec));
 	while (*argv)
 	{
 		key = key_get(*argv);
-		if (is_keyvalid(key))
+		if (is_keyvalid(key) && (i = -1))
 		{
-			i = -1;
 			while (!is_keyend((*argv)[++i]))
 				;
 			value = (!(*argv)[i]) ? NULL : ft_strdup(*argv + i + 1);
