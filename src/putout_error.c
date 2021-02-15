@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 14:01:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 15:19:21 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	fd_error(char *str, int fd)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);
 	ft_putstr_fd("\n", 2);
-	errno = 0;
 }
 
 int		dir_error(char *path, int n)

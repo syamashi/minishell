@@ -33,7 +33,10 @@ SRCS = main.c\
 		sh_export2_no_args.c\
 		sh_export3_any_args.c\
 		sh_env.c\
-		sh_unset.c
+		sh_unset.c\
+		sh_cd.c\
+		sh_pwd.c\
+		sh_exit.c
 
 OBJDIR = ./obj/
 OBJS = $(SRCS:%.c=$(OBJDIR)%.o)

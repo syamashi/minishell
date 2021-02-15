@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/14 22:35:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 15:01:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,8 @@ int		sh_echo(t_minishell *m_sh, t_exec *exec);
 int		sh_export(t_minishell *m_sh, t_exec *exec);
 int		sh_unset(t_minishell *m_sh, t_exec *exec);
 int		sh_env(t_minishell *m_sh, t_exec *exec);
+int		sh_cd(t_minishell *m_sh, t_exec *exec);
+int		sh_pwd(t_minishell *m_sh, t_exec *exec);
+int		sh_exit(t_minishell *m_sh, t_exec *exec);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 15:18:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 		if (ambiguous_check(((t_pack *)mov->content)->line, m_sh, ex))
 			break ;
 		path_make(&path, ((t_pack *)mov->content)->line, m_sh);
+		errno = 0;
 		if (type == RDIR)
 			fdout_set(ex, open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666), path);
 		else if (type == RRDIR)
