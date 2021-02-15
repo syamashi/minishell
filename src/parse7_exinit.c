@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 15:11:13 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/15 18:22:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
 
 	mov = ast;
 	*exlist = NULL;
-//	all_close();
+	all_close();
 	while (mov)
 	{
 		ex_def(&ex, mov, m_sh->env_list);
