@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/16 16:43:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ void	env_oldpwd_init(t_list **env)
 	map = NULL;
 	new = NULL;
 	if(!(map = (t_dict *)malloc(sizeof(t_dict))))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	if (!(map->key = ft_strdup("OLDPWD")))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	map->value = NULL;
 	if (!(new = ft_lstnew(map)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	ft_lstadd_back(env, new);
 }
 

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 18:16:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*dummy_set()
 	char	*set;
 
 	if (!(set = (char *)malloc(2)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	set[0] = DUMMY;
 	set[1] = '\0';
 	return (set);

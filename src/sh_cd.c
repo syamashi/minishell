@@ -13,9 +13,11 @@ int		pwd_update(t_minishell *m_sh)
 	buf = NULL;
 	if (!(value = value_get("PWD", m_sh)))
 		if (!(value = ft_strdup("")))
-			exit(ft_error("", 1));
+			exit(ft_error("minishell: malloc failed", 1));
 	if (key_find("OLDPWD", m_sh))
 		export_envp(m_sh, ft_strdup("OLDPWD"), value);
+	else
+		free(value);
 	if (key_find("PWD", m_sh))
 	{
 		errno = 0;
@@ -33,7 +35,11 @@ int		cd_no_args(t_minishell *m_sh)
 	if (!key_find("HOME", m_sh) || !(home = value_get("HOME", m_sh)))
 		return (ft_error("minishell: cd: HOME not set", 1));
 	if (chdir(home) == -1)
+	{
+		free(home);
 		return (ft_cd_error(home, 1));
+	}
+	free(home);
 	return (0);
 }
 
@@ -47,7 +53,7 @@ void	tilde_join(char **argv, t_minishell *m_sh)
 	if (!key_find("HOME", m_sh) || !(home_value = value_get("HOME", m_sh)))
 		if (!(home_value = ft_strdup(m_sh->home_defvalue)))
 			if (!(home_value = ft_strdup("")))
-				exit(ft_error("", 1));
+				exit(ft_error("minishell: malloc failed", 1));
 	tmp = *argv;
 	*argv = ft_strjoin(home_value, *argv + 1);
 	free(tmp);

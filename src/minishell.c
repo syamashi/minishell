@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/16 16:44:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	m_sh->env_list = quick_sort_list(m_sh->env_list);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
-			exit(ft_error("", 1));
+			exit(ft_error("minishell: malloc failed", 1));
 }
 
 t_list	*div_commands(t_minishell *m_sh, char *line)
