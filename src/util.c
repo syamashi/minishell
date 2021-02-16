@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/16 16:35:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	simplejoin(char **output, char *add)
 
 	tmp = *output;
 	if (!(*output = ft_strjoin(*output, add)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	free(tmp);
 }
 
@@ -178,7 +178,7 @@ char	*simpletrim(char *output, char *trim)
 
 	tmp = output;
 	if (!(output = ft_strtrim(output, trim)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	free(tmp);
 	return (output);
 }
