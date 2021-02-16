@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 21:03:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 14:56:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,13 @@ int		dir_error(char *path, int n)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": ambiguous redirect\n", 2);
+	return (n);
+}
+
+int		ft_cd_error(char *path, int n)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
 	return (n);
 }

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 12:29:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 15:49:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct	s_minishell
 {
 	t_list	*env_list;
 	int		exit_status;
+	char	*home_defvalue;
 }				t_minishell;
 
 sig_atomic_t	g_intflag;
@@ -84,6 +85,8 @@ int		sh_launch(t_minishell *m_sh, t_list *exlist);
 
 char	*key_get(char *line);
 char	*value_get(char	*key, t_minishell *m_sh);
+bool	key_find(char *key, t_minishell *m_sh);
+
 /*
 int		sh_echo(char **argv);
 int		sh_cd(char **argv);

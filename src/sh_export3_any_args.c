@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:34:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 16:09:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 	t_list	*new;
 	t_dict	*dict;
 
+	if (!key)
+		return ;
 	env = m_sh->env_list;
 	while (env)
 	{

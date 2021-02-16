@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:15:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 16:43:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	init_map(t_dict **map, t_list **env, char **envp)
 		env_error("[init_env] (*map)->value malloc failed", map, env);
 }
 
-void	envtest(t_list **env)
+void	env_oldpwd_init(t_list **env)
 {
 	t_dict	*map;
 	t_list	*new;
@@ -56,10 +56,13 @@ void	envtest(t_list **env)
 
 	map = NULL;
 	new = NULL;
-	map = (t_dict *)malloc(sizeof(t_dict));
-	map->key = ft_strdup("test");
-	map->value = ft_strdup("  a  b  c  ");
-	new = ft_lstnew(map);
+	if(!(map = (t_dict *)malloc(sizeof(t_dict))))
+		exit(ft_error("", 1));
+	if (!(map->key = ft_strdup("OLDPWD")))
+		exit(ft_error("", 1));
+	map->value = NULL;
+	if (!(new = ft_lstnew(map)))
+		exit(ft_error("", 1));
 	ft_lstadd_back(env, new);
 }
 
@@ -83,6 +86,6 @@ int		env_init(char **envp, t_list **env)
 		ft_lstadd_back(env, new);
 		envp++;
 	}
-//	envtest(env);
+	env_oldpwd_init(env);
 	return (0);
 }
