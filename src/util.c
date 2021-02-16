@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 18:06:27 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/16 16:35:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,4 +181,18 @@ char	*simpletrim(char *output, char *trim)
 		exit(ft_error("", 1));
 	free(tmp);
 	return (output);
+}
+
+bool	key_find(char *key, t_minishell *m_sh)
+{
+	t_list	*mov;
+
+	mov = m_sh->env_list;
+	while (mov)
+	{
+		if (!ft_strcmp(key, ((t_dict*)mov->content)->key))
+			return (true);
+		mov = mov->next;
+	}
+	return (false);
 }
