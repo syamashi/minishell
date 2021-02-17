@@ -6,22 +6,23 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 19:42:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 14:16:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 22:16:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	scolon_del(t_list **packs, t_list **top, t_list **prev)
+void	scolon_del(t_list **packs, t_command **top, t_list **prev, int type)
 {
-	t_list	*new;
+	t_command	*new;
 
 	if ((*packs)->next)
 	{
-		if (!(new = ft_lstnew((*packs)->next)))
+		if (!(new = ft_clstnew((*packs)->next)))
 			exit(ft_error("minishell: malloc failed", 1));
-		ft_lstadd_back(top, new);
+		new->and_or = (type == DPIPE || type == DAND) ? type : 0;
+		ft_clstadd_back(top, new);
 		*top = (*top)->next;
 	}
 	ft_lstdelone(*packs, pack_free);
@@ -40,13 +41,13 @@ void	scolon_del(t_list **packs, t_list **top, t_list **prev)
 **   -type       -type
 */
 
-void	store_div(t_list **store)
+void	store_div(t_command **store)
 {
-	t_list	*top;
-	t_list	*packs;
-	t_list	*prev;
-	char	*line;
-	int		type;
+	t_command	*top;
+	t_list		*packs;
+	t_list		*prev;
+	char		*line;
+	int			type;
 
 	top = *store;
 	packs = top->content;
@@ -55,8 +56,8 @@ void	store_div(t_list **store)
 	{
 		line = ((t_pack *)packs->content)->line;
 		type = ((t_pack *)packs->content)->type;
-		if (type == SCOLON)
-			scolon_del(&packs, &top, &prev);
+		if (type == SCOLON || type == DPIPE || type == DAND)
+			scolon_del(&packs, &top, &prev, type);
 		else
 		{
 			prev = packs;
