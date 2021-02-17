@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/11 16:39:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 17:10:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,33 +98,4 @@ void	ex_free(void *ptr)
 	free(ex->envp);
 	free(ptr);
 	ptr = NULL;
-}
-
-/*void	exlist_free(t_list **exlist)
-{
-	t_list	*tmp;
-	
-	while (*exlist)
-	{
-		tmp = (*exlist)->next;
-		ft_lstdelone(*exlist, ex_free);
-		*exlist = tmp;
-	}
-}
-*/
-void all_free(char **line, t_list **store, t_list **ast, t_list **exlist)
-{
-	if (line)
-	{
-		free(*line);
-		*line = NULL;
-	}
-	if (store)
-		store_free(store);
-	if (ast)
-		ast_free(ast);
-	if (exlist)
-		ft_lstclear(exlist, ex_free);
-	//	if (env)
-	//		ft_lstclear(env, env_free);
 }

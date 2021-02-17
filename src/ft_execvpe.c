@@ -6,13 +6,13 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/11 19:26:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 17:17:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-static int	make_path(char *buf, const char *path, const char *sep,
+static	int	make_path(char *buf, const char *path, const char *sep,
 		const char *file)
 {
 	size_t	filelen;
@@ -26,7 +26,7 @@ static int	make_path(char *buf, const char *path, const char *sep,
 	return (0);
 }
 
-int		ft_execvpe(const char *file, char *const *argv, char *const *envp)
+int			ft_execvpe(const char *file, char *const *argv, char *const *envp)
 {
 	char	*env_path;
 	char	*sep;
@@ -38,7 +38,7 @@ int		ft_execvpe(const char *file, char *const *argv, char *const *envp)
 	env_path = ft_strdup("/bin:/sbin:/usr/bin:/usr/sbin");
 	sep = env_path;
 	eacces = false;
-	while(*sep)
+	while (*sep)
 	{
 		if (!(sep = ft_strchr(env_path, ':')))
 			sep = ft_strchr(env_path, 0);

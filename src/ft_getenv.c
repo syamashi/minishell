@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_getenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/24 17:44:13 by ewatanab          #+#    #+#             */
-/*   Updated: 2020/09/25 11:33:28 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/17 17:18:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	env_init(char **envp)
 		ft_lstadd_back(&g_env, ft_lstnew(ft_strdup((*envp)++)));
 }
 
-void	env_destroy()
+void	env_destroy(void)
 {
 	ft_lstclear(&g_env, free);
 }
@@ -38,7 +38,7 @@ char	*ft_getenv(const char *name)
 	tmp = ft_lstfindb(g_env, start_with, key);
 	free(key);
 	if (tmp)
-		return(ft_strchr(tmp->content, '=') + 1);
+		return (ft_strchr(tmp->content, '=') + 1);
 	return (NULL);
 }
 

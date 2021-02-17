@@ -1,4 +1,16 @@
-# include "../includes/sh_launch.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
+/*   Updated: 2021/02/17 18:53:24 by syamashi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/sh_launch.h"
 
 /*
 ** export_envp() required malloced key/value and freed
@@ -80,4 +92,3 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 		return (ft_cd_error(*argv, 1));
 	return (pwd_update(m_sh));
 }
-

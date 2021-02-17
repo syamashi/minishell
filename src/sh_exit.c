@@ -1,6 +1,18 @@
-# include "../includes/sh_launch.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sh_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
+/*   Updated: 2021/02/17 18:29:06 by syamashi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	get_exitnum(const char *nptr)
+#include "../includes/sh_launch.h"
+
+static	int	get_exitnum(const char *nptr)
 {
 	char		*str;
 	int			n;
@@ -29,8 +41,7 @@ static int	get_exitnum(const char *nptr)
 	return (((m % 256) + 256) % 256);
 }
 
-
-int		sh_exit(t_minishell *m_sh, t_exec *exec)
+int			sh_exit(t_minishell *m_sh, t_exec *exec)
 {
 	char	**argv;
 	int		len;

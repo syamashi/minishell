@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   sh_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ewatanab <ewatanab@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 12:35:36 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/12 13:06:49 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:56:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-bool		if_opt_n(int flag)
+bool	if_opt_n(int flag)
 {
 	return (flag & F_ECHO_OPT_N);
 }
 
 /*
- * int	parse_flag(char *str);
+ * int parse_flag(char *str);
  * arg
  *  - str : string to parse
  * return value
@@ -26,7 +26,7 @@ bool		if_opt_n(int flag)
  *  - else : parsed flag bit
  */
 
-int			parse_flag(char *str)
+int		parse_flag(char *str)
 {
 	int		flag;
 	flag = 0;

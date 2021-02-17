@@ -6,11 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:29:50 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/sh_launch.h"
+#include "../includes/sh_launch.h"
 
 static	void	prejoin(int *i, int *j, char *value, char **output)
 {

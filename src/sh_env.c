@@ -6,11 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 14:23:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:28:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/sh_launch.h"
+#include "../includes/sh_launch.h"
 
 void	display_env(t_minishell *m_sh, t_exec *ex)
 {

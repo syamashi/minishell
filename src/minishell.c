@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 17:18:40 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
  * 	execpt parse error in div_commands
  */
 
-void	minishell(char	**envp)
+void	minishell(char **envp)
 {
 	t_minishell	mini_sh;
 	char		*line;

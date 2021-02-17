@@ -6,13 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/15 18:16:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:30:49 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-void	sh_launch_child(t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
+void	sh_launch_child(
+	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
 {
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
@@ -74,4 +75,3 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 	signal(SIGINT, SIG_DFL);
 	return (m_sh->exit_status);
 }
-

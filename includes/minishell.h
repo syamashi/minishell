@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/16 15:49:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 16:50:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ typedef	struct	s_exec
 	bool	error_flag;
 }				t_exec;
 
-typedef struct s_leaf
+typedef struct	s_leaf
 {
 	t_list	*str;
 	t_list	*dir;
 }				t_leaf;
 
-typedef struct s_pack
+typedef	struct	s_pack
 {
 	char	*line;
 	int		type;
 }				t_pack;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	char	*line;
 	int		i;

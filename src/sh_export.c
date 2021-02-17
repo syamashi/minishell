@@ -6,11 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 00:23:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:29:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/sh_launch.h"
+#include "../includes/sh_launch.h"
 
 int		is_keyvalid(char *key)
 {

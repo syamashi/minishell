@@ -6,19 +6,19 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/15 14:18:07 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:31:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-int		sh_execvpes(t_exec *s)
+int			sh_execvpes(t_exec *s)
 {
 	return (ft_execvpe(s->argv[0], s->argv, s->envp));
 	//execvp(s->argv[0], s->argv);
 }
 
-int		ft_perror(char *string)
+int			ft_perror(char *string)
 {
 	int	a_errno = errno;
 
@@ -29,7 +29,7 @@ int		ft_perror(char *string)
 	return (-1);
 }
 
-void	sh_dup_close(int old_fd, int new_fd)
+void		sh_dup_close(int old_fd, int new_fd)
 {
 	if (dup2(old_fd, new_fd) < 0)
 	{

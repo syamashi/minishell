@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 16:49:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:04:48 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 {
 	t_list	*mov;
 	t_list	*prev;
-	int		type;
 	int		pre_type;
 	int		quote_flag;
 
@@ -89,17 +88,17 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 	mov = *packs;
 	while (mov)
 	{
-		type = ((t_pack *)mov->content)->type;
-		if (is_cmdstr(type, &pre_type, &quote_flag))
+		if (is_cmdstr(((t_pack *)mov->content)->type, &pre_type, &quote_flag))
 		{
 			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
 			if (quote_flag == 0 && !pathflag)
 				repack(&prev, &mov, packs);
-			pre_type = type;
+			pre_type = ((t_pack *)mov->content)->type;
 		}
 		prev = mov;
-		if (is_cmd(type) && mov->next && ((t_pack*)mov->next->content)->type == SPACE)
-			pre_type = type;
+		if (is_cmd(((t_pack *)mov->content)->type) && mov->next
+			&& ((t_pack*)mov->next->content)->type == SPACE)
+			pre_type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
 	}
 }

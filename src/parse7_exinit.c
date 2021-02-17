@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/15 20:35:38 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:09:13 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
+static	void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
 {
 	int argc;
 	int envc;
@@ -38,7 +38,7 @@ void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
 	(*ex)->error_flag = false;
 }
 
-void	argv_init(t_exec **ex, t_list *str)
+void			argv_init(t_exec **ex, t_list *str)
 {
 	t_list	*mov;
 	int		i;
@@ -54,7 +54,7 @@ void	argv_init(t_exec **ex, t_list *str)
 	}
 }
 
-void	envp_init(t_exec **ex, t_list *env)
+void			envp_init(t_exec **ex, t_list *env)
 {
 	char	*key;
 	char	*value;
@@ -93,7 +93,7 @@ void	envp_init(t_exec **ex, t_list *env)
 **   -errorflag
 */
 
-void	all_close()
+static	void	all_close(void)
 {
 	int i;
 
@@ -103,7 +103,7 @@ void	all_close()
 	errno = 0;
 }
 
-void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
+void			exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
 {
 	t_list	*mov;
 	t_exec	*ex;

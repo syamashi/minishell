@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/16 17:15:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:52:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	solve_dummied(char **line)
+static	void	solve_dummied(char **line)
 {
 	unsigned char	uc;
 	int				i;
@@ -27,7 +27,7 @@ void	solve_dummied(char **line)
 	}
 }
 
-void	envspace_dummied(t_list **packs)
+static	void	envspace_dummied(t_list **packs)
 {
 	char	*line;
 	int		type;
@@ -46,7 +46,7 @@ void	envspace_dummied(t_list **packs)
 	}
 }
 
-static char	*dummy_set()
+static	char	*dummy_set(void)
 {
 	char	*set;
 
@@ -57,7 +57,7 @@ static char	*dummy_set()
 	return (set);
 }
 
-bool	ambiguous_check(char **path)
+static	bool	ambiguous_check(char **path)
 {
 	int i;
 
@@ -74,7 +74,7 @@ bool	ambiguous_check(char **path)
 	return (false);
 }
 
-char	*path_make(char *src, t_minishell *m_sh)
+char			*path_make(char *src, t_minishell *m_sh)
 {
 	t_list	*packs;
 	char	*set;
@@ -91,7 +91,10 @@ char	*path_make(char *src, t_minishell *m_sh)
 	set = dummy_set();
 	path = simpletrim(path, set);
 	free(set);
-	if (ambiguous_check(&path))
+	if (ambiguous_check(&path) || *path == '\0')
+	{
+		free(path);
 		return (NULL);
+	}
 	return (path);
 }

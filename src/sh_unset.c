@@ -6,16 +6,16 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:16 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/14 22:21:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 18:33:21 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../includes/sh_launch.h"
+#include "../includes/sh_launch.h"
 
 void	envlst_delone(t_minishell *m_sh, t_list *mov, t_list *prev)
 {
 	t_list	*tmp;
-	
+
 	if (!prev)
 	{
 		tmp = m_sh->env_list->next;
