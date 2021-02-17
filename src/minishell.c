@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 17:18:40 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 22:16:49 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,11 @@ void	sh_init(t_minishell *m_sh, char **envp)
 			exit(ft_error("minishell: malloc failed", 1));
 }
 
-t_list	*div_commands(t_minishell *m_sh, char *line)
+t_command	*div_commands(t_minishell *m_sh, char *line)
 {
-	t_list	*store;
+	t_command	*store;
 
-	store = ft_lstnew(ft_strtoken(line));
+	store = ft_clstnew(ft_strtoken(line));
 	if (input_check(store->content, m_sh))
 		return (NULL);
 	store_div(&store);
@@ -106,12 +106,23 @@ t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
  * 	execpt parse error in div_commands
  */
 
+bool	and_orflag(t_minishell mini_sh, int type)
+{
+	if (type == 0)
+		return (true);
+	if (type == DAND && !mini_sh.exit_status)
+		return (true);
+	if (type == DPIPE && mini_sh.exit_status)
+		return (true);
+	return (false);
+}
+
 void	minishell(char **envp)
 {
 	t_minishell	mini_sh;
 	char		*line;
-	t_list		*commands;
-	t_list		*tmp;
+	t_command	*commands;
+	t_command	*tmp;
 	t_list		*ex_list;
 
 	sh_init(&mini_sh, envp);
@@ -124,10 +135,12 @@ void	minishell(char **envp)
 		while (commands)
 		{
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
-			sh_launch(&mini_sh, ex_list);
+			// semiなら実行。&&なら、ret==0, ||ならret>0
+			if (and_orflag(mini_sh, commands->and_or))
+				sh_launch(&mini_sh, ex_list);
 			ft_lstclear(&ex_list, del_t_exec);
 			tmp = commands->next;
-			ft_lstdelone(commands, del_command);
+			ft_clstdelone(commands, del_command);
 			commands = tmp;
 		}
 	}

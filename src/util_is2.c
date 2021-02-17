@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:35:56 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:36:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 21:36:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,7 @@ bool	is_bonus(int n)
 {
 	return (n == LLDIR ||
 			n == LLLDIR ||
-			n == DPIPE ||
-			n == AND ||
-			n == DAND);
+			n == AND);
 }
 
 bool	isnot_cmd(const int type)

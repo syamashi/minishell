@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 16:50:28 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 21:24:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ typedef struct	s_minishell
 	int		exit_status;
 	char	*home_defvalue;
 }				t_minishell;
+
+typedef struct s_command
+{
+	void				*content;
+	int					and_or;
+	struct s_command	*next;
+}				t_command;
 
 sig_atomic_t	g_intflag;
 

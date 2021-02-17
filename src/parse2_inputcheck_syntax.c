@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 13:15:31 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:38:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/17 21:47:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int		endl_check(
 		return (m_sh->exit_status = ft_avoid_error("open quote", 1));
 	if (is_dir(pre_type))
 		return (m_sh->exit_status = ft_syntax_error("newline", 258));
-	if (pre_type == PIPE || (pre_type == ESC && !*pre_line))
+	if (pre_type == PIPE || (pre_type == ESC && !*pre_line)
+	|| pre_type == DAND || pre_type == DPIPE)
 		return (m_sh->exit_status = ft_avoid_error("multiline", 1));
 	return (0);
 }
