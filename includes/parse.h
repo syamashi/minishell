@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 21:34:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 18:38:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	env_free(void *ptr);
 void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
 void	ast_free(t_list **ast);
 
-int		env_init(char **envp, t_list **env);
+int		env_init(char **envp, t_minishell *m_sh);
 t_list	*ft_strtoken(char *line);
 void	store_div(t_command **store);
-void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag);
+void	env_expand(t_list **packs, t_minishell *m_sh);
 void	packs_trim(t_list **packs);
 void	new_pack(t_pack **pack);
 void	pack_join(t_pack **pack, char *str, int len);
@@ -119,5 +119,6 @@ int		ft_error(char *str, int i);
 void	fd_error(char *str, int fd);
 int		dir_error(char *path, int n);
 int		ft_cd_error(char *path, int n);
+void	shlvl_error(int depth);
 t_list	*quick_sort_list(t_list *c);
 #endif

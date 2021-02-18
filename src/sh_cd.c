@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:53:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 18:50:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		cd_no_args(t_minishell *m_sh)
 {
 	char	*home;
 
-	if (!key_find("HOME", m_sh) || !(home = value_get("HOME", m_sh)))
+	if (!(home = value_get("HOME", m_sh)))
 		return (ft_error("minishell: cd: HOME not set", 1));
 	if (chdir(home) == -1)
 	{
@@ -53,25 +53,6 @@ int		cd_no_args(t_minishell *m_sh)
 	}
 	free(home);
 	return (0);
-}
-
-void	tilde_join(char **argv, t_minishell *m_sh)
-{
-	char	*tmp;
-	char	*home_value;
-
-	if (ft_strncmp(*argv, "~/", 2))
-		return ;
-	if (!key_find("HOME", m_sh) || !(home_value = value_get("HOME", m_sh)))
-		if (!(home_value = ft_strdup(m_sh->home_defvalue)))
-			if (!(home_value = ft_strdup("")))
-				exit(ft_error("minishell: malloc failed", 1));
-	tmp = *argv;
-	*argv = ft_strjoin(home_value, *argv + 1);
-	free(tmp);
-	tmp = NULL;
-	free(home_value);
-	home_value = NULL;
 }
 
 int		sh_cd(t_minishell *m_sh, t_exec *exec)
@@ -87,7 +68,6 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 		return (cd_no_args(m_sh));
 	if (!**argv)
 		return (pwd_update(m_sh));
-	tilde_join(argv, m_sh);
 	if (chdir(*argv))
 		return (ft_cd_error(*argv, 1));
 	return (pwd_update(m_sh));
