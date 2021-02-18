@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:04:48 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 18:38:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ bool	is_cmdstr(int type, int *pre_type, int *quote_flag)
 **  3. NOT SQUOTE
 */
 
-void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
+void	env_expand(t_list **packs, t_minishell *m_sh)
 {
 	t_list	*mov;
 	t_list	*prev;
@@ -91,7 +91,7 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 		if (is_cmdstr(((t_pack *)mov->content)->type, &pre_type, &quote_flag))
 		{
 			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
-			if (quote_flag == 0 && !pathflag)
+			if (quote_flag == 0)
 				repack(&prev, &mov, packs);
 			pre_type = ((t_pack *)mov->content)->type;
 		}

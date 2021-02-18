@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 22:16:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 19:01:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,11 @@ void	sh_init(t_minishell *m_sh, char **envp)
 {
 	m_sh->env_list = NULL;
 	m_sh->exit_status = 0;
-	env_init(envp, &(m_sh->env_list));
-	m_sh->env_list = quick_sort_list(m_sh->env_list);
+	env_init(envp, m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
 			exit(ft_error("minishell: malloc failed", 1));
+	m_sh->env_list = quick_sort_list(m_sh->env_list);
 }
 
 t_command	*div_commands(t_minishell *m_sh, char *line)
@@ -75,6 +75,52 @@ t_command	*div_commands(t_minishell *m_sh, char *line)
 	return (store);
 }
 
+bool	is_tilde(char *line)
+{
+	if (ft_strncmp(line, "~/", 2) && ft_strncmp(line, "~", 2))
+		return (false);
+	return (true);
+}
+
+void	tilde_join(t_list *mov, t_minishell *m_sh)
+{
+	char	*line;
+	char	*tmp;
+	char	*home_value;
+
+	line = ((t_pack*)mov->content)->line;
+	if (!(home_value = value_get("HOME", m_sh)))
+		if (!(home_value = ft_strdup(m_sh->home_defvalue)))
+			if (!(home_value = ft_strdup("")))
+				exit(ft_error("minishell: malloc failed", 1));
+	tmp = line;
+	line = ft_strjoin(home_value, line + 1);
+	free(tmp);
+	tmp = NULL;
+	free(home_value);
+	home_value = NULL;
+	((t_pack *)mov->content)->line = line;
+}
+
+void	tilde_expand(t_list **pack_list, t_minishell *m_sh)
+{
+	t_list	*mov;
+	char	*line;
+	int		type;
+	int		pre_type;
+
+	mov = *pack_list;
+	pre_type = SPACE;
+	while (mov)
+	{
+		packinfo_get(&line, &type, mov);
+		if (pre_type == SPACE && type == STR && is_tilde(line))
+			tilde_join(mov, m_sh);
+		pre_type = type;
+		mov = mov->next;
+	}
+}
+
 // why recieve double pointer list???????
 t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
 {
@@ -84,7 +130,8 @@ t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
 	ast = NULL;
 	ex_list = NULL;
 //	debug(*pack_list);
-	env_expand((t_list **)pack_list, m_sh, 0);
+	tilde_expand(pack_list, m_sh);
+	env_expand((t_list **)pack_list, m_sh);
 	packs_trim((t_list **)pack_list);
 	ast_init(&ast, (t_list**)pack_list);
 	//ast_debug(ast);

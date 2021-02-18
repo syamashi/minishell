@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:56:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 16:54:45 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ char	*value_get(char *key, t_minishell *m_sh)
 	t_list	*mov;
 	char	*dkey;
 
+	if (!key)
+		return (NULL);
 	if (!ft_strncmp(key, "?", 2))
 		return (ft_itoa(m_sh->exit_status));
 	else
@@ -55,7 +57,7 @@ char	*value_get(char *key, t_minishell *m_sh)
 			mov = mov->next;
 		}
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 bool	key_find(char *key, t_minishell *m_sh)
