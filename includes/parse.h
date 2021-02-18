@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 18:38:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/18 19:07:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ast_free(t_list **ast);
 int		env_init(char **envp, t_minishell *m_sh);
 t_list	*ft_strtoken(char *line);
 void	store_div(t_command **store);
-void	env_expand(t_list **packs, t_minishell *m_sh);
+void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag);
 void	packs_trim(t_list **packs);
 void	new_pack(t_pack **pack);
 void	pack_join(t_pack **pack, char *str, int len);
