@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 21:24:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:45:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define STR_OPT_LN "-n"
 # define EM_TOO_MANY_ARG "too many arg"
 # define MINISHELL "minishell :"
-# define PROMPT_NAME "minishell > "
+# define PROMPT_NAME ""
 
 typedef enum	e_errno
 {
