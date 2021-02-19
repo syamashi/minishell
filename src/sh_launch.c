@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 18:30:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/19 15:47:18 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 {
 	t_builtin_f	builtin_function;
 
-	if ((builtin_function = builtin_table(execlist->content)))
+	if (execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
+		if (((t_exec *)execlist->content)->error_flag)
+			return ((m_sh->exit_status = -1));
 		m_sh->exit_status = builtin_function(m_sh, execlist->content);
 		return (m_sh->exit_status);
 	}
