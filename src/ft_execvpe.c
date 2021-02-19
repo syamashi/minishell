@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/19 16:02:13 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:13:14 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,7 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 	}
 	if (eacces)
 		errno = EACCES;
+	if (!*file)
+		errno = ENOENT;
 	return (-1);
 }
