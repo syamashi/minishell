@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/17 17:17:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/19 16:02:13 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 	return (0);
 }
 
-int			ft_execvpe(const char *file, char *const *argv, char *const *envp)
+int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minishell *m_sh)
 {
 	char	*env_path;
 	char	*sep;
@@ -35,7 +35,7 @@ int			ft_execvpe(const char *file, char *const *argv, char *const *envp)
 
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
-	env_path = ft_strdup("/bin:/sbin:/usr/bin:/usr/sbin");
+	env_path = value_get("PATH", m_sh);
 	sep = env_path;
 	eacces = false;
 	while (*sep)

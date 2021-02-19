@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/19 15:47:18 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/02/19 16:20:15 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,12 @@ void	sh_launch_child(
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
+	{
+		exec_param->fd_in = 0;
+		exec_param->fd_out = 1;
 		exit(builtin_function(m_sh, exec_param));
-	sh_execvpes(exec_param);
+	}
+	sh_execvpes(exec_param, m_sh);
 	ft_perror("minishell");
 	exit(1);
 }
@@ -65,7 +69,7 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 {
 	t_builtin_f	builtin_function;
 
-	if (execlist->next && (builtin_function = builtin_table(execlist->content)))
+	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
 		if (((t_exec *)execlist->content)->error_flag)
 			return ((m_sh->exit_status = -1));
