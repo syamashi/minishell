@@ -56,8 +56,6 @@ $(OBJDIR)%.o : $(SRCDIR)%.c dir_obj
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)
-	# echo @ : $@
-	# echo ^ : $^
 	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
 dir_obj :

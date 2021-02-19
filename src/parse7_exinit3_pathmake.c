@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 19:12:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/19 23:48:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static	void	envspace_dummied(t_list **packs)
 
 static	char	*dummy_set(void)
 {
-	char	*set;
+	unsigned char	*set;
 
-	if (!(set = (char *)malloc(2)))
+	if (!(set = (unsigned char *)malloc(2)))
 		exit(ft_error("minishell: malloc failed", 1));
 	set[0] = DUMMY;
 	set[1] = '\0';
-	return (set);
+	return ((char*)set);
 }
 
 static	bool	ambiguous_check(char **path)
