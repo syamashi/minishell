@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_exit.c                                          :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/19 17:25:21 by syamashi         ###   ########.fr       */
+/*   Created: 2020/06/24 22:15:35 by syamashi          #+#    #+#             */
+/*   Updated: 2020/06/28 19:39:50 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/sh_launch.h"
+#include "libft.h"
 
-static	int	get_exitnum(const char *nptr)
+int	ft_atoi(const char *nptr)
 {
 	char		*str;
 	int			n;
@@ -31,26 +31,10 @@ static	int	get_exitnum(const char *nptr)
 	{
 		num = (*str++ - '0');
 		if ((m >= 922337203685477580 && num > 7) || m >= 922337203685477581)
-			return (4242);
+			return (-1);
 		if ((m <= -922337203685477580 && num > 8) || m <= -922337203685477581)
-			return (4242);
+			return (0);
 		m = m * 10 + n * num;
 	}
-	return (*str ? 4242 : ((m % 256) + 256) % 256);
-}
-
-int			sh_exit(t_minishell *m_sh, t_exec *exec)
-{
-	char	**argv;
-	int		len;
-	int		ret;
-
-	argv = exec->argv + 1;
-	if (!*argv)
-		exit(0);
-	if (*(argv + 1))
-		return (ft_error("minishell: exit: too many arguments", 1));
-	if ((ret = get_exitnum(*argv)) > 255)
-		exit(ft_exit_error(*argv, 255));
-	exit(ret);
+	return (m);
 }
