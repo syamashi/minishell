@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:39:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 12:37:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	empty_key(char **new, t_list *mov)
 {
 	char	*tmp;
 
-	if (mov->next && is_quote(((t_pack *)mov->next->content)->type))
+	if (mov->next && ((t_pack *)mov->next->content)->type == SQUOTE)
 		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
@@ -69,7 +69,7 @@ void	env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
 			value = ((t_dict *)pos->content)->value;
 			tmp = *new;
 			if (!(*new = ft_strjoin(*new, value)))
-				exit(ft_error("[env_join] new malloc error", 1));
+				exit(ft_error("minishell: malloc failed", 1));
 			free(tmp);
 			break ;
 		}
@@ -85,8 +85,11 @@ void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh)
 
 	++t->i;
 	t->j = t->i;
-	while (!is_keyend(t->line[t->i]))
-		(t->i)++;
+	if (t->line[t->i] == '?')
+		t->i++;
+	else
+		while (!is_keyend(t->line[t->i]))
+			(t->i)++;
 	if (!(key = ft_substr(t->line, t->j, t->i - t->j)))
 		exit(ft_error("minishell: malloc failed", 1));
 	if (!ft_strncmp(key, "?", 2))

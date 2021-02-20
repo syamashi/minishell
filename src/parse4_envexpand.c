@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 19:08:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 11:36:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	env_solve(char **line, t_list *mov, t_minishell *m_sh)
 	while ((*line)[++t.i])
 	{
 		if ((*line)[t.i] != '$')
-			continue;
+			continue ;
 		pre_join(&new, &t);
 		env_join(&new, mov, &t, m_sh);
 	}
@@ -91,7 +91,7 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 		if (is_cmdstr(((t_pack *)mov->content)->type, &pre_type, &quote_flag))
 		{
 			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
-			if (quote_flag == 0 && !pathflag)
+			if (quote_flag != 1 && !pathflag)
 				repack(&prev, &mov, packs);
 			pre_type = ((t_pack *)mov->content)->type;
 		}
