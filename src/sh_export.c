@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:29:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 12:48:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int		is_keyvalid(char *key)
 {
 	int i;
 
-	if (ft_isdigit(*key))
+	if (ft_isdigit(*key) || !*key)
 		return (0);
 	i = -1;
 	while (key[++i])
