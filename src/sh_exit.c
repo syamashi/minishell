@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/19 17:25:21 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 10:18:49 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static	int	get_exitnum(const char *nptr)
 int			sh_exit(t_minishell *m_sh, t_exec *exec)
 {
 	char	**argv;
-	int		len;
 	int		ret;
 
 	argv = exec->argv + 1;
