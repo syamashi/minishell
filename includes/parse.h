@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 19:07:28 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 12:57:29 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,10 @@
 # define AND 11
 # define DAND 12
 # define SCOLON 13
-# define DOLL 14
-# define ESC 15
-# define SSTR 16
+# define DSCOLON 14
+# define DOLL 15
+# define ESC 16
+# define SSTR 17
 # define DUMMY 129
 
 void	pack_free(void *ptr);

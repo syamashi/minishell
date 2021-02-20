@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 16:54:45 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 15:02:27 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ char	*key_get(char *line)
 	i = 0;
 	while (!is_keyend(line[i]))
 		i++;
+	if (i && line[i] == '=' && line[i - 1] == '+')
+		i--;
 	return (ft_substr(line, 0, i));
 }
 
@@ -72,4 +74,23 @@ bool	key_find(char *key, t_minishell *m_sh)
 		mov = mov->next;
 	}
 	return (false);
+}
+
+char	*value_add(t_minishell *m_sh, char *key, char *value)
+{
+	char	*add;
+	char	*tmp;
+
+	add = value_get(key, m_sh);
+	if (add)
+	{
+		tmp = value;
+		if (!(value = ft_strjoin(add, value)))
+			exit(ft_error("", 1));
+		free(tmp);
+		tmp = NULL;
+	}
+	free(add);
+	add = NULL;
+	return (value);
 }

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/19 17:45:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 14:43:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int		sh_launch(t_minishell *m_sh, t_list *exlist);
 char	*key_get(char *line);
 char	*value_get(char	*key, t_minishell *m_sh);
 bool	key_find(char *key, t_minishell *m_sh);
+char	*value_add(t_minishell *m_sh, char *key, char *value);
 
 /*
 int		sh_echo(char **argv);

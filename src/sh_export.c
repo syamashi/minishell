@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 12:48:34 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 14:50:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int		sh_export(t_minishell *m_sh, t_exec *exec)
 			while (!is_keyend((*argv)[++i]))
 				;
 			value = (!(*argv)[i]) ? NULL : ft_strdup(*argv + i + 1);
+			if (value && i && (*argv)[i] == '=' && (*argv)[i - 1] == '+')
+				value = value_add(m_sh, key, value);
 			export_envp(m_sh, key, value);
 		}
 		else
