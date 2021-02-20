@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 11:36:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 15:58:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 		if (is_cmdstr(((t_pack *)mov->content)->type, &pre_type, &quote_flag))
 		{
 			env_solve(&((t_pack *)mov->content)->line, mov, m_sh);
-			if (quote_flag != 1 && !pathflag)
+			if (!quote_flag && !pathflag)
 				repack(&prev, &mov, packs);
 			pre_type = ((t_pack *)mov->content)->type;
 		}
