@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 13:30:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 17:34:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-void	fdin_set(t_exec **ex, const int n, char *path)
+/*void	fdin_set(t_exec **ex, const int n, char *path)
 {
 	if (errno)
 	{
@@ -36,14 +36,19 @@ void	fdout_set(t_exec **ex, const int n, char *path)
 		close((*ex)->fd_out);
 	(*ex)->fd_out = n;
 }
-
+*/
 bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 {
+	errno = 0;
+	
 	m_sh->exit_status = dir_error(str, 1);
 	(*ex)->error_flag = true;
-	fdin_set(ex, 0, "");
-	fdout_set(ex, 1, "");
-	return (true);
+	if ((*ex)->fd_in != 0)
+		close((*ex)->fd_in);
+	(*ex)->fd_in = 0;
+	if ((*ex)->fd_out != 1)
+		close((*ex)->fd_out);
+	(*ex)->fd_out = 1;
 }
 
 int	rint_atoi(const char *nptr)
@@ -79,33 +84,6 @@ void	rint_error(char *rint, int rint_num)
 	if (rint_num > 255)
 		ft_putstr_fd(rint, 2);
 	ft_putstr_fd(": Bad file descriptor\n", 2);
-}
-
-void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
-{
-	int			rint_num;
-	t_list		*new;
-	t_redint	*rfd;
-
-	if (!rint || (*ex)->error_flag)
-		return ;
-	rint_num = rint_atoi(rint);
-	if (rint_num == -1 || rint_num > 255)
-	{
-		rint_error(rint, rint_num);
-		(*ex)->error_flag = true;
-		printf("[solve_rint]error\n");
-		return;
-	}
-	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
-		exit(ft_error("", 1));
-	rfd->rint = rint_num;
-	rfd->backup = dup(rint_num);
-	if (!(new = ft_lstnew(rfd)))
-		exit(ft_error("", 1));
-	ft_lstadd_front(&m_sh->fd_backup, new);
-	dup2(fd, rint_num);
-	close(fd);
 }
 
 int		fd_rdir(t_exec **ex, char *path)
@@ -157,6 +135,48 @@ int		fd_get(t_exec **ex, char *path, int type)
 	return (fd);
 }
 
+void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
+{
+	int			rint_num;
+	t_list		*new;
+	t_redint	*rfd;
+
+	printf("[solve_rint] \n");
+	if (!rint || (*ex)->error_flag)
+		return ;
+	rint_num = rint_atoi(rint);
+	if (rint_num == -1 || rint_num > 255)
+	{
+		rint_error(rint, rint_num);
+		(*ex)->error_flag = true;
+		printf("[solve_rint]error\n");
+		return;
+	}
+	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
+		exit(ft_error("", 1));
+	rfd->rint = rint_num;
+	rfd->backup = dup(rint_num);
+	if (!(new = ft_lstnew(rfd)))
+		exit(ft_error("", 1));
+	ft_lstadd_front(&m_sh->fd_backup, new);
+	printf("dup2(%d, %d), size:%d\n", fd, rint_num, ft_lstsize(m_sh->fd_backup));
+	if (dup2(fd, rint_num) < 0)
+	{
+		ft_error("minishell", 1);
+		exit(1);
+	}
+	close(fd);
+}
+void	fd_reget(int fd, char *rint, t_exec **ex, int type)
+{
+	if (!rint || (*ex)->error_flag)
+		return ;
+	if (type == LDIR)
+		(*ex)->fd_in = rint_atoi(rint);
+	if (type == RDIR || type == RRDIR)
+		(*ex)->fd_out = rint_atoi(rint);
+}
+
 void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 {
 	t_list	*mov;
@@ -169,19 +189,16 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 	while (mov && !(*ex)->error_flag)
 	{
 		type = ((t_pack *)mov->content)->type;
-		printf("1type:%d\n", type);
 		if (rint = (type == RINT) ? ((t_pack *)mov->content)->line : NULL)
 			mov = mov->next;
 		type = ((t_pack *)mov->content)->type;
-		printf("2type:%d, rint:%s\n", type, rint);
 		mov = mov->next;
 		if (!(path = path_make(((t_pack *)mov->content)->line, m_sh)))
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
 		fd = fd_get(ex, path, type);
-		printf("3fd:%d, path:%s\n", fd, path);
 		solve_rint(fd, rint, ex, m_sh);
-		printf("fin\n");
+		fd_reget(fd, rint, ex, type);
 		free(path);
 		mov = mov->next;
 	}

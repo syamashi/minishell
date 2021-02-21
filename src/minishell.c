@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/21 12:58:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 14:49:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,8 +232,10 @@ void	minishell(char **envp)
 				t_redint *rd;
 				rd = (mini_sh.fd_backup)->content;
 				dup2(rd->backup, rd->rint);
+				printf("backup(%d, %d)\n", rd->backup, rd->rint);
 				close(rd->backup);
 				rtmp = mini_sh.fd_backup->next;
+				printf("rtmp:%p, size:%d\n", rtmp, ft_lstsize(mini_sh.fd_backup));
 				ft_lstdelone(mini_sh.fd_backup, free);
 				mini_sh.fd_backup = rtmp;
 			}
