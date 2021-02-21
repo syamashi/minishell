@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/20 14:43:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 11:31:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct	s_minishell
 	t_list	*env_list;
 	int		exit_status;
 	char	*home_defvalue;
+	t_list	*fd_backup;
 }				t_minishell;
 
 typedef struct s_command
@@ -83,6 +84,12 @@ typedef struct s_command
 	int					and_or;
 	struct s_command	*next;
 }				t_command;
+
+typedef struct s_redint
+{
+	int rint;
+	int backup;
+}				t_redint;
 
 sig_atomic_t	g_intflag;
 

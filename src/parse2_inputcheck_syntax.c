@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 13:15:31 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 21:47:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 20:04:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		syntax_check(t_list *list, t_minishell *m_sh)
 		if ((pre_type == -1 || is_dir(pre_type) ||
 			is_metatype(pre_type)) && is_metatype(type))
 			return (m_sh->exit_status = ft_syntax_error(line, 258));
-		if (is_dir(pre_type) && is_dir(type))
+		if (is_dir(pre_type) && (is_dir(type) || type == RINT))
 			return (m_sh->exit_status = ft_syntax_error(line, 258));
 		if (!isnot_cmd(type))
 			set_preinfo(&type, &pre_type, &line, &pre_line);

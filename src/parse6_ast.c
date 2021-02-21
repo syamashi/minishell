@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 01:33:38 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 03:16:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ void	dir_add(t_list **mov, t_leaf **leaf)
 	t_pack	*pack;
 	t_list	*new;
 	char	*line;
-	int		i;
 
-	i = -1;
-	while (++i < 2)
+	while (1)
 	{
 		new_pack(&pack);
 		line = ((t_pack*)((*mov)->content))->line;
@@ -47,8 +45,8 @@ void	dir_add(t_list **mov, t_leaf **leaf)
 		if (!(new = ft_lstnew(pack)))
 			exit(ft_error("minishell: malloc failed", 1));
 		ft_lstadd_back(&(*leaf)->dir, new);
-		if (i == 1)
-			break ;
+		if (((t_pack*)((*mov)->content))->type == STR)
+			break;
 		*mov = (*mov)->next;
 	}
 }
@@ -92,7 +90,7 @@ void	ast_init(t_list **ast, t_list **packs)
 			ast_add(ast, &leaf);
 			new_leaf(&leaf);
 		}
-		else if (is_dir(type))
+		else if (is_dir(type) || type == RINT)
 			dir_add(&mov, &leaf);
 		else
 			str_add(&mov, &leaf);

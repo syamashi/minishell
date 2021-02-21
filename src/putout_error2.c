@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 20:18:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 10:39:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	shlvl_error(int depth)
 	char	*str;
 	
 	if (!(str = ft_itoa(depth)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	ft_putstr_fd("minishell: warning: shell level (", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(") too high, resetting to 1\n", 2);

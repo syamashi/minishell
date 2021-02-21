@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/18 18:59:01 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 10:39:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ static	void	init_map(t_dict **map, t_list **env, char **envp)
 	while ((*envp)[i] != '=' && (*envp)[i])
 		i++;
 	if (!((*map)->key = ft_substr(*envp, 0, i)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	j = ++i;
 	while ((*envp)[i])
 		i++;
 	if (!((*map)->value = ft_substr(*envp, j, i - j)))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 }
 
 void			env_oldpwd_init(t_minishell *m_sh)
@@ -93,7 +93,7 @@ void		env_shlvl_init(t_minishell *m_sh)
 	int		depth;
 
 	if (!(key = ft_strdup("SHLVL")))
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	if (!(value = value_get(key, m_sh)))
 		depth = 0;
 	else
@@ -109,7 +109,7 @@ void		env_shlvl_init(t_minishell *m_sh)
 	else
 		value = ft_itoa(depth);
 	if (!value)
-		exit(ft_error("", 1));
+		exit(ft_error("minishell: malloc failed", 1));
 	export_envp(m_sh, key, value);
 }
 
@@ -123,10 +123,10 @@ int			env_init(char **envp, t_minishell *m_sh)
 	while (*envp)
 	{
 		if (!(map = (t_dict *)malloc(sizeof(t_dict))))
-			exit(ft_error("", 1));
+			exit(ft_error("minishell: malloc failed", 1));
 		init_map(&map, &m_sh->env_list, envp);
 		if (!(new = ft_lstnew(map)))
-			exit(ft_error("", 1));
+			exit(ft_error("minishell: malloc failed", 1));
 		ft_lstadd_back(&m_sh->env_list, new);
 		envp++;
 	}

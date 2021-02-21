@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/20 16:10:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 12:58:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,40 @@ void	sh_init(t_minishell *m_sh, char **envp)
 		if (!(m_sh->home_defvalue = ft_strdup("")))
 			exit(ft_error("minishell: malloc failed", 1));
 	m_sh->env_list = quick_sort_list(m_sh->env_list);
+	m_sh->fd_backup = NULL;
+}
+
+bool	is_nums(char *line)
+{
+	int i;
+
+	i = -1;
+	while (ft_isdigit(line[++i]))
+		;
+	return (line[i] ? false : true);
+}
+
+void	redirectionint_trance(t_list *store)
+{
+	t_list	*mov;
+	int		type;
+	char	*line;
+	int		ptype;
+
+	mov = store;
+	ptype = -1;
+	while (mov && mov->next)
+	{
+		line = ((t_pack *)mov->content)->line;
+		type = ((t_pack *)mov->content)->type;
+		if (is_dir(((t_pack*)mov->next->content)->type) && type == STR
+		&& (ptype == -1 || ptype == SPACE))
+			if (is_nums(line)){
+				((t_pack *)mov->content)->type = RINT;
+			}
+		ptype = type;
+		mov = mov->next;
+	}
 }
 
 t_command	*div_commands(t_minishell *m_sh, char *line)
@@ -69,6 +103,7 @@ t_command	*div_commands(t_minishell *m_sh, char *line)
 	t_command	*store;
 
 	store = ft_clstnew(ft_strtoken(line));
+	redirectionint_trance(store->content);
 	if (input_check(store->content, m_sh))
 		return (NULL);
 	store_div(&store);
@@ -185,9 +220,24 @@ void	minishell(char **envp)
 		while (commands)
 		{
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
-			// semiなら実行。&&なら、ret==0, ||ならret>0
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
+
+			if (((t_exec*)ex_list->content)->fd_in != 0)
+				close(((t_exec*)ex_list->content)->fd_in);
+			if (((t_exec*)ex_list->content)->fd_out != 1)
+				close(((t_exec*)ex_list->content)->fd_out);
+			while (mini_sh.fd_backup){
+				t_list *rtmp;
+				t_redint *rd;
+				rd = (mini_sh.fd_backup)->content;
+				dup2(rd->backup, rd->rint);
+				close(rd->backup);
+				rtmp = mini_sh.fd_backup->next;
+				ft_lstdelone(mini_sh.fd_backup, free);
+				mini_sh.fd_backup = rtmp;
+			}
+
 			ft_lstclear(&ex_list, del_t_exec);
 			tmp = commands->next;
 			ft_clstdelone(commands, del_command);

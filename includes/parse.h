@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 12:57:29 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 18:23:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define DOLL 15
 # define ESC 16
 # define SSTR 17
+# define RINT 18
 # define DUMMY 129
 
 void	pack_free(void *ptr);

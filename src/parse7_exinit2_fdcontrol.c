@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:17:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 12:57:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,137 @@ bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 	return (true);
 }
 
+int	rint_atoi(const char *nptr)
+{
+	char		*str;
+	int			n;
+	int			num;
+	long long	m;
+
+	str = (char *)nptr;
+	while (*str == ' ' || *str == '\t' ||
+	*str == '\n' || *str == '\v' || *str == '\f' || *str == '\r')
+		str++;
+	n = (*str == '-') ? -1 : 1;
+	if (*str == '+' || *str == '-')
+		str++;
+	m = 0;
+	while (ft_isdigit(*str))
+	{
+		num = (*str++ - '0');
+		if (m > 2147483647)
+			return (-1);
+		m = m * 10 + n * num;
+	}
+	return (m);
+}
+
+void	rint_error(char *rint, int rint_num)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (rint_num == -1)
+		ft_putstr_fd("file descriptor out of range", 2);
+	if (rint_num > 255)
+		ft_putstr_fd(rint, 2);
+	ft_putstr_fd(": Bad file descriptor\n", 2);
+}
+
+void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
+{
+	int			rint_num;
+	t_list		*new;
+	t_redint	*rfd;
+
+	if (!rint || (*ex)->error_flag)
+		return ;
+	rint_num = rint_atoi(rint);
+	if (rint_num == -1 || rint_num > 255)
+	{
+		rint_error(rint, rint_num);
+		(*ex)->error_flag = true;
+		return ;
+	}
+	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
+		exit(ft_error("", 1));
+	rfd->rint = rint_num;
+	rfd->backup = dup(rint_num);
+	if (!(new = ft_lstnew(rfd)))
+		exit(ft_error("", 1));
+	ft_lstadd_front(&m_sh->fd_backup, new);
+	dup2(fd, rint_num);
+	close(fd);
+}
+
+int		fd_rdir(t_exec **ex, char *path)
+{
+	int	fd;
+	
+	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if ((*ex)->fd_out != 1)
+		close((*ex)->fd_out);
+	(*ex)->fd_out = fd;
+	return (fd);
+}
+
+int		fd_rrdir(t_exec **ex, char *path)
+{
+	int	fd;
+	
+	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if ((*ex)->fd_out != 1)
+		close((*ex)->fd_out);
+	(*ex)->fd_out = fd;
+	return (fd);
+}
+
+int		fd_ldir(t_exec **ex, char *path)
+{
+	int	fd;
+	
+	fd = open(path, O_RDONLY);
+	if ((*ex)->fd_in != 0)
+		close((*ex)->fd_in);
+	(*ex)->fd_in = fd;
+	return (fd);
+}
+
+int		fd_get(t_exec **ex, char *path, int type)
+{
+	int fd;
+
+	errno = 0;
+	if (type == RDIR)
+		fd = fd_rdir(ex, path);
+	if (type == RRDIR)
+		fd = fd_rrdir(ex, path);
+	if (type == LDIR)
+		fd = fd_ldir(ex, path);
+	if (errno && ((*ex)->error_flag = true))
+		fd_error(path, 2);
+	return (fd);
+}
+
 void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 {
 	t_list	*mov;
 	int		type;
+	int		fd;
+	char	*rint;
 	char	*path;
 
 	mov = dir;
 	while (mov && !(*ex)->error_flag)
 	{
 		type = ((t_pack *)mov->content)->type;
+		if (rint = (type == RINT) ? ((t_pack *)mov->content)->line : NULL)
+			mov = mov->next;
+		type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
 		if (!(path = path_make(((t_pack *)mov->content)->line, m_sh)))
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
-		errno = 0;
-		if (type == RDIR)
-			fdout_set(ex, open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666), path);
-		else if (type == RRDIR)
-			fdout_set(
-				ex, open(path, O_WRONLY | O_CREAT | O_APPEND, 0666), path);
-		else if (type == LDIR)
-			fdin_set(ex, open(path, O_RDONLY), path);
+		fd = fd_get(ex, path, type);
+		solve_rint(fd, rint, ex, m_sh);
 		free(path);
 		mov = mov->next;
 	}

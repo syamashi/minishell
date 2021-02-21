@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:35:56 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 12:58:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/20 20:02:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ bool	isnot_cmd(const int type)
 {
 	return (type == SPACE ||
 			type == SQUOTE ||
-			type == DQUOTE);
+			type == DQUOTE ||
+			type == RINT);
 }
 
 bool	is_cmd(int type)
