@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 12:57:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/02/21 13:30:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
 	{
 		rint_error(rint, rint_num);
 		(*ex)->error_flag = true;
-		return ;
+		printf("[solve_rint]error\n");
+		return;
 	}
 	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
 		exit(ft_error("", 1));
@@ -168,15 +169,19 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 	while (mov && !(*ex)->error_flag)
 	{
 		type = ((t_pack *)mov->content)->type;
+		printf("1type:%d\n", type);
 		if (rint = (type == RINT) ? ((t_pack *)mov->content)->line : NULL)
 			mov = mov->next;
 		type = ((t_pack *)mov->content)->type;
+		printf("2type:%d, rint:%s\n", type, rint);
 		mov = mov->next;
 		if (!(path = path_make(((t_pack *)mov->content)->line, m_sh)))
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
 		fd = fd_get(ex, path, type);
+		printf("3fd:%d, path:%s\n", fd, path);
 		solve_rint(fd, rint, ex, m_sh);
+		printf("fin\n");
 		free(path);
 		mov = mov->next;
 	}
