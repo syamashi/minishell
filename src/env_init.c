@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 10:39:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 23:15:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ void			env_oldpwd_init(t_minishell *m_sh)
 void		env_pwd_init(t_minishell *m_sh)
 {
 	char	*pwd;
-	char	*buf;
 	char	*key;
 
-	buf = NULL;
 	errno = 0;
-	if (!(pwd = getcwd(buf, 1024)) && errno)
+	if (!(pwd = getcwd(NULL, 0)) && errno)
 		ft_putendl_fd(strerror(errno), 2);
 	if (!(key = ft_strdup("PWD")))
 		exit(ft_error("minishell: malloc failed", 1));
