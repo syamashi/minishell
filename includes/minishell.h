@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/21 11:31:18 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 23:05:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define EM_TOO_MANY_ARG "too many arg"
 # define MINISHELL "minishell :"
 # define PROMPT_NAME ""
+# define NOCURRENT 1
+# define NXCURRENT 2
 
 typedef enum	e_errno
 {
@@ -75,6 +77,7 @@ typedef struct	s_minishell
 	t_list	*env_list;
 	int		exit_status;
 	char	*home_defvalue;
+	t_list	*pwds;
 	t_list	*fd_backup;
 }				t_minishell;
 
@@ -101,6 +104,8 @@ char	*key_get(char *line);
 char	*value_get(char	*key, t_minishell *m_sh);
 bool	key_find(char *key, t_minishell *m_sh);
 char	*value_add(t_minishell *m_sh, char *key, char *value);
+t_list	*pwdlst_init(char *str, int delflag);
+char	*pwds_str(t_minishell *m_sh);
 
 /*
 int		sh_echo(char **argv);

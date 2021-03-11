@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 18:23:06 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 11:13:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int		ft_exit_error(char *str, int i);
 int		ft_error(char *str, int i);
 void	fd_error(char *str, int fd);
 int		dir_error(char *path, int n);
-int		ft_cd_error(char *path, int n);
+int		ft_cd_error(char *path, int n, char *serror);
 void	shlvl_error(int depth);
 t_list	*quick_sort_list(t_list *c);
 #endif

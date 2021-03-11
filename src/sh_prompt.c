@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/21 13:06:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 08:15:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,17 +91,3 @@ char	*sh_prompt()
 	ft_lstclear(&store, free);
 	return (line_validcheck(&line));
 }
-
-/*
-int		main()
-{
-	char	*line;
-
-	while (1)
-	{
-		line = sh_prompt();
-		ft_putstr(line);
-		ft_putstr("\n");
-	}
-}
-*/

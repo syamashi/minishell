@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:22:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:32:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 19:53:48 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,8 @@ int		sh_pwd(t_minishell *m_sh, t_exec *exec)
 	char	*pwd;
 	char	*buf;
 
-	buf = NULL;
-	errno = 0;
-	if (!(pwd = getcwd(buf, 1024)))
-	{
-		ft_putendl_fd(strerror(errno), 2);
-		return (1);
-	}
-	else
-		ft_putendl_fd(pwd, exec->fd_out);
+	pwd = pwds_str(m_sh);
+	ft_putendl_fd(pwd, exec->fd_out);
 	free(pwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/21 14:49:02 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 23:04:47 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,75 @@ void	del_command(void *pack_list_arg)
 	ft_lstclear(&pack_list, del_pack);
 }
 
+t_list	*pwdlst_nocurrent(char *str)
+{
+	t_list	*ret;
+	t_list	*new;
+	char	*add;
+	int 	i;
+	int		j;
+
+	i = -1;
+	j = 0;
+	ret = NULL;
+	while (str[++i])
+	{
+		if (str[i] == '.')
+			add = ft_strdup(".");
+		else if (i == 0 || str[i - 1] == '/')
+			add = ft_strdup("");
+		else
+			continue ;
+		if (!add || !(new = ft_lstnew(add)))
+			exit(ft_error("", 1));
+		ft_lstadd_back(&ret, new);
+	}
+	if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
+		exit(ft_error("", 1));
+	ft_lstadd_back(&ret, new);
+	return (ret);
+}
+
+t_list	*pwdlst_solve(char *str)
+{
+	t_list	*ret;
+	t_list	*new;
+	char	*add;
+	int 	i;
+	int		j;
+
+	i = -1;
+	j = 0;
+	ret = NULL;
+	while (str[++i])
+	{
+		while (str[i] && str[i] != '/')
+			i++;
+		if (i > j)
+		{
+			if (!(add = ft_substr(str, j, i - j)) || !(new = ft_lstnew(add)))
+				exit(ft_error("", 1));
+			ft_lstadd_back(&ret, new);
+		}
+		j = i + 1;
+		if (!str[i])
+			i--;
+	}
+	return (ret);
+}
+
+t_list	*pwdlst_init(char *str, int delflag)
+{
+	if (delflag == 1)
+		return (pwdlst_nocurrent(str));
+	else
+		return (pwdlst_solve(str));
+}
+
 void	sh_init(t_minishell *m_sh, char **envp)
 {
+	char	*strpwd;
+	
 	m_sh->env_list = NULL;
 	m_sh->exit_status = 0;
 	env_init(envp, m_sh);
@@ -63,6 +130,10 @@ void	sh_init(t_minishell *m_sh, char **envp)
 			exit(ft_error("minishell: malloc failed", 1));
 	m_sh->env_list = quick_sort_list(m_sh->env_list);
 	m_sh->fd_backup = NULL;
+	if (!(strpwd = value_get("PWD", m_sh)))
+		exit(ft_error("", 1));
+	m_sh->pwds = pwdlst_init(strpwd, 0);
+	free(strpwd);
 }
 
 bool	is_nums(char *line)

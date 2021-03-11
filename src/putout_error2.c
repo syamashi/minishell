@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 10:39:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 11:21:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,16 @@ int		dir_error(char *path, int n)
 	return (n);
 }
 
-int		ft_cd_error(char *path, int n)
+int		ft_cd_error(char *path, int n, char *serror)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
+	if (path)
+	{
+		ft_putstr_fd(path, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd(serror, 2);
+	ft_putstr_fd("\n", 2);
 	return (n);
 }
 
