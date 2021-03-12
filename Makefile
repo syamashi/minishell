@@ -52,7 +52,7 @@ CFLAGS = -g -O0
 
 all : $(NAME)
 
-$(OBJDIR)%.o : $(SRCDIR)%.c dir_obj
+$(OBJDIR)%.o : $(SRCDIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)

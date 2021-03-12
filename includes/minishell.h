@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/11 23:05:23 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 08:09:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ typedef struct	s_minishell
 	int		exit_status;
 	char	*home_defvalue;
 	t_list	*pwds;
+	bool	pwd_dslash;
 	t_list	*fd_backup;
 }				t_minishell;
 

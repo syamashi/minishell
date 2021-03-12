@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/11 23:10:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 09:32:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,18 @@ void	lstlast_del(t_minishell *m_sh)
 	ft_lstdelone(last, free);
 }
 
+void	pwdlst_add(t_minishell *m_sh, char *str)
+{
+	char	*add;
+	t_list	*new;
+
+	if (!(add = ft_strdup(str)))
+		exit(ft_error("", 1));
+	if (!(new = ft_lstnew(add)))
+		exit(ft_error("", 1));
+	ft_lstadd_back(&m_sh->pwds, new);
+}
+
 void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag)
 {
 	t_list	*work;
@@ -42,25 +54,36 @@ void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag)
 	t_list	*new;
 	char	*dir;
 
+//	printf("[pwdlst_update]argv:%s\n", argv);
 	work = pwdlst_init(argv, delflag);
 	if (delflag == NOCURRENT && (!*((char *)(ft_lstlast(m_sh->pwds))->content)))
 		lstlast_del(m_sh);
-	else if (*argv == '/' || delflag == NXCURRENT)
+	else if ((*argv == '/' || delflag == NXCURRENT) && !(m_sh->pwd_dslash = false))
 		ft_lstclear(&m_sh->pwds, free);
+	if (!ft_strncmp(argv, "//", 2) && ft_strncmp(argv, "///", 3))
+		m_sh->pwd_dslash = true;
+//	printf("[pwdlst_update]dslash:%d\n", m_sh->pwd_dslash);
 	tmp = work;
 	while (tmp)
 	{
 		if (!ft_strncmp((char *)tmp->content, "..", 3))
 			lstlast_del(m_sh);
 		else if (delflag == NOCURRENT || ft_strncmp((char *)tmp->content, ".", 2))
-		{
-			if (!(dir = ft_strdup((char *)tmp->content)) || !(new = ft_lstnew(dir)))
-				exit(ft_error("", 1));
-			ft_lstadd_back(&m_sh->pwds, new);
-		}
+			pwdlst_add(m_sh, (char *)tmp->content);
+//		printf("[pwdlst_update]content:%s\n", (char *)tmp->content);
 		tmp = tmp->next;
 	}
 	ft_lstclear(&work, free);
+}
+
+char	*pwds_joinfree(char *pwd, char *add)
+{
+	char	*ret;
+
+	if (!(ret = ft_strjoin(pwd, add)))
+		exit(ft_error("", 1));
+	free(pwd);
+	return (ret);
 }
 
 char	*pwds_str(t_minishell *m_sh)
@@ -69,21 +92,22 @@ char	*pwds_str(t_minishell *m_sh)
 	char	*tmp;
 	t_list	*list;
 
-	pwd = NULL;
+	if (m_sh->pwd_dslash)
+		pwd = ft_strdup("/");
+	else
+		pwd = NULL;
 	list = m_sh->pwds;
+//	printf("[pwds_str]firstlist:%p\n", list);
 	while (list)
 	{
-		tmp = pwd;
-		if (!(pwd = ft_strjoin(pwd, "/")))
-			exit(ft_error("", 1));
-		free(tmp);
-		tmp = pwd;
-		char *dir = (char*)list->content;
-		if (!(pwd = ft_strjoin(pwd, dir)))
-			exit(ft_error("", 1));
-		free(tmp);
+		pwd = pwds_joinfree(pwd, "/");
+		pwd = pwds_joinfree(pwd, (char *)list->content);
 		list = list->next;
+//		printf("[pwds_str]pwd:%s\n", pwd);
 	}
+	if (!m_sh->pwds)
+		pwd = pwds_joinfree(pwd, "/");
+//	printf("[pwds_str]pwd:%s\n", pwd);
 	return (pwd);
 }
 
@@ -92,6 +116,7 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	char	*pwdval;
 
 	pwdval = value_get("PWD", m_sh);
+//	printf("[pwd_update] 1pwdval:%s\n", pwdval);
 	if (key_find("OLDPWD", m_sh))
 		export_envp(m_sh, ft_strdup("OLDPWD"), pwdval);
 	else
@@ -100,6 +125,7 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	if (delflag == NXCURRENT)
 		free(argv);
 	pwdval = pwds_str(m_sh);
+//	printf("[pwd_update] 2pwdval:%s\n", pwdval);
 	errno = 0;
 	if (key_find("PWD", m_sh))
 		export_envp(m_sh, ft_strdup("PWD"), pwdval);
@@ -134,6 +160,14 @@ int		cd_no_current(t_minishell *m_sh, char *argv)
 	return (1);
 }
 
+int		cd_nx_current(t_minishell *m_sh, char *path, char *argv)
+{
+	if (*argv == '/')
+		return (pwd_update(m_sh, argv, 0));
+	else
+		return (pwd_update(m_sh, path, NXCURRENT));
+}
+
 int		sh_cd(t_minishell *m_sh, t_exec *exec)
 {
 	char			**argv;
@@ -155,7 +189,7 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	if (!(path = getcwd(NULL, 0)) && (nocurrent = true))
 		return (cd_no_current(m_sh, *argv));
 	if (nocurrent && !(nocurrent = false))
-		return (pwd_update(m_sh, path, NXCURRENT));
+		return (cd_nx_current(m_sh, path, *argv));
 	free(path);
 	return (pwd_update(m_sh, *argv, 0));
 }

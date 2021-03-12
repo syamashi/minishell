@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 19:22:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/11 23:23:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 	while (mov && !(*ex)->error_flag)
 	{
 		type = ((t_pack *)mov->content)->type;
-		if (rint = (type == RINT) ? ((t_pack *)mov->content)->line : NULL)
+		if ((rint = (type == RINT) ? ((t_pack *)mov->content)->line : NULL))
 			mov = mov->next;
 		type = ((t_pack *)mov->content)->type;
 		mov = mov->next;
