@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 21:37:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 23:16:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	m_sh->env_list = NULL;
 	m_sh->exit_status = 0;
 	m_sh->env_pwd = NULL;
+	m_sh->env_oldpwd = NULL;
 	env_init(envp, m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
