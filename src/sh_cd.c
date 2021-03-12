@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 13:44:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:23:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,16 +129,22 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 		export_envp(m_sh, ft_strdup("OLDPWD"), pwdval);
 	else
 		free(pwdval);
+	free(m_sh->env_oldpwd);
+	m_sh->env_oldpwd = m_sh->env_pwd;
 	pwdlst_update(m_sh, argv, delflag);
 	if (delflag == NXCURRENT)
 		free(argv);
 	pwdval = pwds_str(m_sh);
-//	printf("[pwd_update] 2pwdval:%s\n", pwdval);
 	errno = 0;
 	if (key_find("PWD", m_sh))
+	{
 		export_envp(m_sh, ft_strdup("PWD"), pwdval);
+		if (!(m_sh->env_pwd = ft_strdup(pwdval)))
+			exit(ft_error("", 1));
+	}
 	else
-		free(pwdval);
+		m_sh->env_pwd = pwdval;
+	printf("[pwd_update] m_sh->env_pwd:%s\n", m_sh->env_pwd);
 	return (0);
 }
 

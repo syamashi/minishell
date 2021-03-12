@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:16 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:33:21 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:37:12 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,20 @@ void	envlst_delone(t_minishell *m_sh, t_list *mov, t_list *prev)
 	}
 }
 
+void	pwdshell_del(char *key, t_minishell *m_sh)
+{
+	if (!ft_strncmp(key, "PWD", 4) && m_sh->env_pwd)
+	{
+		free(m_sh->env_pwd);
+		m_sh->env_pwd = NULL;
+	}
+	if (!ft_strncmp(key, "OLDPWD", 7) && m_sh->env_oldpwd)
+	{
+		free(m_sh->env_oldpwd);
+		m_sh->env_oldpwd = NULL;
+	}
+}
+
 void	unset_envp(t_minishell *m_sh, char *key)
 {
 	char	*dkey;
@@ -45,11 +59,13 @@ void	unset_envp(t_minishell *m_sh, char *key)
 		if (!ft_strcmp(key, dkey))
 		{
 			envlst_delone(m_sh, mov, prev);
-			return ;
+			break ;
 		}
 		prev = mov;
 		mov = mov->next;
 	}
+	if (pwdshell_exist(key, m_sh))
+		pwdshell_del(key, m_sh);
 }
 
 int		sh_unset(t_minishell *m_sh, t_exec *exec)
