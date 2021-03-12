@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:23:34 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:44:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	}
 	else
 		m_sh->env_pwd = pwdval;
-	printf("[pwd_update] m_sh->env_pwd:%s\n", m_sh->env_pwd);
+//	printf("[pwd_update] m_sh->env_pwd:%s\n", m_sh->env_pwd);
 	return (0);
 }
 
