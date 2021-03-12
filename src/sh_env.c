@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 22:34:13 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 22:52:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ void	display_env(t_minishell *m_sh, t_exec *ex)
 	mov = m_sh->env_list;
 	while (mov)
 	{
-		if (!*(((t_dict *)mov->content)->value))
-			continue ;
-		ft_putstr_fd(((t_dict *)mov->content)->key, ex->fd_out);
-		ft_putstr_fd("=", ex->fd_out);
-		ft_putstr_fd(((t_dict *)mov->content)->value, ex->fd_out);
-		ft_putstr_fd("\n", ex->fd_out);
+		if (((t_dict *)mov->content)->value
+		&& *(((t_dict *)mov->content)->value))
+		{
+			ft_putstr_fd(((t_dict *)mov->content)->key, ex->fd_out);
+			ft_putstr_fd("=", ex->fd_out);
+			ft_putstr_fd(((t_dict *)mov->content)->value, ex->fd_out);
+			ft_putstr_fd("\n", ex->fd_out);
+		}
 		mov = mov->next;
 	}
 }
