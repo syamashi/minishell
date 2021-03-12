@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 10:39:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:57:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,24 @@ char	*key_get(char *line)
 **  $$ = $null + $null
 */
 
+bool	pwdshell_exist(char *key, t_minishell *m_sh)
+{
+	if (!ft_strncmp(key, "PWD", 4) && m_sh->env_pwd)
+		return (true);
+	if (!ft_strncmp(key, "OLDPWD", 7) && m_sh->env_oldpwd)
+		return (true);
+	return (false);
+}
+
+char	*pwdshell(char *key, t_minishell *m_sh)
+{
+	if (!ft_strncmp(key, "PWD", 4))
+		return (ft_strdup(m_sh->env_pwd));
+	if (!ft_strncmp(key, "OLDPWD", 7))
+		return (ft_strdup(m_sh->env_oldpwd));
+	return (NULL);
+}
+
 char	*value_get(char *key, t_minishell *m_sh)
 {
 	int		len;
@@ -47,6 +65,8 @@ char	*value_get(char *key, t_minishell *m_sh)
 		return (ft_itoa(m_sh->exit_status));
 	else
 	{
+		if (pwdshell_exist(key, m_sh))
+			return (pwdshell(key, m_sh));
 		len = ft_strlen(key);
 		if (len == 0)
 			return (ft_strdup(""));

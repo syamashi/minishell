@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 08:09:15 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:00:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ typedef struct	s_minishell
 	char	*home_defvalue;
 	t_list	*pwds;
 	bool	pwd_dslash;
+	char	*env_pwd;
+	char	*env_oldpwd;
 	t_list	*fd_backup;
 }				t_minishell;
 
@@ -107,6 +109,7 @@ bool	key_find(char *key, t_minishell *m_sh);
 char	*value_add(t_minishell *m_sh, char *key, char *value);
 t_list	*pwdlst_init(char *str, int delflag);
 char	*pwds_str(t_minishell *m_sh);
+bool	pwdshell_exist(char *key, t_minishell *m_sh);
 
 /*
 int		sh_echo(char **argv);

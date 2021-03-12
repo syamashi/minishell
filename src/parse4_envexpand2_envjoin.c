@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 12:37:36 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:08:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,35 +49,23 @@ void	empty_key(char **new, t_list *mov)
 	tmp = NULL;
 }
 
-void	env_add(t_minishell *m_sh, t_list *mov, char *key, char **new)
+void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 {
-	t_list	*pos;
+	char	*value;
 	char	*tmp;
 	int		len;
-	char	*dkey;
-	char	*value;
 
 	len = ft_strlen(key);
-	if (len == 0)
+	if (!len)
 		return (empty_key(new, mov));
-	pos = m_sh->env_list;
-	while (pos)
-	{
-		dkey = ((t_dict *)pos->content)->key;
-		if (!ft_strncmp(key, dkey, len + 1))
-		{
-			value = ((t_dict *)pos->content)->value;
-			tmp = *new;
-			if (!(*new = ft_strjoin(*new, value)))
-				exit(ft_error("minishell: malloc failed", 1));
-			free(tmp);
-			break ;
-		}
-		pos = pos->next;
-	}
+	value = value_get(key, m_sh);
+	tmp = *new;
+	if (!(*new = ft_strjoin(*new, value)))
+		exit(ft_error("minishell: malloc failed", 1));
+	free(tmp);
 }
 
-void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh)
+void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 {
 	char	*key;
 	char	*tmp;
@@ -95,7 +83,7 @@ void	env_join(char **new, t_list *mov, t_token *t, t_minishell *m_sh)
 	if (!ft_strncmp(key, "?", 2))
 		env_retadd(m_sh, new);
 	else
-		env_add(m_sh, mov, key, new);
+		env_add(m_sh, key, new, mov);
 	free(key);
 	key = NULL;
 	t->j = t->i--;

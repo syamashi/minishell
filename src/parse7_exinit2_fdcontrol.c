@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/11 23:23:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:46:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 	if ((*ex)->fd_out != 1)
 		close((*ex)->fd_out);
 	(*ex)->fd_out = 1;
+	return (true);
 }
 
 int	rint_atoi(const char *nptr)

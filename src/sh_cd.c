@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 09:32:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:52:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,15 @@ void	lstlast_del(t_minishell *m_sh)
 		last = last->next;
 	}
 	if (pre)
+	{
 		pre->next = NULL;
-	ft_lstdelone(last, free);
+		ft_lstdelone(last, free);
+	}
+	else
+	{
+		ft_lstdelone(m_sh->pwds, free);
+		m_sh->pwds = NULL;
+	}
 }
 
 void	pwdlst_add(t_minishell *m_sh, char *str)
@@ -100,6 +107,7 @@ char	*pwds_str(t_minishell *m_sh)
 //	printf("[pwds_str]firstlist:%p\n", list);
 	while (list)
 	{
+//	printf("[pwds_str]list->content:%s\n", (char *)list->content);
 		pwd = pwds_joinfree(pwd, "/");
 		pwd = pwds_joinfree(pwd, (char *)list->content);
 		list = list->next;
@@ -121,16 +129,22 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 		export_envp(m_sh, ft_strdup("OLDPWD"), pwdval);
 	else
 		free(pwdval);
+	free(m_sh->env_oldpwd);
+	m_sh->env_oldpwd = m_sh->env_pwd;
 	pwdlst_update(m_sh, argv, delflag);
 	if (delflag == NXCURRENT)
 		free(argv);
 	pwdval = pwds_str(m_sh);
-//	printf("[pwd_update] 2pwdval:%s\n", pwdval);
 	errno = 0;
 	if (key_find("PWD", m_sh))
+	{
 		export_envp(m_sh, ft_strdup("PWD"), pwdval);
+		if (!(m_sh->env_pwd = ft_strdup(pwdval)))
+			exit(ft_error("", 1));
+	}
 	else
-		free(pwdval);
+		m_sh->env_pwd = pwdval;
+//	printf("[pwd_update] m_sh->env_pwd:%s\n", m_sh->env_pwd);
 	return (0);
 }
 

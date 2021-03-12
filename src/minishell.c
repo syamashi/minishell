@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 09:38:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 15:16:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ t_list	*pwdlst_nocurrent(char *str)
 			exit(ft_error("", 1));
 		ft_lstadd_back(&ret, new);
 	}
-	if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
-		exit(ft_error("", 1));
-	ft_lstadd_back(&ret, new);
+	if (i && str[i - 1] == '/')
+	{
+		if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
+			exit(ft_error("", 1));
+		ft_lstadd_back(&ret, new);
+	}
 	return (ret);
 }
 
@@ -124,6 +127,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	
 	m_sh->env_list = NULL;
 	m_sh->exit_status = 0;
+	m_sh->env_pwd = NULL;
 	env_init(envp, m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
@@ -134,7 +138,8 @@ void	sh_init(t_minishell *m_sh, char **envp)
 		exit(ft_error("", 1));
 	m_sh->pwd_dslash = false;
 	m_sh->pwds = pwdlst_init(strpwd, 0);
-	free(strpwd);
+	m_sh->env_pwd = strpwd;
+	m_sh->env_oldpwd = NULL;
 }
 
 bool	is_nums(char *line)
