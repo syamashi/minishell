@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 23:16:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 02:41:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,21 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	char	*strpwd;
 	
 	m_sh->env_list = NULL;
-	m_sh->exit_status = 0;
-	m_sh->env_pwd = NULL;
 	m_sh->env_oldpwd = NULL;
+	m_sh->env_pwd = NULL;
+	m_sh->exit_status = 0;
+	m_sh->fd_backup = NULL;
+	m_sh->pwd_dslash = false;
+	m_sh->pwds = NULL;
 	env_init(envp, m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
 			exit(ft_error("malloc failed", 1));
-	m_sh->env_list = quick_sort_list(m_sh->env_list);
-	m_sh->fd_backup = NULL;
 	if (!(strpwd = value_get("PWD", m_sh)))
 		exit(ft_error("malloc failed", 1));
-	m_sh->pwd_dslash = false;
 	m_sh->pwds = pwdlst_init(strpwd, 0);
-	m_sh->env_pwd = strpwd;
-	m_sh->env_oldpwd = NULL;
+	free(strpwd);
+	m_sh->env_list = quick_sort_list(m_sh->env_list);
 }
 
 bool	is_nums(char *line)

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 02:38:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ bool	pwdshell_exist(char *key, t_minishell *m_sh)
 	return (false);
 }
 
-char	*pwdshell(char *key, t_minishell *m_sh)
+char	*pwdshell_dup(char *key, t_minishell *m_sh)
 {
+	char	*str;
+	
 	if (!ft_strncmp(key, "PWD", 4))
 		return (ft_strdup(m_sh->env_pwd));
 	if (!ft_strncmp(key, "OLDPWD", 7))
@@ -66,9 +68,8 @@ char	*value_get(char *key, t_minishell *m_sh)
 	else
 	{
 		if (pwdshell_exist(key, m_sh))
-			return (pwdshell(key, m_sh));
-		len = ft_strlen(key);
-		if (len == 0)
+			return (pwdshell_dup(key, m_sh));
+		if (!(len = ft_strlen(key)))
 			return (ft_strdup(""));
 		mov = m_sh->env_list;
 		while (mov)

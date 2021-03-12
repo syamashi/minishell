@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 01:59:27 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,27 +124,23 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	char	*pwdval;
 
 	pwdval = value_get("PWD", m_sh);
-//	printf("[pwd_update] 1pwdval:%s\n", pwdval);
+	free(m_sh->env_oldpwd);
+	m_sh->env_oldpwd = NULL;
 	if (key_find("OLDPWD", m_sh))
 		export_envp(m_sh, ft_strdup("OLDPWD"), pwdval);
 	else
-		free(pwdval);
-	free(m_sh->env_oldpwd);
-	m_sh->env_oldpwd = m_sh->env_pwd;
+		m_sh->env_oldpwd = pwdval;
 	pwdlst_update(m_sh, argv, delflag);
 	if (delflag == NXCURRENT)
 		free(argv);
 	pwdval = pwds_str(m_sh);
 	errno = 0;
+	free(m_sh->env_pwd);
+	m_sh->env_pwd = NULL;
 	if (key_find("PWD", m_sh))
-	{
 		export_envp(m_sh, ft_strdup("PWD"), pwdval);
-		if (!(m_sh->env_pwd = ft_strdup(pwdval)))
-			exit(ft_error("malloc failed", 1));
-	}
 	else
 		m_sh->env_pwd = pwdval;
-//	printf("[pwd_update] m_sh->env_pwd:%s\n", m_sh->env_pwd);
 	return (0);
 }
 

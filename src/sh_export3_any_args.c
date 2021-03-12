@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 23:13:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 01:41:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 	if (!key)
 		return ;
 	env = m_sh->env_list;
-	if (pwdshell_exist(key, m_sh))
+	if (!(ft_strncmp(key, "PWD", 4)) || !(ft_strncmp(key, "OLDPWD", 7)))
 		pwdshell_export(key, value, m_sh);
 	while (env)
 	{
