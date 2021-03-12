@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 19:06:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	empty_key(char **new, t_list *mov)
 {
 	char	*tmp;
 
-	if (mov->next && ((t_pack *)mov->next->content)->type == SQUOTE)
+	if (mov->next && (is_quote(((t_pack *)mov->next->content)->type)))
 		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
