@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/11 23:04:47 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 09:38:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	m_sh->fd_backup = NULL;
 	if (!(strpwd = value_get("PWD", m_sh)))
 		exit(ft_error("", 1));
+	m_sh->pwd_dslash = false;
 	m_sh->pwds = pwdlst_init(strpwd, 0);
 	free(strpwd);
 }
