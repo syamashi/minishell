@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 16:27:29 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 18:25:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ typedef struct s_redint
 sig_atomic_t	g_intflag;
 
 void	minishell(char **envp);
-char	*sh_prompt();
+char	*sh_prompt(t_minishell *m_sh);
 int		sh_launch(t_minishell *m_sh, t_list *exlist);
 
 char	*key_get(char *line);

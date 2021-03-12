@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 18:31:40 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,13 @@ t_command	*div_commands(t_minishell *m_sh, char *line)
 	store = ft_clstnew(ft_strtoken(line));
 	redirectionint_trance(store->content);
 	if (input_check(store->content, m_sh))
+	{
+		free(store->content);
+		store->content = NULL;
+		free(store);
+		store = NULL;
 		return (NULL);
+	}
 	store_div(&store);
 	return (store);
 }
@@ -299,7 +305,6 @@ void	minishell(char **envp)
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
-
 			if (((t_exec*)ex_list->content)->fd_in != 0)
 				close(((t_exec*)ex_list->content)->fd_in);
 			if (((t_exec*)ex_list->content)->fd_out != 1)
