@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:33:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:10:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
 void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
 t_list	*pack_end(t_pack **pack, t_list **list);
 
-void	env_solve(char **line, t_minishell *m_sh);
+void	env_solve(char **line, t_minishell *m_sh, t_list *mov);
 void	repack(t_list **prev, t_list **mov, t_list **packs);
-void	env_join(char **new, t_token *t, t_minishell *m_sh);
+void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov);
 
 void	pack_del(t_list **prev, t_list **mov, t_list **packs);
 

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:34:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:09:37 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	def_env(t_token *t, char *line, char **new)
 		exit(ft_error("minishell: malloc failed", 1));
 }
 
-void	env_solve(char **line, t_minishell *m_sh)
+void	env_solve(char **line, t_minishell *m_sh, t_list *mov)
 {
 	char	*new;
 	t_token t;
@@ -49,7 +49,7 @@ void	env_solve(char **line, t_minishell *m_sh)
 		if ((*line)[t.i] != '$')
 			continue ;
 		pre_join(&new, &t);
-		env_join(&new, &t, m_sh);
+		env_join(&new, &t, m_sh, mov);
 	}
 	if (t.j != t.i)
 		pre_join(&new, &t);
@@ -90,7 +90,7 @@ void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag)
 	{
 		if (is_cmdstr(((t_pack *)mov->content)->type, &pre_type, &quote_flag))
 		{
-			env_solve(&((t_pack *)mov->content)->line, m_sh);
+			env_solve(&((t_pack *)mov->content)->line, m_sh, mov);
 			if (!quote_flag && !pathflag)
 				repack(&prev, &mov, packs);
 			pre_type = ((t_pack *)mov->content)->type;

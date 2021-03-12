@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:31:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:08:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,15 @@ void	empty_key(char **new, t_list *mov)
 	tmp = NULL;
 }
 
-void	env_add(t_minishell *m_sh, char *key, char **new)
+void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 {
 	char	*value;
 	char	*tmp;
+	int		len;
 
+	len = ft_strlen(key);
+	if (!len)
+		return (empty_key(new, mov));
 	value = value_get(key, m_sh);
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
@@ -61,7 +65,7 @@ void	env_add(t_minishell *m_sh, char *key, char **new)
 	free(tmp);
 }
 
-void	env_join(char **new, t_token *t, t_minishell *m_sh)
+void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 {
 	char	*key;
 	char	*tmp;
@@ -79,7 +83,7 @@ void	env_join(char **new, t_token *t, t_minishell *m_sh)
 	if (!ft_strncmp(key, "?", 2))
 		env_retadd(m_sh, new);
 	else
-		env_add(m_sh, key, new);
+		env_add(m_sh, key, new, mov);
 	free(key);
 	key = NULL;
 	t->j = t->i--;
