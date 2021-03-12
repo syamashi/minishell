@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 12:45:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:48:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	lstlast_del(t_minishell *m_sh)
 	{
 		pre = last;
 		last = last->next;
-		printf("path!\n");
 	}
 	if (pre)
 	{
@@ -105,18 +104,18 @@ char	*pwds_str(t_minishell *m_sh)
 	else
 		pwd = NULL;
 	list = m_sh->pwds;
-	printf("[pwds_str]firstlist:%p\n", list);
+//	printf("[pwds_str]firstlist:%p\n", list);
 	while (list)
 	{
-	printf("[pwds_str]list->content:%s\n", (char *)list->content);
+//	printf("[pwds_str]list->content:%s\n", (char *)list->content);
 		pwd = pwds_joinfree(pwd, "/");
 		pwd = pwds_joinfree(pwd, (char *)list->content);
 		list = list->next;
-		printf("[pwds_str]pwd:%s\n", pwd);
+//		printf("[pwds_str]pwd:%s\n", pwd);
 	}
 	if (!m_sh->pwds)
 		pwd = pwds_joinfree(pwd, "/");
-	printf("[pwds_str]pwd:%s\n", pwd);
+//	printf("[pwds_str]pwd:%s\n", pwd);
 	return (pwd);
 }
 
