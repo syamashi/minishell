@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 19:06:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 21:48:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,29 @@ void	env_retadd(t_minishell *m_sh, char **new)
 
 /*
 **    $ = $
-**  $'' = null
-**  $"" = null
 **  $\\ = $\
+**
+**  $'' = null,  $"" = null
+**  [$][ 0] <- now
+**  ["][ 8] <- nexttype = quote
+**  [][ 0] <- nextnextline = null
+**  ["][ 8]
+**
+**  "$ $" = $ $ 
+**  "$" = $ 
+**  ["][ 8] 
+**  [][ 0]
+**  [$ $ $ $][ 0] <- now
+**  ["][ 8] <- nexttype = quote
+**          <- nextnexttype = nextnext = NULL
 */
 
 void	empty_key(char **new, t_list *mov)
 {
 	char	*tmp;
 
-	if (mov->next && (is_quote(((t_pack *)mov->next->content)->type)))
+	if (mov->next && (is_quote(((t_pack *)mov->next->content)->type))
+		&& mov->next->next && !*(((t_pack*)mov->next->next->content)->line))
 		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
