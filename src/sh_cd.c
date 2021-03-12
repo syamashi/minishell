@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:52:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ void	pwdlst_add(t_minishell *m_sh, char *str)
 	t_list	*new;
 
 	if (!(add = ft_strdup(str)))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	if (!(new = ft_lstnew(add)))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	ft_lstadd_back(&m_sh->pwds, new);
 }
 
@@ -88,7 +88,7 @@ char	*pwds_joinfree(char *pwd, char *add)
 	char	*ret;
 
 	if (!(ret = ft_strjoin(pwd, add)))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	free(pwd);
 	return (ret);
 }
@@ -140,7 +140,7 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	{
 		export_envp(m_sh, ft_strdup("PWD"), pwdval);
 		if (!(m_sh->env_pwd = ft_strdup(pwdval)))
-			exit(ft_error("", 1));
+			exit(ft_error("malloc failed", 1));
 	}
 	else
 		m_sh->env_pwd = pwdval;

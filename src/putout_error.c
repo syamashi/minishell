@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 20:03:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:32:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 int		ft_error(char *str, int i)
 {
+	ft_putstr_fd(BASH, 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("\n", 2);
 	return (i);
@@ -22,7 +23,8 @@ int		ft_error(char *str, int i)
 
 int		ft_syntax_error(char *str, int i)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
+	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd("syntax error near unexpected token '", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("'", 2);
 	ft_putstr_fd("\n", 2);
@@ -33,7 +35,7 @@ int		ft_avoid_error(char *str, int i)
 {
 	static int cnt;
 
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(BASH, 2);
 	if (cnt % 3 == 0)
 		ft_putstr_fd("（ﾟﾛﾟ）oops '", 2);
 	if (cnt % 3 == 1)
@@ -50,7 +52,8 @@ int		ft_avoid_error(char *str, int i)
 
 int		ft_exit_error(char *str, int i)
 {
-	ft_putstr_fd("minishell: exit: ", 2);
+	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd("exit: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": numeric argument required", 2);
 	ft_putstr_fd("\n", 2);
@@ -59,7 +62,7 @@ int		ft_exit_error(char *str, int i)
 
 void	fd_error(char *str, int fd)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(BASH, 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(strerror(errno), 2);

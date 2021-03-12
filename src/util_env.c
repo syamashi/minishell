@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:57:18 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*value_add(t_minishell *m_sh, char *key, char *value)
 	{
 		tmp = value;
 		if (!(value = ft_strjoin(add, value)))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 		free(tmp);
 		tmp = NULL;
 	}

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:08:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	env_retadd(t_minishell *m_sh, char **new)
 	char	*tmp;
 
 	if (!(value = ft_itoa(m_sh->exit_status)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 	tmp = NULL;
 	free(value);
@@ -44,7 +44,7 @@ void	empty_key(char **new, t_list *mov)
 		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 	tmp = NULL;
 }
@@ -61,7 +61,7 @@ void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 	value = value_get(key, m_sh);
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 }
 
@@ -79,7 +79,7 @@ void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 		while (!is_keyend(t->line[t->i]))
 			(t->i)++;
 	if (!(key = ft_substr(t->line, t->j, t->i - t->j)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	if (!ft_strncmp(key, "?", 2))
 		env_retadd(m_sh, new);
 	else

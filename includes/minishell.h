@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 15:00:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:27:29 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # define STR_OPT_LN "-n"
 # define EM_TOO_MANY_ARG "too many arg"
 # define MINISHELL "minishell :"
+# define BASH "bash: "
 # define PROMPT_NAME ""
 # define NOCURRENT 1
 # define NXCURRENT 2

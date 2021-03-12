@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/19 23:48:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static	char	*dummy_set(void)
 	unsigned char	*set;
 
 	if (!(set = (unsigned char *)malloc(2)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	set[0] = DUMMY;
 	set[1] = '\0';
 	return ((char*)set);
@@ -86,7 +86,7 @@ char			*path_make(char *src, t_minishell *m_sh)
 	quote_del(&packs);
 	strs_join(&packs);
 	if (!(path = ft_strdup(((t_pack *)packs->content)->line)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	ft_lstclear(&packs, pack_free);
 	set = dummy_set();
 	path = simpletrim(path, set);

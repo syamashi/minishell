@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	pack_marge(
 		pack_join(&pack, "\\", 1);
 	pack_join(&pack, line, ft_strlen(line));
 	if (!(new = ft_lstnew(pack)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	new->next = (*mov)->next->next;
 	if (*prev)
 		(*prev)->next = new;
