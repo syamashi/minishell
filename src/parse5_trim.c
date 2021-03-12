@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 02:09:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 20:40:01 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	pack_marge(
 		pack_join(&pack, "\\", 1);
 	pack_join(&pack, line, ft_strlen(line));
 	if (!(new = ft_lstnew(pack)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	new->next = (*mov)->next->next;
 	if (*prev)
 		(*prev)->next = new;
@@ -102,6 +102,31 @@ void	space_del(t_list **packs)
 **	types = {STR, DIRS, SPACE, QUOTES, PIPE, SSTR}
 **  after DIRS, NOT del QUOTES
 */
+void	null_del(t_list **packs)
+{
+	t_list	*mov;
+	t_list	*prev;
+	int		type;
+	int		pretype;
+	char	*line;
+
+	prev = NULL;
+	pretype = STR;
+	mov = *packs;
+	while (mov)
+	{
+		type = ((t_pack *)mov->content)->type;
+		line = ((t_pack *)mov->content)->line;
+		if (type == STR && !is_quote(pretype) && !*line)
+			pack_del(&prev, &mov, packs);
+		else
+		{
+			prev = mov;
+			mov = mov->next;
+		}
+		pretype = type;
+	}
+}
 
 void	packs_trim(t_list **packs)
 {
@@ -109,6 +134,7 @@ void	packs_trim(t_list **packs)
 	int		nexttype;
 	t_list	*mov;
 
+	null_del(packs);
 	quote_del(packs);
 	strs_join(packs);
 	space_del(packs);

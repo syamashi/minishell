@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/11 08:15:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 18:26:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*line_validcheck(char **line)
 	
 	tmp = *line;
 	if (!(*line = ft_strtrim(*line, " \t")))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 	tmp = NULL;
 	if (**line == '\0')
@@ -58,7 +58,7 @@ char	*line_validcheck(char **line)
 	return (*line);
 }
 
-char	*sh_prompt()
+char	*sh_prompt(t_minishell *m_sh)
 {
 	char	*line;
 	t_list	*store;
@@ -75,8 +75,8 @@ char	*sh_prompt()
 		if (!store && !ft_strcmp(line, ""))
 		{
 			free(line);
-			ft_putstr("exit\n");
-			exit(0);
+			ft_putstr_fd("exit\n", 2);
+			exit(m_sh->exit_status);
 		}
 		ft_lstadd_back(&store, ft_lstnew(line));
 	}

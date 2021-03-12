@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:29:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 		env = env->next;
 	}
 	if (!(dict = (t_dict *)malloc(sizeof(t_dict))))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	dict->key = key;
 	dict->value = value;
 	if (!(new = ft_lstnew(dict)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	envlst_add(&m_sh->env_list, new);
 	return ;
 }

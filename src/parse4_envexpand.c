@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 22:00:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:09:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 20:53:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	pre_join(char **new, t_token *t)
 	if (t->i == t->j)
 		return ;
 	if (!(add = ft_substr(t->line, t->j, t->i - t->j)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, add)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 	free(add);
 }
@@ -35,7 +35,7 @@ void	def_env(t_token *t, char *line, char **new)
 	t->j = 0;
 	t->line = line;
 	if (!(*new = ft_strdup("")))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 }
 
 void	env_solve(char **line, t_minishell *m_sh, t_list *mov)

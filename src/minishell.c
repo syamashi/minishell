@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 15:16:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 21:37:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ t_list	*pwdlst_nocurrent(char *str)
 		else
 			continue ;
 		if (!add || !(new = ft_lstnew(add)))
-			exit(ft_error("", 1));
+			exit(ft_error("malloc failed", 1));
 		ft_lstadd_back(&ret, new);
 	}
 	if (i && str[i - 1] == '/')
 	{
 		if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
-			exit(ft_error("", 1));
+			exit(ft_error("malloc failed", 1));
 		ft_lstadd_back(&ret, new);
 	}
 	return (ret);
@@ -103,7 +103,7 @@ t_list	*pwdlst_solve(char *str)
 		if (i > j)
 		{
 			if (!(add = ft_substr(str, j, i - j)) || !(new = ft_lstnew(add)))
-				exit(ft_error("", 1));
+				exit(ft_error("malloc failed", 1));
 			ft_lstadd_back(&ret, new);
 		}
 		j = i + 1;
@@ -131,11 +131,11 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	env_init(envp, m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 	m_sh->env_list = quick_sort_list(m_sh->env_list);
 	m_sh->fd_backup = NULL;
 	if (!(strpwd = value_get("PWD", m_sh)))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	m_sh->pwd_dslash = false;
 	m_sh->pwds = pwdlst_init(strpwd, 0);
 	m_sh->env_pwd = strpwd;
@@ -182,7 +182,10 @@ t_command	*div_commands(t_minishell *m_sh, char *line)
 	store = ft_clstnew(ft_strtoken(line));
 	redirectionint_trance(store->content);
 	if (input_check(store->content, m_sh))
+	{
+		ft_clstdelone(store, del_command);
 		return (NULL);
+	}
 	store_div(&store);
 	return (store);
 }
@@ -204,7 +207,7 @@ void	tilde_join(t_list *mov, t_minishell *m_sh)
 	if (!(home_value = value_get("HOME", m_sh)))
 		if (!(home_value = ft_strdup(m_sh->home_defvalue)))
 			if (!(home_value = ft_strdup("")))
-				exit(ft_error("minishell: malloc failed", 1));
+				exit(ft_error("malloc failed", 1));
 	tmp = line;
 	line = ft_strjoin(home_value, line + 1);
 	free(tmp);
@@ -248,11 +251,11 @@ t_list	*to_ex_list(t_minishell *m_sh, t_list **pack_list)
 	packs_trim((t_list **)pack_list);
 //	debug(*pack_list);
 	ast_init(&ast, (t_list**)pack_list);
-	//ast_debug(ast);
+//	ast_debug(ast);
 	exlist_init(ast, &ex_list, m_sh);
 //	debug(*pack_list);
 	ast_free(&ast);
-	//exlist_debug(ex_list);
+//	exlist_debug(ex_list);
 	return (ex_list);
 }
 
@@ -304,6 +307,7 @@ void	minishell(char **envp)
 				close(((t_exec*)ex_list->content)->fd_in);
 			if (((t_exec*)ex_list->content)->fd_out != 1)
 				close(((t_exec*)ex_list->content)->fd_out);
+
 			while (mini_sh.fd_backup){
 				t_list *rtmp;
 				t_redint *rd;

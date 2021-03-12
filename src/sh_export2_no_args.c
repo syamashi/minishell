@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 18:29:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ static	void	prejoin(int *i, int *j, char *value, char **output)
 	char	*tmp;
 
 	if (!(add = ft_substr(value, *j, *i - *j)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	tmp = *output;
 	if (!(*output = ft_strjoin(*output, add)))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	free(tmp);
 	free(add);
 	*j = *i;
@@ -36,7 +36,7 @@ static	char	*make_outputvalue(char *value)
 	if (!value)
 		return (NULL);
 	if (!(output = ft_strdup("=\"")))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	i = -1;
 	j = 0;
 	while (value[++i])
@@ -64,7 +64,7 @@ static	char	*make_output(t_list *env)
 	key = ((t_dict *)env->content)->key;
 	value = make_outputvalue(((t_dict *)env->content)->value);
 	if (!(output = ft_strdup("")))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	simplejoin(&output, "declare -x ");
 	simplejoin(&output, key);
 	if (value)

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/21 13:06:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static	void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
 	argc = ft_lstsize(((t_leaf*)ast->content)->str);
 	envc = ft_lstsize(env);
 	if (!(*ex = (t_exec *)malloc(sizeof(t_exec))))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	if (!((*ex)->argv = (char **)malloc(sizeof(char *) * (argc + 1))))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	if (!((*ex)->envp = (char **)malloc(sizeof(char *) * (envc + 1))))
-		exit(ft_error("minishell: malloc failed", 1));
+		exit(ft_error("malloc failed", 1));
 	i = -1;
 	while (++i <= argc)
 		(*ex)->argv[i] = NULL;
@@ -49,7 +49,7 @@ void			argv_init(t_exec **ex, t_list *str)
 	{
 		++i;
 		if (!((*ex)->argv[i] = ft_strdup(((t_pack *)mov->content)->line)))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 		mov = mov->next;
 	}
 }
@@ -68,10 +68,10 @@ void			envp_init(t_exec **ex, t_list *env)
 	{
 		key = ((t_dict *)mov->content)->key;
 		if (!(line = ft_strjoin(key, "=")))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 		value = ((t_dict *)mov->content)->value;
 		if (!((*ex)->envp[++i] = ft_strjoin(line, value)))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 		free(line);
 		line = NULL;
 		mov = mov->next;
@@ -108,7 +108,7 @@ void			exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh)
 		envp_init(&ex, m_sh->env_list);
 		fd_controller(&ex, ((t_leaf *)mov->content)->dir, m_sh);
 		if (!(new = ft_lstnew(ex)))
-			exit(ft_error("minishell: malloc failed", 1));
+			exit(ft_error("malloc failed", 1));
 		ft_lstadd_back(exlist, new);
 		mov = mov->next;
 	}

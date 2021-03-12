@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 15:46:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 16:29:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,11 +166,11 @@ void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
 		return;
 	}
 	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	rfd->rint = rint_num;
 	rfd->backup = dup(rint_num);
 	if (!(new = ft_lstnew(rfd)))
-		exit(ft_error("", 1));
+		exit(ft_error("malloc failed", 1));
 	ft_lstadd_front(&m_sh->fd_backup, new);
 	printf("dup2(%d, %d), size:%d\n", fd, rint_num, ft_lstsize(m_sh->fd_backup));
 	if (dup2(fd, rint_num) < 0)
