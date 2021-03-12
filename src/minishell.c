@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 09:38:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 13:13:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,12 @@ t_list	*pwdlst_nocurrent(char *str)
 			exit(ft_error("", 1));
 		ft_lstadd_back(&ret, new);
 	}
-	if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
-		exit(ft_error("", 1));
-	ft_lstadd_back(&ret, new);
+	if (i && str[i - 1] == '/')
+	{
+		if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
+			exit(ft_error("", 1));
+		ft_lstadd_back(&ret, new);
+	}
 	return (ret);
 }
 

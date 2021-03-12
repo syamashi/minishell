@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 10:18:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 13:42:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			sh_exit(t_minishell *m_sh, t_exec *exec)
 
 	argv = exec->argv + 1;
 	if (!*argv)
-		exit(0);
+		exit(m_sh->exit_status);
 	if (*(argv + 1))
 		return (ft_error("minishell: exit: too many arguments", 1));
 	if ((ret = get_exitnum(*argv)) > 255)
