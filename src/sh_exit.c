@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:52:27 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 13:35:50 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static	int	get_exitnum(const char *nptr)
 	if (*str == '+' || *str == '-')
 		str++;
 	m = 0;
+	if (!*str)
+		return (4242);
 	while (ft_isdigit(*str))
 	{
 		num = (*str++ - '0');
