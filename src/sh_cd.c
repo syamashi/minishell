@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 13:08:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:25:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,8 +192,11 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 		return (cd_no_args(m_sh, *argv));
 	if (ft_strlen(*argv) > 255)
 		return (ft_cd_error(*argv, 1, "File name too long"));
-	if (!**argv)
+	if (!**argv && (path = getcwd(NULL, 0)))
+	{
+		free(path);
 		return (pwd_update(m_sh, *argv, false));
+	}
 	if (chdir(*argv))
 		return (ft_cd_error(*argv, 1, "No such file or directory"));
 	if (!(path = getcwd(NULL, 0)) && (nocurrent = true))
