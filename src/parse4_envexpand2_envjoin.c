@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 02:40:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:35:50 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 	if (t->line[t->i] == '?')
 		t->i++;
 	else
-		while (!is_keyend(t->line[t->i]))
+		while (!is_envend(t->line[t->i]))
 			(t->i)++;
 	if (!(key = ft_substr(t->line, t->j, t->i - t->j)))
 		exit(ft_error("malloc failed", 1));
