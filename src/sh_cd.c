@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 18:12:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 18:15:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,7 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	if (!**argv && (path = getcwd(NULL, 0)))
 	{
 		// cd "" で今いる場所に復帰できない場合
-		printf("path:%s\n", path);
+//		printf("path:%s\n", path);
 		free(path);
 		input_pwd = pwds_str(m_sh);
 		if (chdir(input_pwd))
