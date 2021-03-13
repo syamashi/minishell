@@ -6,11 +6,18 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/21 10:58:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:18:02 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
+
+int		status_handling(int e)
+{
+	if (e == ENOENT)
+		return (127);
+	return (126);
+}
 
 void	sh_launch_child(
 	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
@@ -38,7 +45,7 @@ void	sh_launch_child(
 	}
 	sh_execvpes(exec_param, m_sh);
 	ft_perror("minishell");
-	exit(1);
+	exit(status_handling(errno));
 }
 
 int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
