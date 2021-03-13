@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 22:29:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:41:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	rint_atoi(const char *nptr)
 
 void	rint_error(char *rint, int rint_num)
 {
-	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd(MINISHELL, 2);
 	if (rint_num == -1)
 		ft_putstr_fd("file descriptor out of range", 2);
 	if (rint_num > 255)

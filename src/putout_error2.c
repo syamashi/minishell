@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:32:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:41:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int		dir_error(char *path, int n)
 {
-	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(": ambiguous redirect\n", 2);
 	return (n);
@@ -23,7 +23,7 @@ int		dir_error(char *path, int n)
 
 int		ft_cd_error(char *path, int n, char *serror)
 {
-	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd("cd: ", 2);
 	if (path)
 	{
@@ -41,7 +41,7 @@ void	shlvl_error(int depth)
 	
 	if (!(str = ft_itoa(depth)))
 		exit(ft_error("malloc failed", 1));
-	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd("warning: shell level (", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(") too high, resetting to 1\n", 2);
