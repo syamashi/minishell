@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 14:25:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:59:54 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,16 +144,19 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	return (0);
 }
 
-int		cd_no_args(t_minishell *m_sh, char *argv)
+int		cd_no_args(t_minishell *m_sh)
 {
 	char	*home;
+	char	*path;
 
 	if (!(home = value_get("HOME", m_sh)))
 		return (ft_cd_error(NULL, 1, "HOME not set"));
+	if (!*home && (path = getcwd(NULL, 0)))
+		return (pwd_update(m_sh, path, false));
 	if (chdir(home) == -1)
 	{
 		free(home);
-		return (ft_cd_error(argv, 1, "No such file or directory"));
+		return (ft_cd_error(home, 1, "No such file or directory"));
 	}
 	ft_lstclear(&m_sh->pwds, free);
 	pwd_update(m_sh, home, false);
@@ -189,7 +192,7 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	errno = 0;
 	argv = exec->argv + 1;
 	if (!*argv)
-		return (cd_no_args(m_sh, *argv));
+		return (cd_no_args(m_sh));
 	if (ft_strlen(*argv) > 255)
 		return (ft_cd_error(*argv, 1, "File name too long"));
 	if (!**argv && (path = getcwd(NULL, 0)))
