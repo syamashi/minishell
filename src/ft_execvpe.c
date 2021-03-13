@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/13 14:16:45 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/13 15:04:42 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 	if (filelen + (sep - path) + 1 > PATH_MAX)
 		return (-1);
 	ft_memcpy(buf, path, sep - path);
-	ft_memcpy(buf + (sep - path), "/", 1);
-	ft_memcpy(buf + (sep - path) + 1, file, filelen + 1);
+	if (sep - path)
+		ft_memcpy(buf + (sep - path), "/", 1);
+	ft_memcpy(buf + (sep - path) + (sep - path > 0 ? 1 : 0), file, filelen + 1);
 	return (0);
 }
 
@@ -35,7 +36,8 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
-	env_path = value_get("PATH", m_sh);
+	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
+		return (execve(file, argv, envp));
 	sep = env_path;
 	errno_reserve = 0;
 	while (*sep)
