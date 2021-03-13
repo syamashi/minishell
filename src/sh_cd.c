@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 14:59:54 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 18:12:43 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,48 @@ int		cd_nx_current(t_minishell *m_sh, char *path, char *argv)
 		return (pwd_update(m_sh, path, NXCURRENT));
 }
 
+bool	is_del_link(t_minishell *m_sh, char *argv)
+{
+	t_list	*work;
+	t_minishell sh;
+	t_list	*tmp;
+	t_list	*new;
+	char	*dir;
+
+//	printf("[pwdlst_update]argv:%s\n", argv);
+	if (*argv == '/')
+		return (false);
+	sh.pwd_dslash = false;
+	sh.pwds = NULL;
+	tmp = m_sh->pwds;
+	while (tmp)
+	{
+		new = ft_lstnew(ft_strdup((char *)(tmp->content)));
+		ft_lstadd_back(&sh.pwds, new);
+		tmp = tmp->next;
+	}
+	work = pwdlst_init(argv, false);
+	tmp = work;
+	while (tmp)
+	{
+		if (!ft_strncmp((char *)tmp->content, "..", 3))
+			lstlast_del(&sh);
+		else if (ft_strncmp((char *)tmp->content, ".", 2))
+			pwdlst_add(&sh, (char *)tmp->content);
+		tmp = tmp->next;
+	}
+	dir = pwds_str(&sh);
+	ft_lstclear(&work, free);
+	ft_lstclear(&sh.pwds, free);
+	if (chdir(dir))
+	{
+		free(dir);
+		return (true);
+	}
+	free(dir);
+	return (false);
+}
+
 int		sh_cd(t_minishell *m_sh, t_exec *exec)
 {
 	char			**argv;
@@ -188,6 +230,7 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	int				chdir_ret;
 	char			*path;
 	static	bool	nocurrent;
+	char			*input_pwd;
 
 	errno = 0;
 	argv = exec->argv + 1;
@@ -197,15 +240,28 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 		return (ft_cd_error(*argv, 1, "File name too long"));
 	if (!**argv && (path = getcwd(NULL, 0)))
 	{
+		// cd "" で今いる場所に復帰できない場合
+		printf("path:%s\n", path);
 		free(path);
+		input_pwd = pwds_str(m_sh);
+		if (chdir(input_pwd))
+		{
+			free(input_pwd);
+			return (ft_cd_error(*argv, 1, "No such file or directory"));
+		}
+		free(input_pwd);
 		return (pwd_update(m_sh, *argv, false));
 	}
+//	printf("argv:%s, path:%s, chdir:%d\n", *argv, getcwd(NULL, 0));
 	if (chdir(*argv))
 		return (ft_cd_error(*argv, 1, "No such file or directory"));
+	// pwdを作って、chdirできなければ、link消滅
 	if (!(path = getcwd(NULL, 0)) && (nocurrent = true))
 		return (cd_no_current(m_sh, *argv));
 	if (nocurrent && !(nocurrent = false))
 		return (cd_nx_current(m_sh, path, *argv));
+	if (is_del_link(m_sh, *argv))
+		return (pwd_update(m_sh, path, NXCURRENT));
 	free(path);
 	return (pwd_update(m_sh, *argv, 0));
 }
