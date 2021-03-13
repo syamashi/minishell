@@ -6,18 +6,24 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/13 13:25:24 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/13 14:18:02 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
+
+int		status_handling(int e)
+{
+	if (e == ENOENT)
+		return (127);
+	return (126);
+}
 
 void	sh_launch_child(
 	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
 {
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
-	int			errno_reserve;
 
 	signal(SIGINT, SIG_DFL);
 	exec_param = exlist->content;
@@ -38,10 +44,8 @@ void	sh_launch_child(
 		exit(builtin_function(m_sh, exec_param));
 	}
 	sh_execvpes(exec_param, m_sh);
-	printf("%d\n", errno);
-	errno_reserve = errno;
 	ft_perror("minishell");
-	exit(errno_reserve);
+	exit(status_handling(errno));
 }
 
 int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
