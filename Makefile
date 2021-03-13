@@ -52,19 +52,24 @@ CFLAGS = -g -O0
 
 all : $(NAME)
 
-$(OBJDIR)%.o : $(SRCDIR)%.c
+$(OBJDIR)%.o : $(SRCDIR)%.c $(OBJDIR)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)
+	$(MAKE) -C $(LIBFTDIR)
 	$(CC) $(CFLAGS) -I./includes -L $(LIBFTDIR) -o $@ $^ -lft
 
-dir_obj :
-	mkdir -p obj
+$(OBJDIR) :
+	if [ ! -d $(OBJDIR) ] ; then \
+		mkdir $(OBJDIR) ; \
+	fi
+
 
 clean :
 	rm -f $(OBJS)
 
 fclean : clean
+	$(MAKE) -C $(LIBFTDIR) fclean
 	rm -f $(NAME)
 
 re : fclean all
