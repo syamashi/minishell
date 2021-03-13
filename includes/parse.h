@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 12:36:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 12:38:47 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*path_make(char *src, t_minishell *m_sh);
 bool	is_space(char c);
 bool	is_meta(char c);
 bool	is_keyend(char c);
-bool	is_envend(char c)
+bool	is_envend(char c);
 bool	is_envmeta(char c);
 bool	is_dir(int n);
 bool	is_quote(int n);
