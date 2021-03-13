@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/20 14:50:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 22:26:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int		is_keyvalid(char *key)
 
 void	invalid_key(char *argv, int *is_invalid, char **key)
 {
-	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd(BASH, 2);
+	ft_putstr_fd("export: `", 2);
 	ft_putstr_fd(argv, 2);
 	ft_putstr_fd("': not a valid identifier", 2);
 	ft_putstr_fd("\n", 2);

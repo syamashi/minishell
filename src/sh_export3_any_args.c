@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 01:41:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ void	value_update(t_list *env, char *value, char *key)
 	free(key);
 }
 
+void	pwdshell_export(char *key, char *value, t_minishell *m_sh)
+{
+	if (!(ft_strncmp(key, "PWD", 4)))
+	{
+		free(m_sh->env_pwd);
+		m_sh->env_pwd = ft_strdup(value);
+	}
+	if (!(ft_strncmp(key, "OLDPWD", 7)))
+	{
+		free(m_sh->env_oldpwd);
+		m_sh->env_oldpwd = ft_strdup(value);
+	}
+}
+
 void	export_envp(t_minishell *m_sh, char *key, char *value)
 {
 	t_list	*env;
@@ -59,6 +73,8 @@ void	export_envp(t_minishell *m_sh, char *key, char *value)
 	if (!key)
 		return ;
 	env = m_sh->env_list;
+	if (!(ft_strncmp(key, "PWD", 4)) || !(ft_strncmp(key, "OLDPWD", 7)))
+		pwdshell_export(key, value, m_sh);
 	while (env)
 	{
 		if (!ft_strcmp(key, ((t_dict *)env->content)->key))

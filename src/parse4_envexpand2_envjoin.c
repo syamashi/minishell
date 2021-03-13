@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 21:48:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/13 02:40:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
 		exit(ft_error("malloc failed", 1));
+	free(value);
 	free(tmp);
 }
 

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/12 22:29:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	rint_atoi(const char *nptr)
 
 void	rint_error(char *rint, int rint_num)
 {
-	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(BASH, 2);
 	if (rint_num == -1)
 		ft_putstr_fd("file descriptor out of range", 2);
 	if (rint_num > 255)
@@ -90,7 +90,7 @@ void	rint_error(char *rint, int rint_num)
 int		fd_rdir(t_exec **ex, char *path, int rint_num)
 {
 	int	fd;
-	
+
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	// 1>file か>fileだったら付け替え
 	// それ以外だったら、とりあえずdup2()。復元していないので、pipeあとでも変わったまま
@@ -111,7 +111,7 @@ int		fd_rdir(t_exec **ex, char *path, int rint_num)
 int		fd_rrdir(t_exec **ex, char *path, int rint_num)
 {
 	int	fd;
-	
+
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	if ((*ex)->fd_out != 1)
 		close((*ex)->fd_out);
