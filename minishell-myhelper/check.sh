@@ -861,7 +861,7 @@ test_export () {
     run_test "export !=aaa"
     run_test "export _!=aaa"
     run_test "export _$=aaa"
-    run_test "export #=aaa B=bbb; echo \$B"
+#    run_test "export #=aaa B=bbb; echo \$B"
 }
 
 test_unset () {
