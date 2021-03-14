@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 01:53:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 01:56:38 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ char			*path_make(char *src, t_minishell *m_sh)
 	char	*path;
 
 	packs = ft_strtoken(src);
-	debug(packs);
 	env_expand(&packs, m_sh, 1);
 	null_del(&packs);
 	if (!packs)
