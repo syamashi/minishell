@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:16 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 01:59:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 17:41:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,12 @@ int		sh_unset(t_minishell *m_sh, t_exec *exec)
 		return (0);
 	while (*key)
 	{
+		if (**key == '#')
+			break;
 		if (is_keyvalid(*key))
 			unset_envp(m_sh, *key);
 		else
-			invalid_key(*key, &is_invalid, NULL);
+			invalid_key(*key, &is_invalid, NULL, "unset");
 		key++;
 	}
 	return (is_invalid);

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 13:15:31 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:28:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 17:19:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int		syntax_check(t_list *list, t_minishell *m_sh)
 	{
 		packinfo_get(&line, &type, list);
 		check_quote(type, &quote_flag);
+		if (type == DSCOLON)
+			return (m_sh->exit_status = ft_syntax_error(";;", 258));
 		if ((pre_type == -1 || is_dir(pre_type) ||
 			is_metatype(pre_type)) && is_metatype(type))
 			return (m_sh->exit_status = ft_syntax_error(line, 258));
