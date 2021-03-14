@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 14:41:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 02:08:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	fdout_set(t_exec **ex, const int n, char *path)
 bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 {
 	errno = 0;
-	
+
 	m_sh->exit_status = dir_error(str, 1);
 	(*ex)->error_flag = true;
 	if ((*ex)->fd_in != 0)
@@ -210,6 +210,8 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
 		fd = fd_get(ex, path, type, rint);
+		if (errno)
+			m_sh->exit_status = 1;
 //		solve_rint(fd, rint, ex, m_sh);
 //		fd_reget(fd, rint, ex, type);
 		free(path);
