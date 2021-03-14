@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_cd_pwdstr_utils.c                               :+:      :+:    :+:   */
+/*   sh_cd_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:53:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 10:55:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 19:28:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	char	*pwdval;
 
 	pwdval = value_get("PWD", m_sh);
+	if (!pwdval)
+		pwdval = ft_strdup("");
 	free(m_sh->env_oldpwd);
 	m_sh->env_oldpwd = NULL;
 	if (key_find("OLDPWD", m_sh))
