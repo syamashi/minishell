@@ -623,6 +623,15 @@ test_echo()
     run_test '""e""c""h""o"" 1 | cat -e'
     run_test '""e""c""h""o"""""" 1 | cat -e'
     run_test 'echo "" "" "" a'
+    run_test 'echo $>""'
+    run_test "echo $>''"
+    run_test 'echo $<""'
+    run_test "echo $<''"
+    run_test 'echo $>"" aaa'
+    run_test "echo $>'' bbb"
+    run_test "echo a #a b c d"
+    run_test "echo ## a b c"
+
     # run_test 'echo 1 ; echo $_'
     # run_test 'ls ; echo $_'
     # run_test '1 ; echo $_'
@@ -863,9 +872,9 @@ test_unset () {
     run_test 'unset ; echo $?'
     run_test 'unset ; unset ; unset ; echo $?'
     run_test 'unset !'
-#    run_test 'unset #'
-#    run_test 'unset ##'
-#    run_test 'export HOGE=hoge # FUGA=fuga; unset FUGA # HOGE; echo $HOGE'
+    run_test 'unset #'
+    run_test 'unset ##'
+    run_test 'export HOGE=hoge # FUGA=fuga; unset FUGA # HOGE; echo $HOGE'
 }
 
 test_env () {

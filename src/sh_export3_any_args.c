@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 01:41:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 01:01:49 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,11 @@
 
 void	envlst_add(t_list **env, t_list *new)
 {
-	char	*newkey;
 	t_list	*mov;
 	t_list	*prev;
 
 	mov = *env;
 	prev = NULL;
-	newkey = ((t_dict *)new->content)->key;
-	while (mov)
-	{
-		if (ft_strcmp(newkey, ((t_dict *)(mov)->content)->key) < 0)
-		{
-			if (prev)
-			{
-				prev->next = new;
-				new->next = mov;
-			}
-			else
-				ft_lstadd_front(env, new);
-			return ;
-		}
-		prev = mov;
-		mov = mov->next;
-	}
 	ft_lstadd_back(env, new);
 }
 

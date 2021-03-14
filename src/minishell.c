@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/14 13:02:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 00:41:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	sh_init(t_minishell *m_sh, char **envp)
 		exit(ft_error("malloc failed", 1));
 	m_sh->pwds = pwdlst_init(strpwd, 0);
 	free(strpwd);
-	m_sh->env_list = quick_sort_list(m_sh->env_list);
 }
 
 void	close_fd_all(t_minishell *m_sh, t_list *ex_list)
