@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 01:21:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char			*path_make(char *src, t_minishell *m_sh)
 	set = dummy_set();
 	path = simpletrim(path, set);
 	free(set);
-	if (ambiguous_check(&path) || *path == '\0')
+	if (ambiguous_check(&path))
 	{
 		free(path);
 		return (NULL);
