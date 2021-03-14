@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/11 23:05:13 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 12:31:02 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,15 @@ void	invalid_key(char *argv, int *is_invalid, char **key);
 
 char	*value_get(char *key, t_minishell *m_sh);
 
+void	lstlast_del(t_minishell *m_sh);
+void	pwdlst_cpy(t_minishell *sh, t_minishell *m_sh);
+void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag);
+void	pwdlst_add(t_minishell *m_sh, char *str);
+char	*pwds_str(t_minishell *m_sh);
+char	*pwds_joinfree(char *pwd, char *add);
+int		pwd_update(t_minishell *m_sh, char *argv, int delflag);
+bool	is_linkdel(t_minishell *m_sh, char *argv);
+t_list	*pwdlst_init(char *str, int delflag);
 /*
  * builtin functions
  */
