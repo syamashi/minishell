@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 16:04:30 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 02:05:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ static	bool	ambiguous_check(char **path)
 	int i;
 
 	i = -1;
+	if (!*path)
+		return (true);
 	while ((*path)[++i])
 	{
 		if ((unsigned char)(*path)[i] == DUMMY)
@@ -82,6 +84,9 @@ char			*path_make(char *src, t_minishell *m_sh)
 
 	packs = ft_strtoken(src);
 	env_expand(&packs, m_sh, 1);
+	null_del(&packs);
+	if (!packs)
+		return (NULL);
 	envspace_dummied(&packs);
 	quote_del(&packs);
 	strs_join(&packs);
@@ -91,7 +96,7 @@ char			*path_make(char *src, t_minishell *m_sh)
 	set = dummy_set();
 	path = simpletrim(path, set);
 	free(set);
-	if (ambiguous_check(&path) || *path == '\0')
+	if (ambiguous_check(&path))
 	{
 		free(path);
 		return (NULL);
