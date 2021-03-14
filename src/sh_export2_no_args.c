@@ -6,10 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 01:08:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
 #include "../includes/sh_launch.h"
 
 static	void	prejoin(int *i, int *j, char *value, char **output)
@@ -75,19 +76,46 @@ static	char	*make_output(t_list *env)
 	return (output);
 }
 
+t_list	*dictlst_cpy(t_list *env_list)
+{
+	t_list	*env;
+	t_list	*new;
+	t_list	*mov;
+	t_dict	*dict;
+
+	env = NULL;
+	mov = env_list;
+	while (mov)
+	{
+		if (!(dict = (t_dict *)malloc(sizeof(t_dict))))
+			exit(ft_error("", 1));
+		dict->key = ft_strdup(((t_dict *)mov->content)->key);
+		dict->value = ft_strdup(((t_dict *)mov->content)->value);
+		if (!(new = ft_lstnew(dict)))
+			exit(ft_error("", 1));
+		ft_lstadd_back(&env, new);
+		mov = mov->next;
+	}
+	return (env);
+}
+
 int				display_export(t_minishell *m_sh, t_exec *ex)
 {
 	t_list	*env;
+	t_list	*mov;
 	char	*output;
 
-	env = m_sh->env_list;
-	while (env)
+	env = dictlst_cpy(m_sh->env_list);
+	env = quick_sort_list(env);
+	mov = env;
+	while (mov)
 	{
-		output = make_output(env);
+		output = make_output(mov);
 		ft_putstr_fd(output, ex->fd_out);
 		free(output);
 		ft_putstr_fd("\n", ex->fd_out);
-		env = env->next;
+		mov = mov->next;
 	}
+	ft_lstclear(&env, env_free);
 	return (0);
 }
