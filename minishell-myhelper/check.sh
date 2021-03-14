@@ -631,6 +631,18 @@ test_echo()
     run_test "echo $>'' bbb"
     run_test "echo a #a b c d"
     run_test "echo ## a b c"
+    run_test "echo $>''"
+    run_test 'export a=aaa; export b=bbb; echo $a$b'
+    run_test 'export a=aaa; echo 123 > "b $a c"'
+    run_test 'export a=" a "; echo 123 > "b $a c"'
+    run_test 'export a="	a	"; echo 123 > "b $a c"'
+    run_test 'export a="a	a"; echo 123 > "b $a c"'
+    run_test 'export a=" aaa "; export b="	bbb	"; echo $a$b'
+    run_test 'echo > $a'
+    run_test 'export a="echo abc > test1.txt"'
+    run_test '"$a"'
+    run_test 'wc > bb < aa > cc'
+    run_test 'wc < aa < bb < cc < test1.txt | echo abc < aa | echo < aa'
 
     # run_test 'echo 1 ; echo $_'
     # run_test 'ls ; echo $_'
