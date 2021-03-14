@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 11:02:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 18:42:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	argv = exec->argv + 1;
 	if (!*argv)
 		return (cd_no_args(m_sh));
+	if (*(argv + 1))
+		return (ft_cd_error(NULL, 1, "too many arguments"));
 	if (ft_strlen(*argv) > 255)
 		return (ft_cd_error(*argv, 1, "File name too long"));
 	if (!**argv && (path = getcwd(NULL, 0)))
