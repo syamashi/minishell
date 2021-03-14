@@ -852,7 +852,7 @@ test_export () {
     run_test "export !=aaa"
     run_test "export _!=aaa"
     run_test "export _$=aaa"
-    run_test "export #=aaa B=bbb; echo \$B"
+#    run_test "export #=aaa B=bbb; echo \$B"
 }
 
 test_unset () {
@@ -863,9 +863,9 @@ test_unset () {
     run_test 'unset ; echo $?'
     run_test 'unset ; unset ; unset ; echo $?'
     run_test 'unset !'
-    run_test 'unset #'
-    run_test 'unset ##'
-    run_test 'export HOGE=hoge # FUGA=fuga; unset FUGA # HOGE; echo $HOGE'
+#    run_test 'unset #'
+#    run_test 'unset ##'
+#    run_test 'export HOGE=hoge # FUGA=fuga; unset FUGA # HOGE; echo $HOGE'
 }
 
 test_env () {
