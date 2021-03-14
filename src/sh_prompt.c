@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/14 20:21:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/14 20:31:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,33 @@ char	*ft_lstjoin(t_list *lst)
 	return (str);
 }
 
-char	*line_validcheck(char **line)
+void	check_commentout(char **line)
 {
-	char	*tmp;
-	int		i;
+	int i;
+	int quote_flag;
 
+	quote_flag = 0;
 	i = -1;
 	while ((*line)[++i])
-		if ((*line)[i] == '#' && (!i || (*line)[i - 1] == ' ' || (*line)[i - 1] == '\t'))
+	{
+		if ((*line)[i] == '\'')
+			quote_flag ^= 1;
+		if ((*line)[i] == '"')
+			quote_flag ^= 2;
+		if (!quote_flag && (*line)[i] == '#' && 
+		(!i || (*line)[i - 1] == ' ' || (*line)[i - 1] == '\t'))
 		{
 			(*line)[i] = '\0';
 			break;
 		}
+	}
+}
+
+char	*line_validcheck(char **line)
+{
+	char	*tmp;
+
+	check_commentout(line);
 	tmp = *line;
 	if (!(*line = ft_strtrim(*line, " \t")))
 		exit(ft_error("malloc failed", 1));
