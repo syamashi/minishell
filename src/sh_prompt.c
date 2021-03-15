@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 10:24:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 10:28:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char	*sh_prompt(t_minishell *m_sh)
 	}
 	if (g_intflag && !(g_intflag = 0))
 		m_sh->exit_status = 1;
-	if (signal(SIGINT, SIG_DFL) == SIG_ERR);
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
 	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
