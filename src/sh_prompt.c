@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/14 20:31:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 09:53:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ extern sig_atomic_t	g_intflag;
 
 void	sh_inthandler()
 {
-	ft_putstr("\n");
-	ft_putstr(PROMPT_NAME);
+	ft_putstr_fd("\b\b  \b\n", 2);
+	ft_putstr_fd(PROMPT_NAME, 2);
 	g_intflag = 1;
 }
 
@@ -89,7 +89,7 @@ char	*sh_prompt(t_minishell *m_sh)
 
 	store = NULL;
 	signal(SIGINT, sh_inthandler);
-	ft_putstr(PROMPT_NAME);
+	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
 	{
 		if (g_intflag)
