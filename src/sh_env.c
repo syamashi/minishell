@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 18:00:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:40:56 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int		sh_env(t_minishell *m_sh, t_exec *exec)
 	argv = exec->argv + 1;
 	if (*argv)
 	{
-		ft_putstr_fd("env: ", 2);
-		ft_putstr_fd(*argv, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd("env: ", exec->fd_err);
+		ft_putstr_fd(*argv, exec->fd_err);
+		ft_putstr_fd(": No such file or directory\n", exec->fd_err);
 		return (127);
 	}
 	else
