@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 02:08:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 02:10:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	int		pipefd[2];
 
 	status = 0;
-	signal(SIGINT, sh_putendl_handler);
-	signal(SIGQUIT, sh_quithandler);
 	if (execlist->next && pipe(pipefd) < 0)
 		return (ft_perror("minishell"));
 	if ((cpid = fork()) < 0)
@@ -90,7 +88,9 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 		m_sh->exit_status = builtin_function(m_sh, execlist->content);
 		return (m_sh->exit_status);
 	}
-	signal(SIGINT, SIG_IGN);
+//	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sh_putendl_handler);
+	signal(SIGQUIT, sh_quithandler);
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
