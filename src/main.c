@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:29:16 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/01/30 18:22:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:12:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int		main(int argc, char **argv, char **envp)
 		minishell(envp);
 	else
 	{
-		ft_putstr_fd(MINISHELL, 2);
-		ft_putstr_fd(EM_TOO_MANY_ARG, 2);
+		ft_putstr_fd(MINISHELL, STDERR);
+		ft_putstr_fd(EM_TOO_MANY_ARG, STDERR);
 	}
 	return (0);
 }

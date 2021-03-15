@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 10:16:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 12:57:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,28 @@
 
 extern sig_atomic_t	g_intflag;
 
-void	sh_inthandler()
+void	sh_input_inthandler()
 {
 	ft_putstr_fd("\b\b  \b\n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
 	g_intflag = 1;
 }
 
-void	sh_quitnothing()
+/*
+**  GNL, ^\ not display
+*/
+
+void	sh_input_quithandler()
 {
 	ft_putstr_fd("\b\b  \b\b", 2);
 }
+
+/*
+**  bash-3.2$ cat
+**  ^\Quit: 3
+**  bash-3.2$ echo $?
+**  131
+*/
 
 void	sh_quithandler(int sig)
 {
@@ -100,9 +111,9 @@ char	*sh_prompt(t_minishell *m_sh)
 	int		ret;
 
 	store = NULL;
-	if (signal(SIGINT, sh_inthandler) == SIG_ERR)
+	if (signal(SIGINT, sh_input_inthandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
-	if (signal(SIGQUIT, sh_quitnothing) == SIG_ERR)
+	if (signal(SIGQUIT, sh_input_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
@@ -120,7 +131,10 @@ char	*sh_prompt(t_minishell *m_sh)
 	}
 	if (g_intflag && !(g_intflag = 0))
 		m_sh->exit_status = 1;
-	signal(SIGINT, SIG_DFL);
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+		exit(ft_error("sigerror", 1));
+	//if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
+	//	exit(ft_error("sigerror", 1));
 	//if (g_intflag)
 	//	ft_lstclear(&store, free);
 	//g_intflag = 0;

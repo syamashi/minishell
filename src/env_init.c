@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 02:21:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:13:22 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		env_pwd_init(t_minishell *m_sh)
 
 	errno = 0;
 	if (!(pwd = getcwd(NULL, 0)) && errno)
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(strerror(errno), STDERR);
 	if (!(key = ft_strdup("PWD")))
 		exit(ft_error("malloc failed", 1));
 	export_envp(m_sh, key, pwd);

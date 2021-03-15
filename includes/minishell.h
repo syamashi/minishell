@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/14 17:20:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:19:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,10 @@
 # define NOCURRENT 1
 # define NXCURRENT 2
 
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
 typedef enum	e_errno
 {
 	TOO_MANY_ARG,
@@ -44,6 +48,7 @@ typedef	struct	s_exec
 	char	**envp;
 	int		fd_in;
 	int		fd_out;
+	int		fd_err;
 	bool	error_flag;
 }				t_exec;
 
@@ -91,11 +96,11 @@ typedef struct s_command
 	struct s_command	*next;
 }				t_command;
 
-typedef struct s_redint
+typedef struct s_redirect
 {
 	int rint;
 	int backup;
-}				t_redint;
+}				t_redirect;
 
 sig_atomic_t	g_intflag;
 
