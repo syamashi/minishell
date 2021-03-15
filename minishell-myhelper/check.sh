@@ -664,6 +664,7 @@ test_echo()
     run_test 'echo aa 2<file; file file; rm file'
     run_test 'echo aa 1<file; file file; rm file'
     run_test 'echo aa 0<file; file file; rm file'
+    run_test '>file | echo abc | echo aaa'
     # run_test 'echo 1 ; echo $_'
     # run_test 'ls ; echo $_'
     # run_test '1 ; echo $_'

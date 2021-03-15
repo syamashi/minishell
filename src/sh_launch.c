@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 23:21:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 02:10:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	sh_launch_child(
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
 
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, sh_quithandler);
 	exec_param = exlist->content;
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0);
@@ -83,8 +81,6 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 {
 	t_builtin_f	builtin_function;
 
-	if (!((t_exec *)execlist->content)->argv[0])
-		return (m_sh->exit_status);
 	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
 		if (((t_exec *)execlist->content)->error_flag)
@@ -92,7 +88,9 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 		m_sh->exit_status = builtin_function(m_sh, execlist->content);
 		return (m_sh->exit_status);
 	}
-	signal(SIGINT, SIG_IGN);
+//	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, sh_putendl_handler);
+	signal(SIGQUIT, sh_quithandler);
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
