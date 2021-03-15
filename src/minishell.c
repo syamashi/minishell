@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 17:40:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:51:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,18 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	free(strpwd);
 }
 
-void	close_fd_all(t_minishell *m_sh)
+void	close_fd_all(t_minishell *m_sh, t_list *ex_list)
 {
+	if (((t_exec*)ex_list->content)->fd_in != 0)
+		close(((t_exec*)ex_list->content)->fd_in);
+	if (((t_exec*)ex_list->content)->fd_out != 1)
+		close(((t_exec*)ex_list->content)->fd_out);
+	if (((t_exec*)ex_list->content)->fd_err != 2)
+		close(((t_exec*)ex_list->content)->fd_err);
+/*
 	t_list		*rtmp;
 	t_redirect	*rd;
+
 
 	while (m_sh->fd_backup){
 		rd = (m_sh->fd_backup)->content;
@@ -73,6 +81,7 @@ void	close_fd_all(t_minishell *m_sh)
 		ft_lstdelone(m_sh->fd_backup, free);
 		m_sh->fd_backup = rtmp;
 	}
+*/
 }
 
 void	minishell(char **envp)
@@ -93,11 +102,10 @@ void	minishell(char **envp)
 		while (commands)
 		{
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
-			printf("ex\n");
-			exlist_debug(ex_list);
+//			exlist_debug(ex_list);
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
-//			close_fd_all(&mini_sh);
+			close_fd_all(&mini_sh, ex_list);
 			ft_lstclear(&ex_list, del_t_exec);
 			tmp = commands->next;
 			ft_clstdelone(commands, del_command);
