@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 01:35:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 02:00:28 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sh_launch_child(
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
 
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, sh_putendl_handler());
 	signal(SIGQUIT, sh_quithandler);
 	exec_param = exlist->content;
 	if (prev_pipe)

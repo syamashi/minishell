@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 21:26:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 01:55:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define STR_OPT_LN "-n"
 # define EM_TOO_MANY_ARG "too many arg"
 # define MINISHELL "minishell: "
-# define PROMPT_NAME ""
+# define PROMPT_NAME "minishell$ "
 # define NOCURRENT 1
 # define NXCURRENT 2
 
@@ -104,6 +104,8 @@ typedef struct s_redirect
 
 sig_atomic_t	g_intflag;
 
+void	sh_input_inthandler();
+void	sh_input_quithandler();
 void	sh_quithandler(int sig);
 
 void	minishell(char **envp);

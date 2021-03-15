@@ -39,6 +39,7 @@ SRCS = main.c\
 		sh_launch.c\
 		sh_prompt.c\
 		sh_pwd.c\
+		sighander.c\
 		sh_unset.c\
 		to_ex_list.c\
 		util_commandlst.c\
