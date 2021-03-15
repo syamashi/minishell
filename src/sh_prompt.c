@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 09:53:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 10:16:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ void	sh_inthandler()
 	ft_putstr_fd("\b\b  \b\n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
 	g_intflag = 1;
+}
+
+void	sh_quitnothing()
+{
+	ft_putstr_fd("\b\b  \b\b", 2);
+}
+
+void	sh_quithandler(int sig)
+{
+	ft_putstr_fd("Quit: ", 2);
+	ft_putnbr_fd(sig, 2);
+	ft_putstr_fd("\n", 2);
 }
 
 char	*ft_lstjoin(t_list *lst)
@@ -88,7 +100,10 @@ char	*sh_prompt(t_minishell *m_sh)
 	int		ret;
 
 	store = NULL;
-	signal(SIGINT, sh_inthandler);
+	if (signal(SIGINT, sh_inthandler) == SIG_ERR)
+		exit(ft_error("sigerror", 1));
+	if (signal(SIGQUIT, sh_quitnothing) == SIG_ERR)
+		exit(ft_error("sigerror", 1));
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
 	{
@@ -103,6 +118,8 @@ char	*sh_prompt(t_minishell *m_sh)
 		}
 		ft_lstadd_back(&store, ft_lstnew(line));
 	}
+	if (g_intflag && !(g_intflag = 0))
+		m_sh->exit_status = 1;
 	signal(SIGINT, SIG_DFL);
 	//if (g_intflag)
 	//	ft_lstclear(&store, free);
