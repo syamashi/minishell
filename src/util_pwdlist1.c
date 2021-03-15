@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:50:51 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 12:31:45 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ void	pwdlst_add(t_minishell *m_sh, char *str)
 	t_list	*new;
 
 	if (!(add = ft_strdup(str)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	if (!(new = ft_lstnew(add)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	ft_lstadd_back(&m_sh->pwds, new);
 }

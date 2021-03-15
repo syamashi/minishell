@@ -643,7 +643,9 @@ test_echo()
     run_test '"$a"'
     run_test 'wc > bb < aa > cc'
     run_test 'wc < aa < bb < cc < test1.txt | echo abc < aa | echo < aa'
-
+    run_test 'echo a 2>file 2>$aadfadf; file file; rm file'
+    run_test 'rm file; echo aaa 1<file; echo aa 1>file; echo a 1<file;'
+    run_test 'aaa 2>file >$afsdjofijaiojf; cat file; rm file'
     # run_test 'echo 1 ; echo $_'
     # run_test 'ls ; echo $_'
     # run_test '1 ; echo $_'
@@ -954,6 +956,9 @@ test_exit () {
     run_test 'echo | exit 0 ; echo $?'
     run_test 'echo 123 | exit ; echo $?'
     run_test 'echo -123 | exit ; echo $?'
+    run_test 'echo -123 | exit ; echo $?'
+    run_test 'exit 2>file'
+    run_test 'exit 123 aaa 2>file; tail file; rm file'
 }
 
 startup $@

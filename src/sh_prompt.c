@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 12:57:34 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:25:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char	*line_validcheck(char **line)
 	check_commentout(line);
 	tmp = *line;
 	if (!(*line = ft_strtrim(*line, " \t")))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(tmp);
 	tmp = NULL;
 	if (**line == '\0')
@@ -112,9 +112,9 @@ char	*sh_prompt(t_minishell *m_sh)
 
 	store = NULL;
 	if (signal(SIGINT, sh_input_inthandler) == SIG_ERR)
-		exit(ft_error("sigerror", 1));
+		exit(ft_error("sigerror", 1, STDERR));
 	if (signal(SIGQUIT, sh_input_quithandler) == SIG_ERR)
-		exit(ft_error("sigerror", 1));
+		exit(ft_error("sigerror", 1, STDERR));
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
 	{
@@ -132,9 +132,9 @@ char	*sh_prompt(t_minishell *m_sh)
 	if (g_intflag && !(g_intflag = 0))
 		m_sh->exit_status = 1;
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
-		exit(ft_error("sigerror", 1));
+		exit(ft_error("sigerror", 1, STDERR));
 	//if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
-	//	exit(ft_error("sigerror", 1));
+	//	exit(ft_error("sigerror", 1, STDERR));
 	//if (g_intflag)
 	//	ft_lstclear(&store, free);
 	//g_intflag = 0;

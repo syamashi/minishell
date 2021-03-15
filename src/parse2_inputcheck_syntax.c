@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 13:15:31 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 17:19:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:03:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int		endl_check(
 	int quote_flag, int pre_type, char *pre_line, t_minishell *m_sh)
 {
 	if (quote_flag)
-		return (m_sh->exit_status = ft_avoid_error("open quote", 1));
+		return (m_sh->exit_status = ft_avoid_error("open quote", 1, STDERR));
 	if (is_dir(pre_type))
 		return (m_sh->exit_status = ft_syntax_error("newline", 258));
 	if (pre_type == PIPE || (pre_type == ESC && !*pre_line)
 	|| pre_type == DAND || pre_type == DPIPE)
-		return (m_sh->exit_status = ft_avoid_error("multiline", 1));
+		return (m_sh->exit_status = ft_avoid_error("multiline", 1, STDERR));
 	return (0);
 }
 

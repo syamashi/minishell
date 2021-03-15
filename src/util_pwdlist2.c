@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:16:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 12:31:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ t_list	*pwdlst_nocurrent(char *str)
 		else
 			continue ;
 		if (!add || !(new = ft_lstnew(add)))
-			exit(ft_error("malloc failed", 1));
+			exit(ft_error("malloc failed", 1, STDERR));
 		ft_lstadd_back(&ret, new);
 	}
 	if (i && str[i - 1] == '/')
 	{
 		if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
-			exit(ft_error("malloc failed", 1));
+			exit(ft_error("malloc failed", 1, STDERR));
 		ft_lstadd_back(&ret, new);
 	}
 	return (ret);
@@ -62,7 +62,7 @@ t_list	*pwdlst_solve(char *str)
 		if (i > j)
 		{
 			if (!(add = ft_substr(str, j, i - j)) || !(new = ft_lstnew(add)))
-				exit(ft_error("malloc failed", 1));
+				exit(ft_error("malloc failed", 1, STDERR));
 			ft_lstadd_back(&ret, new);
 		}
 		j = i + 1;

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 17:57:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,17 @@ void	fdout_set(t_exec **ex, const int n, char *path)
 bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 {
 	errno = 0;
-
-	m_sh->exit_status = dir_error(str, 1);
+	m_sh->exit_status = dir_error(str, 1, ex);
 	(*ex)->error_flag = true;
+	if ((*ex)->fd_in != 0)
+		close((*ex)->fd_in);
+	(*ex)->fd_in = 0;
+	if ((*ex)->fd_out != 1)
+		close((*ex)->fd_out);
+	(*ex)->fd_out = 1;
+	if ((*ex)->fd_err != 2)
+		close((*ex)->fd_err);
+	(*ex)->fd_err = 2;
 	return (true);
 }
 
@@ -71,20 +79,20 @@ int	rint_atoi(const char *nptr)
 	return (m);
 }
 
-void	rint_error(char *rint, int rint_num, t_minishell *m_sh)
+void	rint_error(char *rint, int rint_num, t_minishell *m_sh, int fd)
 {
 	m_sh->exit_status = 1;
-	ft_putstr_fd(MINISHELL, STDERR);
+	ft_putstr_fd(MINISHELL, fd);
 	if (rint_num == -1)
-		ft_putstr_fd("file descriptor out of range", STDERR);
+		ft_putstr_fd("file descriptor out of range", fd);
 	if (rint_num > 255)
-		ft_putstr_fd(rint, STDERR);
+		ft_putstr_fd(rint, fd);
 	if (rint_num > 2)
 	{
-		ft_avoid_error("3 or more fd", 1);
+		ft_avoid_error("3 or more fd", 1, fd);
 		return ;
 	}
-	ft_putstr_fd(": Bad file descriptor\n", STDERR);
+	ft_putstr_fd(": Bad file descriptor\n", fd);
 }
 
 /*
@@ -198,11 +206,11 @@ void	fd_get(t_exec **ex, char *path, int type, int	rint)
 		return;
 	}
 	if (!(rfd = (t_redint *)malloc(sizeof(t_redint))))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	rfd->rint = rint_num;
 	rfd->backup = dup(rint_num);
 	if (!(new = ft_lstnew(rfd)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	ft_lstadd_front(&m_sh->fd_backup, new);
 	printf("dup2(%d, %d), size:%d\n", fd, rint_num, ft_lstsize(m_sh->fd_backup));
 	if (dup2(fd, rint_num) < 0)
@@ -256,7 +264,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 			rint = rint_atoi(((t_pack *)mov->content)->line);
 			if (rint == -1 || rint > 2)
 			{
-				rint_error(((t_pack *)mov->content)->line, rint, m_sh);
+				rint_error(((t_pack *)mov->content)->line, rint, m_sh, (*ex)->fd_err);
 				(*ex)->error_flag = true;
 				rint = -2;
 			}
@@ -270,7 +278,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 		fd_get(ex, path, type, rint);
 		if (errno && ((*ex)->error_flag = true))
 		{
-			fd_error(path, 2);
+			fd_error(path, (*ex)->fd_err);
 			m_sh->exit_status = 1;
 		}
 //		solve_rint(fd, rint, ex, m_sh);

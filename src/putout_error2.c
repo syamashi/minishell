@@ -6,18 +6,18 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 14:41:31 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-int		dir_error(char *path, int n)
+int		dir_error(char *path, int n, t_exec **ex)
 {
-	ft_putstr_fd(MINISHELL, 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": ambiguous redirect\n", 2);
+	ft_putstr_fd(MINISHELL, (*ex)->fd_err);
+	ft_putstr_fd(path, (*ex)->fd_err);
+	ft_putstr_fd(": ambiguous redirect\n", (*ex)->fd_err);
 	return (n);
 }
 
@@ -40,7 +40,7 @@ void	shlvl_error(int depth)
 	char	*str;
 	
 	if (!(str = ft_itoa(depth)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd("warning: shell level (", 2);
 	ft_putstr_fd(str, 2);
