@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 10:16:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 10:24:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,21 @@ void	sh_inthandler()
 	g_intflag = 1;
 }
 
+/*
+**  GNL, ^\ not display
+*/
+
 void	sh_quitnothing()
 {
 	ft_putstr_fd("\b\b  \b\b", 2);
 }
+
+/*
+**  bash-3.2$ cat
+**  ^\Quit: 3
+**  bash-3.2$ echo $?
+**  131
+*/
 
 void	sh_quithandler(int sig)
 {
@@ -120,7 +131,10 @@ char	*sh_prompt(t_minishell *m_sh)
 	}
 	if (g_intflag && !(g_intflag = 0))
 		m_sh->exit_status = 1;
-	signal(SIGINT, SIG_DFL);
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR);
+		exit(ft_error("sigerror", 1));
+	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
+		exit(ft_error("sigerror", 1));
 	//if (g_intflag)
 	//	ft_lstclear(&store, free);
 	//g_intflag = 0;
