@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 01:26:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:03:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ static	void	ex_def(t_exec **ex, const t_list *ast, t_list *env)
 	i = -1;
 	while (++i <= envc)
 		(*ex)->envp[i] = NULL;
-	(*ex)->fd_in = 0;
-	(*ex)->fd_out = 1;
 	(*ex)->error_flag = false;
 }
 

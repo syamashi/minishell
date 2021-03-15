@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 10:28:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 12:57:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 extern sig_atomic_t	g_intflag;
 
-void	sh_inthandler()
+void	sh_input_inthandler()
 {
 	ft_putstr_fd("\b\b  \b\n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
@@ -26,7 +26,7 @@ void	sh_inthandler()
 **  GNL, ^\ not display
 */
 
-void	sh_quitnothing()
+void	sh_input_quithandler()
 {
 	ft_putstr_fd("\b\b  \b\b", 2);
 }
@@ -111,9 +111,9 @@ char	*sh_prompt(t_minishell *m_sh)
 	int		ret;
 
 	store = NULL;
-	if (signal(SIGINT, sh_inthandler) == SIG_ERR)
+	if (signal(SIGINT, sh_input_inthandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
-	if (signal(SIGQUIT, sh_quitnothing) == SIG_ERR)
+	if (signal(SIGQUIT, sh_input_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
@@ -133,8 +133,8 @@ char	*sh_prompt(t_minishell *m_sh)
 		m_sh->exit_status = 1;
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		exit(ft_error("sigerror", 1));
-	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
-		exit(ft_error("sigerror", 1));
+	//if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
+	//	exit(ft_error("sigerror", 1));
 	//if (g_intflag)
 	//	ft_lstclear(&store, free);
 	//g_intflag = 0;

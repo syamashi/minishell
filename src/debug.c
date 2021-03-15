@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:40:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 01:41:15 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:02:54 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ void	exlist_debug(t_list *exlist)
 			if (ex->envp[j+1])	printf(",");
 		}
 		printf("\n");
-*/		printf("fd_in :%d\n", ex->fd_in);
-		printf("fd_out:%d\n", ex->fd_out);
-		printf("error_flag:%d\n", ex->error_flag);
+*/		printf("error_flag:%d\n", ex->error_flag);
 		top = top->next;
 		top_cnt++;
 	}

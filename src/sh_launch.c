@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 02:08:44 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:09:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,18 @@ void	sh_launch_child(
 	exec_param = exlist->content;
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0);
-	if (exec_param->fd_in != 0)
-		sh_dup_close(exec_param->fd_in, 0);
+//	if (exec_param->fd_in != 0)
+//		sh_dup_close(exec_param->fd_in, 0);
 	if (exlist->next)
-		sh_dup_close(pipefd[1], 1);
-	if (exec_param->fd_out != 1)
-		sh_dup_close(exec_param->fd_out, 1);
+		sh_dup_close(pipefd[1], STDOUT);
+//	if (exec_param->fd_out != 1)
+//		sh_dup_close(exec_param->fd_out, 1);
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
 	{
-		exec_param->fd_in = 0;
-		exec_param->fd_out = 1;
+//		exec_param->fd_in = 0;
+//		exec_param->fd_out = 1;
 		exit(builtin_function(m_sh, exec_param));
 	}
 	sh_execvpes(exec_param, m_sh);

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 12:35:36 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 19:01:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:06:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,11 @@ int		sh_echo(t_minishell *m_sh, t_exec *exec)
 	}
 	while (*argv)
 	{
-		ft_putstr_fd(*argv++, exec->fd_out);
+		ft_putstr_fd(*argv++, STDOUT);
 		if (*argv)
-			ft_putchar_fd(' ', exec->fd_out);
+			ft_putchar_fd(' ', STDOUT);
 	}
 	if (!if_opt_n(flag))
-		ft_putchar_fd('\n', exec->fd_out);
+		ft_putchar_fd('\n', STDOUT);
 	return (0);
 }

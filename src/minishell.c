@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 00:41:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 13:18:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,18 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	free(strpwd);
 }
 
-void	close_fd_all(t_minishell *m_sh, t_list *ex_list)
+void	close_fd_all(t_minishell *m_sh)
 {
-	if (((t_exec*)ex_list->content)->fd_in != 0)
-		close(((t_exec*)ex_list->content)->fd_in);
-	if (((t_exec*)ex_list->content)->fd_out != 1)
-		close(((t_exec*)ex_list->content)->fd_out);
+	t_list		*rtmp;
+	t_redirect	*rd;
+
 	while (m_sh->fd_backup){
-		t_list *rtmp;
-		t_redint *rd;
 		rd = (m_sh->fd_backup)->content;
 		dup2(rd->backup, rd->rint);
-		printf("backup(%d, %d)\n", rd->backup, rd->rint);
+//		printf("backup(%d, %d)\n", rd->backup, rd->rint);
 		close(rd->backup);
 		rtmp = m_sh->fd_backup->next;
-		printf("rtmp:%p, size:%d\n", rtmp, ft_lstsize(m_sh->fd_backup));
+//		printf("rtmp:%p, size:%d\n", rtmp, ft_lstsize(m_sh->fd_backup));
 		ft_lstdelone(m_sh->fd_backup, free);
 		m_sh->fd_backup = rtmp;
 	}
@@ -98,7 +95,7 @@ void	minishell(char **envp)
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
-			close_fd_all(&mini_sh, ex_list);
+			close_fd_all(&mini_sh);
 			ft_lstclear(&ex_list, del_t_exec);
 			tmp = commands->next;
 			ft_clstdelone(commands, del_command);
