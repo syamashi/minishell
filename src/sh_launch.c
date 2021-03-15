@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 02:10:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 08:43:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,15 @@ void	sh_launch_child(
 		exit(builtin_function(m_sh, exec_param));
 	}
 	sh_execvpes(exec_param, m_sh);
-	ft_perror("minishell");
+	if (errno == ENOENT)
+	{
+		ft_putstr_fd(MINISHELL, exec_param->fd_err);
+		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
+		ft_putstr_fd(": ", exec_param->fd_err);
+		ft_putstr_fd("command not found\n", exec_param->fd_err);
+	}
+	else
+		ft_perror("minishell");
 	exit(status_handling(errno));
 }
 
@@ -83,14 +91,16 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 
 	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
+		printf("[builtin]\n");
 		if (((t_exec *)execlist->content)->error_flag)
 			return ((m_sh->exit_status));
-		m_sh->exit_status = builtin_function(m_sh, execlist->content);
-		return (m_sh->exit_status);
+		return(m_sh->exit_status = builtin_function(m_sh, execlist->content));
 	}
 //	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, sh_putendl_handler);
-	signal(SIGQUIT, sh_quithandler);
+	if (signal(SIGINT, sh_putendl_handler) == SIG_ERR)
+		exit(ft_error("sigerror", 1, STDERR));
+	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
+		exit(ft_error("sigerror", 1, STDERR));
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
