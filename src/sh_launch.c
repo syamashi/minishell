@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 19:33:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:31:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	sh_launch_child(
 	t_exec		*exec_param;
 
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, sh_quithandler);
 	exec_param = exlist->content;
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0);
@@ -67,6 +68,8 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("minishell"));
 	m_sh->exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status)) // signal終了の判定
+		m_sh->exit_status = WTERMSIG(status) + 128; //signalがとれる
 	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("minishell"));
 	if (execlist->next && close(pipefd[1]) < 0)
@@ -90,5 +93,6 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 	signal(SIGINT, SIG_IGN);
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	return (m_sh->exit_status);
 }
