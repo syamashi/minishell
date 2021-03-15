@@ -1,0 +1,2160 @@
+
+[OK]  ;
+[OK]  |
+[OK]  <
+[OK]  ; ;
+[OK]  | |
+[OK]  < >
+[OK]  ;; echo
+[OK]  | echo
+[OK]  echo > <
+[OK]  echo | |
+[OK]  echo hello > |
+[OK]  echo hello > ;
+[OK]  echo hello >> |
+[OK]  echo hello >> ;
+[OK]  cat < |
+[OK]  cat < ;
+[OK]  echo hello >
+[OK]  echo hello >>
+[OK]  cat <
+[OK]  echo hello > > test1.txt
+[OK]  echo hello >> >> test1.txt
+[OK]  echo hello > >> test1.txt
+[OK]  echo hello > < test1.txt
+[OK]  cat < < test1.txt
+[OK]  echo a;; bcd
+[OK]  echo a ; ; bcd
+[OK]  echo a ; ;
+[OK]  unknowncommand
+
+
+
+[OK]  unknowncommand ; commandunknown
+
+
+
+[OK]  unknowncommand | commandunknown
+
+
+
+[OK]  /bin/ls/asdf ; echo $?
+126
+126
+
+[OK]  /bin/asdf/asdf ; echo $?
+127
+127
+
+[OK]  unknowncommand > nani ; file nani ; rm nani
+nani: empty
+nani: empty
+
+[OK]  asdfas | echo hello | echo world > WORLD | asdfas ; file WORLD; rm WORLD
+WORLD: ASCII text
+WORLD: ASCII text
+
+[OK]  echo '#!/bin/bash' > a ; echo 'echo hello'>>a ; ./a; echo $?;chmod +x a; ./a; echo $? ; rm a
+hello 0 hello 0
+hello 0 hello 0
+
+[OK]  /bin/ls ; echo $?
+b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt 0
+b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt 0
+
+[OK]  /home ; echo $?
+126
+126
+
+[OK]  $PWD/minishell ; exit
+
+
+
+[OK]  $OLDPWD ; echo $?
+126
+126
+
+[OK]  ./. ; echo $?
+126
+126
+
+[OK]  ./.. ; echo $?
+126
+126
+
+[OK]  ./... ; echo $?
+127
+127
+
+[OK]  touch aaa ; ./aaa ; rm aaa
+
+
+
+[OK]  touch bbb ; chmod +x bbb ; ./bbb ; rm bbb
+
+
+
+[OK]  mkdir ccc ; ./ccc ; rmdir ccc
+
+
+
+[OK]  mkdir ccc ; touch ccc/ddd ; chmod +x ccc/ddd ; ccc/ddd ; rm -rf ccc
+
+
+
+[OK]  touch eee ; echo "echo \$SHLVL" > eee ; echo exit >> eee ; ./minishell < eee ; rm eee
+3
+3
+
+[OK]  touch fff ; echo "echo \$SHLVL" > fff ; echo exit >> fff ; ././././././././minishell < fff ; rm fff
+3
+3
+
+[OK]  touch ggg ; echo "echo \$SHLVL" > ggg ; echo exit >> ggg ; .///././/./././minishell < ggg ; rm ggg
+3
+3
+
+[OK]  touch hhh ; echo "echo \$SHLVL" > hhh ; echo \$OLDPWD >> hhh ; echo exit >> hhh ; .///././/./././minishell < hhh; rm hhh
+3
+3
+
+[OK]  mkdir ccc ; echo '#!/bin/sh' 'echo hello' > ccc/ddd ; chmod +x ccc/ddd ; ccc/ddd ; rm -rf ccc
+
+
+
+[OK]  cp /bin/ls a ; export PATH=: ; a ; /bin/rm a
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+
+[OK]  cp /bin/ls a ; export PATH=:: ; a ; /bin/rm a
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+
+[OK]  cp /bin/ls a ; export PATH=. ; a ; /bin/rm a
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+a b a c b a a c b aaa c bb check.sh minishell mytest.sh results.txt test1.txt
+
+[OK]  cp /bin/ls ls ; unset PATH ; ls ; /bin/rm ls
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+
+[OK]  cp /bin/ls ls ; export PATH= ; ls ; /bin/rm ls
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+
+[OK]  cp /bin/ls ls ; export PATH='' ; ls ; /bin/rm ls
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+b a c b a a c b aaa c bb check.sh ls minishell mytest.sh results.txt test1.txt
+
+[OK]  echo | cat -e
+$
+$
+
+[OK]  echo 1 | cat -e
+1$
+1$
+
+[OK]  echo 1 2 3 | cat -e
+1 2 3$
+1 2 3$
+
+[OK]  echo 1 2 3 | cat -e
+1 2 3$
+1 2 3$
+
+[OK]  echo 1 2 3 | cat -e
+1 2 3$
+1 2 3$
+
+[OK]  echo -n | cat -e
+
+
+
+[OK]  echo -""n | cat -e
+
+
+
+[OK]  echo ""-""n"" | cat -e
+
+
+
+[OK]  echo -n hello | cat -e
+hello
+hello
+
+[OK]  echo -n ""h""el""""lo | cat -e
+hello
+hello
+
+[OK]  echo -nnnnnnnn hello | cat -e
+hello
+hello
+
+[OK]  echo ""-nn""n""""nnn""nn hello | cat -e
+hello
+hello
+
+[OK]  echo -n1 | cat -e
+-n1$
+-n1$
+
+[OK]  echo -n -n | cat -e
+
+
+
+[OK]  echo -n -n hello | cat -e
+hello
+hello
+
+[OK]  echo -n -nnnnn hello | cat -e
+hello
+hello
+
+[OK]  echo -nnnnn -nnnnn hello | cat -e
+hello
+hello
+
+[OK]  echo -n -n -n | cat -e
+
+
+
+[OK]  echo -n -n -n hello | cat -e
+hello
+hello
+
+[OK]  echo -n -nnnn -n hello -n -nnnnn -n | cat -e
+hello -n -nnnnn -n
+hello -n -nnnnn -n
+
+[OK]  echo -nnnn -nnnn -n hello -n -nnnnn -n | cat -e
+hello -n -nnnnn -n
+hello -n -nnnnn -n
+
+[OK]  echo -n -nnnn -n hello -n -nnnnn -n world | cat -e
+hello -n -nnnnn -n world
+hello -n -nnnnn -n world
+
+[OK]  echo -""n -nnnn -n hello -n -nnnnn -n world | cat -e
+hello -n -nnnnn -n world
+hello -n -nnnnn -n world
+
+[OK]  echo - n1 | cat -e
+- n1$
+- n1$
+
+[OK]  echo - n 1 | cat -e
+- n 1$
+- n 1$
+
+[OK]  echo -n 1 | cat -e
+1
+1
+
+[OK]  echo -n 1 2 3 | cat -e
+1 2 3
+1 2 3
+
+[OK]  echo -n 1 2 3 | cat -e
+1 2 3
+1 2 3
+
+[OK]  echo 1 2 3 -n | cat -e
+1 2 3 -n$
+1 2 3 -n$
+
+[OK]  echo -n 1 2 3 -n | cat -e
+1 2 3 -n
+1 2 3 -n
+
+[OK]  echo -n 1 2 -n 3 -n | cat -e
+1 2 -n 3 -n
+1 2 -n 3 -n
+
+[OK]  echo 1 2 3 -n | cat -e
+1 2 3 -n$
+1 2 3 -n$
+
+[OK]  echo -n 1 2 3 -n | cat -e
+1 2 3 -n
+1 2 3 -n
+
+[OK]  echo a '' b '' c '' d | cat -e
+a b c d$
+a b c d$
+
+[OK]  echo a "" b "" c "" d | cat -e
+a b c d$
+a b c d$
+
+[OK]  echo -n a '' b '' c '' d | cat -e
+a b c d
+a b c d
+
+[OK]  echo -n a "" b "" c "" d | cat -e
+a b c d
+a b c d
+
+[OK]  echo '' '' '' Echo 1 | cat -e
+Echo 1$
+Echo 1$
+
+[OK]  eCho 1 | cat -e
+
+
+
+[OK]  ecHo 1 | cat -e
+
+
+
+[OK]  echO 1 | cat -e
+
+
+
+[OK]  EchO 1 | cat -e
+
+
+
+[OK]  eCHo 1 | cat -e
+
+
+
+[OK]  EcHo 1 | cat -e
+
+
+
+[OK]  eChO 1 | cat -e
+
+
+
+[OK]  ECHO 1 | cat -e
+
+
+
+[OK]  unset PATH ; echo 1 | /bin/cat -e
+1$
+1$
+
+[OK]  unset PATH ; ECHO 1 | /bin/cat -e
+
+
+
+[OK]  ''e''c''h''o'' 1 | cat -e
+1$
+1$
+
+[OK]  ''e''c''h''o'''''' 1 | cat -e
+1$
+1$
+
+[OK]  ""e""c""h""o"" 1 | cat -e
+1$
+1$
+
+[OK]  ""e""c""h""o"""""" 1 | cat -e
+1$
+1$
+
+[OK]  echo "" "" "" a
+a
+a
+
+[OK]  echo $>""
+
+
+
+[OK]  echo $>''
+
+
+
+[OK]  echo $<""
+
+
+
+[OK]  echo $<''
+
+
+
+[OK]  echo $>"" aaa
+
+
+
+[OK]  echo $>'' bbb
+
+
+
+[OK]  echo a #a b c d
+a
+a
+
+[OK]  echo ## a b c
+
+
+
+[OK]  echo $>''
+
+
+
+[OK]  export a=aaa; export b=bbb; echo $a$b
+aaabbb
+aaabbb
+
+[OK]  export a=aaa; echo 123 > "b $a c"
+
+
+
+[OK]  export a=" a "; echo 123 > "b $a c"
+
+
+
+[OK]  export a=" a "; echo 123 > "b $a c"
+
+
+
+[OK]  export a="a a"; echo 123 > "b $a c"
+
+
+
+[OK]  export a=" aaa "; export b=" bbb "; echo $a$b
+aaa bbb
+aaa bbb
+
+[OK]  echo > $a
+
+
+
+[OK]  export a="echo abc > test1.txt"
+
+
+
+[OK]  "$a"
+
+
+
+[OK]  wc > bb < aa > cc
+
+
+
+[OK]  wc < aa < bb < cc < test1.txt | echo abc < aa | echo < aa
+
+
+
+[OK]  echo a 2>file 2>$aadfadf; file file; rm file
+file: ASCII text
+file: ASCII text
+
+[OK]  rm file; echo aaa 1<file; echo aa 1>file; echo a 1<file;
+
+
+
+[OK]  aaa 2>file >$afsdjofijaiojf; file file; rm file
+file: ASCII text
+file: ASCII text
+
+[OK]  mkdir a b ; cd a ; cd ../b ; pwd ; cd .. ; pwd ; echo $PWD ; echo $OLDPWD ; rm -rf a b
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/b /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/b
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/b /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/b
+
+[OK]  mkdir -p a/aa b ; cd a/aa ; cd ../../b/bb ; pwd ; echo $PWD ; echo $OLDPWD ; cd ../.. ; rm -fr a b
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/aa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/aa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/aa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/aa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir a ; ln -s a aa ; cd aa ; rm ../aa ; cd . ; pwd ; echo $PWD ; echo $OLDPWD ; rm -fr a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/aa
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/aa
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd ; pwd ; rm -rf a
+/home/shojiro
+/home/shojiro
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd "" ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd . ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd ./ ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd ./././ ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./././
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./././
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd ./././///././///// ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./././///././/////
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./././///././/////
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd .. ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; cd ../ ; pwd ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd "" ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd $HOME ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd . ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd . ; pwd ; echo $HOME $PWD $OLDPWD ; cd . ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/.
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd . ; pwd ; echo $HOME $PWD $OLDPWD ; cd . ; pwd ; echo $HOME $PWD $OLDPWD ; cd // ; pwd ; cd home ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. // //home //home //
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/a/. // //home //home //
+
+[OK]  mkdir a ; cd a ; rm -fr ../a ; export HOME= PWD= OLDPWD= ; cd .. ; pwd ; echo $HOME $PWD $OLDPWD ; rm -rf a
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd /.// ; pwd
+/
+/
+
+[OK]  cd /./////././//// ; pwd
+/
+/
+
+[OK]  cd // ; pwd
+//
+//
+
+[OK]  cd //...........////// ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd // ; pwd ; cd / ; pwd
+// /
+// /
+
+[OK]  cd // ; pwd ; cd / ; pwd ; cd /// ; pwd
+// / /
+// / /
+
+[OK]  cd // ; pwd ; cd bin ; pwd
+// //bin
+// //bin
+
+[OK]  cd //. ; pwd
+//
+//
+
+[OK]  cd //./ ; pwd
+//
+//
+
+[OK]  cd //.///./././//// ; pwd
+//
+//
+
+[OK]  cd /// ; pwd
+/
+/
+
+[OK]  cd ///./// ; pwd
+/
+/
+
+[OK]  cd //// ; pwd
+/
+/
+
+[OK]  cd ////./././////// ; pwd
+/
+/
+
+[OK]  cd ///// ; pwd
+/
+/
+
+[OK]  cd /bin ; pwd
+/bin
+/bin
+
+[OK]  cd /usr/bin ; pwd
+/usr/bin
+/usr/bin
+
+[OK]  cd /home ; pwd
+/home
+/home
+
+[OK]  cd /home ; pwd ; cd .. ; ls -l
+/home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+/home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+
+[OK]  cd //home ; pwd
+//home
+//home
+
+[OK]  cd //home ; pwd ; cd .. ; ls -l
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+
+[OK]  cd //./home ; pwd
+//home
+//home
+
+[OK]  cd //./home ; pwd ; cd .. ; ls -l
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+
+[OK]  cd "//home" ; pwd
+//home
+//home
+
+[OK]  cd "//home" ; pwd ; cd .. ; ls -l
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+//home total 620 lrwxrwxrwx 1 root root 7 Apr 23 2020 bin -> usr/bin drwxr-xr-x 1 root root 512 Apr 23 2020 boot drwxr-xr-x 1 root root 512 Mar 15 09:28 dev drwxr-xr-x 1 root root 512 Mar 13 23:46 etc drwxr-xr-x 1 root root 512 Aug 2 2020 home -rwxr-xr-x 1 root root 631968 Jun 19 2020 init lrwxrwxrwx 1 root root 7 Apr 23 2020 lib -> usr/lib lrwxrwxrwx 1 root root 9 Apr 23 2020 lib32 -> usr/lib32 lrwxrwxrwx 1 root root 9 Apr 23 2020 lib64 -> usr/lib64 lrwxrwxrwx 1 root root 10 Apr 23 2020 libx32 -> usr/libx32 drwxr-xr-x 1 root root 512 Apr 23 2020 media drwxr-xr-x 1 root root 512 Aug 2 2020 mnt drwxr-xr-x 1 root root 512 Apr 23 2020 opt dr-xr-xr-x 20 root root 0 Mar 13 23:46 proc drwx------ 1 root root 512 Aug 17 2020 root drwxr-xr-x 1 root root 512 Mar 13 23:46 run lrwxrwxrwx 1 root root 8 Apr 23 2020 sbin -> usr/sbin drwxr-xr-x 1 root root 512 Apr 10 2020 snap drwxr-xr-x 1 root root 512 Apr 23 2020 srv dr-xr-xr-x 12 root root 0 Mar 13 23:46 sys drwxrwxrwt 1 root root 512 Mar 15 19:41 tmp drwxr-xr-x 1 root root 512 Apr 23 2020 usr drwxr-xr-x 1 root root 512 Apr 23 2020 var
+
+[OK]  mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; pwd ; echo $PWD $OLDPWD ; unset PWD OLDPWD ; pwd ; echo $PWD $OLDPWD ; cd . ; pwd ; echo $PWD $OLDPWD ; cd . ; pwd ; echo $PWD $OLDPWD ; cd .. ; pwd ; echo $PWD $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./.
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./.
+
+[OK]  mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; cd . ; echo $PWD ; echo $OLDPWD ; cd .. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir test_dir ; cd test_dir ; rm -rf ../test_dir ; cd . ; pwd ; cd . ; pwd ; cd .. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/test_dir/./. /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset PWD ; cd ; echo $? ; pwd ; echo $PWD ; echo $OLDPWD
+0 /home/shojiro /home/shojiro
+0 /home/shojiro /home/shojiro
+
+[OK]  unset PWD ; cd "" ; echo $? ; pwd ; echo $PWD ; echo $OLDPWD
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset OLDPWD ; cd ; echo $? ; pwd ; echo $PWD ; echo $OLDPWD
+0 /home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+0 /home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset OLDPWD ; cd "" ; echo $? ; pwd ; echo $PWD ; echo $OLDPWD
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset PWD OLDPWD ; cd ; echo $? ; pwd ; unset PWD ; pwd ; echo $PWD ; echo $OLDPWD
+0 /home/shojiro /home/shojiro
+0 /home/shojiro /home/shojiro
+
+[OK]  unset PWD OLDPWD ; cd "" ; echo $? ; pwd ;unset PWD ; pwd ; echo $PWD ; echo $OLDPWD
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+/home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+/home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  cd "" ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+/home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+/home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  export HOME=aaaa ; cd ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+aaaa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git 0
+aaaa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git 0
+
+[OK]  export HOME=aaaa ; cd "" ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+aaaa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+aaaa /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  export HOME= ; export PWD= ; export OLDPWD= ; cd ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  export HOME= ; cd ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  export HOME= ; export PWD= ; export OLDPWD= ; cd "" ; echo $HOME ; echo $PWD ; echo $OLDPWD ; echo $?
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper 0
+
+[OK]  cd aaaaaa
+
+
+
+[OK]  cd aaaaaa ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd aaaaaa ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd ""
+
+
+
+[OK]  cd "" ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd "" ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd " "
+
+
+
+[OK]  cd " " ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd " " ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd ./
+
+
+
+[OK]  cd ./ ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd ./ ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd $OLDPWD ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd $OLDPWD ; cd $OLDPWD ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset OLDPWD ; cd $OLDPWD ; pwd ; echo $PWD ; echo $OLDPWD
+/home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/home/shojiro /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset OLDPWD ; cd $OLDPWD ; pwd ; echo $OLDPWD ; echo $PWD
+/home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /home/shojiro
+/home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /home/shojiro
+
+[OK]  cd $WWW ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  cd $WWW$WWW../../ ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell
+/mnt/c/Users/shojiro/Desktop/42/minishell
+
+[OK]  cd $WWW./$WWW../$WWW ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd ../../../../../../../ ; pwd
+/mnt/c
+/mnt/c
+
+[OK]  cd ../.././.././.././.././.././../ ; pwd
+/mnt/c
+/mnt/c
+
+[OK]  ""c""d"" . ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd . ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd .. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd .."""" ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd "".""."""" ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd ... ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd ../.. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell
+/mnt/c/Users/shojiro/Desktop/42/minishell
+
+[OK]  cd ../. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+/mnt/c/Users/shojiro/Desktop/42/minishell/git
+
+[OK]  cd ./. ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd / ; pwd
+/
+/
+
+[OK]  cd // ; pwd
+//
+//
+
+[OK]  cd //home ; pwd
+//home
+//home
+
+[OK]  cd "//home" ; pwd
+//home
+//home
+
+[OK]  echo $PWD; echo $OLDPWD; cd "/"; pwd; echo $PWD; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD; echo $OLDPWD; cd "//"; pwd; echo $PWD; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git // // /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git // // /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd /// ; pwd
+/
+/
+
+[OK]  cd // ; cd / ; env | grep | sort | PWD
+
+
+
+[OK]  cd / ; cd // ; env | grep | sort | PWD
+
+
+
+[OK]  cd /. ; cd //. ; env | grep | sort | PWD
+
+
+
+[OK]  cd /.. ; cd //.. ; env | grep | sort | PWD
+
+
+
+[OK]  cd ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  cd ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  cd "" "" ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  cd " " ; echo $?
+1
+1
+
+[KO]  cd ../ ../
+
+
+
+[KO]  cd ./ ./
+
+
+
+[KO]  cd ./ a
+
+
+
+[KO]  cd "" ""
+
+
+
+[OK]  cd a ""
+
+
+
+[OK]  cd ~ ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  cd ~/ ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  cd ~/. ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  unset HOME ; cd ; echo $? ; pwd
+1 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+1 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset HOME ; cd "" ; echo $? ; pwd
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+0 /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset HOME ; cd ~ ; pwd
+/home/shojiro
+/home/shojiro
+
+[OK]  mkdir d ; ln -s d dd ; cd dd ; pwd ; chmod 777 ../d ; rm -r ../d ../dd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/dd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper/dd
+
+[OK]  mkdir -m 000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 001 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 002 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 003 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 004 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 005 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 006 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 007 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 010 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 020 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 030 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 040 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 050 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 060 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 070 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 100 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 200 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 300 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 400 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 500 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 600 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 700 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 755 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 644 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 311 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 111 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 222 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 333 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 0777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 1000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 2000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 3000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 4000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 5000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 6000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 7000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 1777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 2777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 3777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 4777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 5777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 6777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 7777 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  mkdir -m 0000 d ; echo $PWD ; echo $OLDPWD ; cd d ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  pwd | cat -e
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper$
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper$
+
+[OK]  unset PWD ; pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  unset PWD ; pwd ; echo $PWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  export PWD=test ; pwd ; echo $PWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper test
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper test
+
+[OK]  cd / ; cd home ; pwd
+/home
+/home
+
+[OK]  cd / ; cd home ; pwd ; cd .. ; pwd
+/home /
+/home /
+
+[OK]  cd // ; cd home ; pwd
+//home
+//home
+
+[OK]  cd // ; cd home ; pwd ; cd .. ; pwd
+//home //
+//home //
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd / ; pwd ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd /. ; pwd ; echo $PWD ; echo $OLDPW
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd /./ ; pwd ; echo $PWD ; echo $OLDPW
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd /././././ ; pwd; echo $PWD ; echo $OLDPW
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd // ; pwd ; echo $PWD ; echo $OLDPW
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git // //
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git // //
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd /// ; pwd ; echo $PWD ; echo $OLDPW
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / /
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd //// ; pwd ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd ///// ; pwd ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git / / /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd ; echo $PWD ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /home/shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD ; echo $OLDPWD ; cd ; echo $OLDPWD
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $PWD 1>file ; echo $OLDPWD 1>>file; cd ; echo $OLDPWD; tail file; rm file
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  export | sort | grep -v SHLVL | grep -v _=
+declare -x HOME="/home/shojiro" declare -x HOSTTYPE="x86_64" declare -x LANG="C.UTF-8" declare -x LESSCLOSE="/usr/bin/lesspipe %s %s" declare -x LESSOPEN="| /usr/bin/lesspipe %s" declare -x LOGNAME="shojiro" declare -x LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:" declare -x NAME="desktop_sh" declare -x NVM_BIN="/home/shojiro/.nvm/versions/node/v15.7.0/bin" declare -x NVM_CD_FLAGS="" declare -x NVM_DIR="/home/shojiro/.nvm" declare -x OLDPWD="/mnt/c/Users/shojiro/Desktop/42/minishell/git" declare -x PATH="/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin" declare -x PWD="/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper" declare -x SHELL="/bin/bash" declare -x TERM="xterm-256color" declare -x USER="shojiro" declare -x WSLENV="" declare -x WSL_DISTRO_NAME="Ubuntu" declare -x XDG_DATA_DIRS="/usr/local/share:/usr/share:/var/lib/snapd/desktop"
+declare -x HOME="/home/shojiro" declare -x HOSTTYPE="x86_64" declare -x LANG="C.UTF-8" declare -x LESSCLOSE="/usr/bin/lesspipe %s %s" declare -x LESSOPEN="| /usr/bin/lesspipe %s" declare -x LOGNAME="shojiro" declare -x LS_COLORS="rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:" declare -x NAME="desktop_sh" declare -x NVM_BIN="/home/shojiro/.nvm/versions/node/v15.7.0/bin" declare -x NVM_CD_FLAGS="" declare -x NVM_DIR="/home/shojiro/.nvm" declare -x OLDPWD="/mnt/c/Users/shojiro/Desktop/42/minishell/git" declare -x PATH="/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin" declare -x PWD="/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper" declare -x SHELL="/bin/bash" declare -x TERM="xterm-256color" declare -x USER="shojiro" declare -x WSLENV="" declare -x WSL_DISTRO_NAME="Ubuntu" declare -x XDG_DATA_DIRS="/usr/local/share:/usr/share:/var/lib/snapd/desktop"
+
+[OK]  export ECHO="echo " ; $ECHO 1
+1
+1
+
+[OK]  export ECHO="echo"" " ; $ECHO 1
+1
+1
+
+[OK]  export ECHO=" echo " ; $ECHO 1
+1
+1
+
+[OK]  export ECHO=" echo " ; $ECHO 1
+1
+1
+
+[OK]  export A=aaa ; export B=bbb ; echo $A$B | cat -e
+aaabbb$
+aaabbb$
+
+[OK]  export A=" aaa " ; export B=" bbb " ; echo $A$B | cat -e
+aaa bbb$
+aaa bbb$
+
+[OK]  export TEST=echo ; $TEST 1
+1
+1
+
+[OK]  export TEST=echo ; ''$TEST 1
+1
+1
+
+[OK]  export TEST=echo ; ""$TEST 1
+1
+1
+
+[OK]  export TEST=echo ; "$TEST" 1
+1
+1
+
+[OK]  export TEST=echo ; '$TEST' 1
+
+
+
+[OK]  export _A=aaa ; echo $_A "$_A" '$_A' ; unset _A ; echo $_A
+aaa aaa $_A
+aaa aaa $_A
+
+[OK]  export AB912__2asdvb_ ; export | grep AB912 | cat | wc ; unset AB91 ; export | grep AB912 ; unset AB912__2asdvb_ ; export | grep AB912
+1 3 26 declare -x AB912__2asdvb_
+1 3 26 declare -x AB912__2asdvb_
+
+[OK]  export ___A=aaa ___b=bbb ___C=ccc ___ddd='ddd ddd ddd' ___f= ___g ___A=a ; export | grep ___
+declare -x ___A="a" declare -x ___C="ccc" declare -x ___b="bbb" declare -x ___ddd="ddd ddd ddd" declare -x ___f="" declare -x ___g
+declare -x ___A="a" declare -x ___C="ccc" declare -x ___b="bbb" declare -x ___ddd="ddd ddd ddd" declare -x ___f="" declare -x ___g
+
+[OK]  export A ; export A= ; export A='hello' ; export A='world' ; export A="hello world" ; echo $A
+hello world
+hello world
+
+[OK]  export A ; echo $? ; export A= ; echo $? ; export A=aaa ; echo $?
+0 0 0
+0 0 0
+
+[OK]  export HELLO ; unset HELLO ; echo $? ; unset HELLO ; echo $? ; export HELLO= ; unset HELLO ; echo $?
+0 0 0
+0 0 0
+
+[OK]  export _A=aaa | echo $_A "$_A" ; echo $_B | export _B=bbb
+
+
+
+[OK]  echo 'export _A=aaa'>export.txt;export < export.txt|grep _A ; echo $? ; rm export.txt
+1
+1
+
+[OK]  export A=aaa ; export A+=bbb ; echo $A
+aaabbb
+aaabbb
+
+[OK]  export !=aaa
+
+
+
+[OK]  export _!=aaa
+
+
+
+[OK]  export _$=aaa
+
+
+
+[OK]  export 2>file 123=aaa; file file; rm file
+file: ASCII text
+file: ASCII text
+
+[OK]  export 1>file; file file
+file: ASCII text, with very long lines
+file: ASCII text, with very long lines
+
+[OK]  export A=aaa | echo aaa 2>file | bbb 2>file2; file file; file file2; rm file file2
+file: empty file2: ASCII text
+file: empty file2: ASCII text
+
+[OK]  unset ' ' ; echo $?
+1
+1
+
+[OK]  unset '' '' ; echo $?
+1
+1
+
+[OK]  unset " USER" ; echo $USER ; echo $?
+shojiro 0
+shojiro 0
+
+[OK]  unset " USER" " ' USER ' " ; unset USER ; echo $USER ; echo $?
+0
+0
+
+[OK]  unset ; echo $?
+0
+0
+
+[OK]  unset ; unset ; unset ; echo $?
+0
+0
+
+[OK]  unset !
+
+
+
+[OK]  unset #
+
+
+
+[OK]  unset ##
+
+
+
+[OK]  export HOGE=hoge # FUGA=fuga; unset FUGA # HOGE; echo $HOGE
+
+
+
+[OK]  env | sort | grep -v SHLVL | grep -v _=
+HOME=/home/shojiro HOSTTYPE=x86_64 LANG=C.UTF-8 LESSCLOSE=/usr/bin/lesspipe %s %s LESSOPEN=| /usr/bin/lesspipe %s LOGNAME=shojiro LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36: NAME=desktop_sh NVM_BIN=/home/shojiro/.nvm/versions/node/v15.7.0/bin NVM_CD_FLAGS= NVM_DIR=/home/shojiro/.nvm OLDPWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git PATH=/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin PWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper SHELL=/bin/bash TERM=xterm-256color USER=shojiro WSLENV= WSL_DISTRO_NAME=Ubuntu XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+HOME=/home/shojiro HOSTTYPE=x86_64 LANG=C.UTF-8 LESSCLOSE=/usr/bin/lesspipe %s %s LESSOPEN=| /usr/bin/lesspipe %s LOGNAME=shojiro LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36: NAME=desktop_sh NVM_BIN=/home/shojiro/.nvm/versions/node/v15.7.0/bin NVM_CD_FLAGS= NVM_DIR=/home/shojiro/.nvm OLDPWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git PATH=/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin PWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper SHELL=/bin/bash TERM=xterm-256color USER=shojiro WSLENV= WSL_DISTRO_NAME=Ubuntu XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+
+[OK]  unset USER HOME AAA; env | sort | grep -v SHLVL | grep -v _=
+HOSTTYPE=x86_64 LANG=C.UTF-8 LESSCLOSE=/usr/bin/lesspipe %s %s LESSOPEN=| /usr/bin/lesspipe %s LOGNAME=shojiro LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36: NAME=desktop_sh NVM_BIN=/home/shojiro/.nvm/versions/node/v15.7.0/bin NVM_CD_FLAGS= NVM_DIR=/home/shojiro/.nvm OLDPWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git PATH=/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin PWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper SHELL=/bin/bash TERM=xterm-256color WSLENV= WSL_DISTRO_NAME=Ubuntu XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+HOSTTYPE=x86_64 LANG=C.UTF-8 LESSCLOSE=/usr/bin/lesspipe %s %s LESSOPEN=| /usr/bin/lesspipe %s LOGNAME=shojiro LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36: NAME=desktop_sh NVM_BIN=/home/shojiro/.nvm/versions/node/v15.7.0/bin NVM_CD_FLAGS= NVM_DIR=/home/shojiro/.nvm OLDPWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git PATH=/home/shojiro/.nvm/versions/node/v15.7.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Python38/Scripts/:/mnt/c/Program Files/Python38/:/mnt/c/ProgramData/Oracle/Java/javapath:/mnt/c/Program Files/Common Files/Microsoft Shared/Windows Live:/mnt/c/Program Files (x86)/Common Files/Microsoft Shared/Windows Live:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/Program Files/Microsoft/Web Platform Installer/:/mnt/c/Program Files (x86)/Microsoft ASP.NET/ASP.NET Web Pages/v1.0/:/mnt/c/Program Files/Microsoft SQL Server/110/Tools/Binn/:/mnt/c/Program Files (x86)/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/Tools/Binn/:/mnt/c/Program Files/Microsoft SQL Server/100/DTS/Binn/:/mnt/c/Program Files (x86)/EmEditor:/mnt/c/Program Files (x86)/Windows Live/Shared:/mnt/c/Program Files (x86)/QuickTime/QTSystem/:/mnt/c/Program Files/Git/bin:/mnt/c/norminette/norminette-client-master:/mnt/c/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin:/mnt/c/Program Files (x86)/GnuWin32/bin:/mnt/c/bits:/mnt/c/Tools/wget/bin:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/ProgramData/DockerDesktop/version-bin:/mnt/c/Users/shojiro/Desktop/42/atcoder/ac-library/atcoder:/mnt/c/node-v12.20.0-win-x64:/mnt/c/Ruby27-x64/bin:/mnt/c/Users/shojiro/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/shojiro/AppData/Local/Microsoft/WindowsApps:/snap/bin PWD=/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper SHELL=/bin/bash TERM=xterm-256color WSLENV= WSL_DISTRO_NAME=Ubuntu XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+
+[OK]  export _ABC ; env | grep _ABC ; export _DEF= ; env | grep _DEF ; export _GHI='hello there' ; env | grep _GHI
+_DEF= _GHI=hello there
+_DEF= _GHI=hello there
+
+[OK]  env asdfasf
+
+
+
+[KO]  env asdfasf >file 2>file2; file file; file file2; rm file file2
+file: empty file2: ASCII text
+file: empty file2: UTF-8 Unicode text
+
+[KO]  exit -
+
+
+
+[OK]  exit ' +1'
+
+
+
+[OK]  exit ' -1'
+
+
+
+[KO]  exit ' '
+
+
+
+[OK]  exit +1
+
+
+
+[OK]  exit +0
+
+
+
+[OK]  exit 0
+
+
+
+[OK]  exit -0
+
+
+
+[OK]  exit -1
+
+
+
+[OK]  exit ' 3'
+
+
+
+[KO]  exit '\t\f\r 3'
+
+
+
+[OK]  exit 4294967296
+
+
+
+[OK]  exit -4294967297
+
+
+
+[OK]  exit 4294967295
+
+
+
+[OK]  exit -4294967295
+
+
+
+[KO]  exit Mollitia asperiores
+
+
+
+[OK]  exit 123 456 asperiores
+
+
+
+[KO]  exit 18446744073709551615
+
+
+
+[OK]  exit -922337285
+
+
+
+[OK]  exit +922337285
+
+
+
+[OK]  exit -922337203685
+
+
+
+[OK]  exit +922337203685
+
+
+
+[OK]  exit -9223372036854775
+
+
+
+[OK]  exit +9223372036854775
+
+
+
+[OK]  exit -9223372036854775807
+
+
+
+[OK]  exit -9223372036854775808
+
+
+
+[KO]  exit -9223372036854775809
+
+
+
+[OK]  exit +9223372036854775807
+
+
+
+[OK]  exit +9223372036854775806
+
+
+
+[KO]  exit 9223372036854775808
+
+
+
+[KO]  exit 92233720368547758099999999
+
+
+
+[KO]  exit -92233720368547758099999999
+
+
+
+[KO]  exit +00092233720368547758099999999
+
+
+
+[KO]  exit -0000092233720368547758099999999
+
+
+
+[KO]  exit ----21
+
+
+
+[KO]  exit --++-+-21
+
+
+
+[OK]  exit 255
+
+
+
+[KO]  exit exit
+
+
+
+[KO]  exit what ; echo $?
+
+
+
+[OK]  exit 00000000
+
+
+
+[OK]  exit >file 2>file 123 aaa;
+
+
+
+[OK]  echo | exit > exit.txt ; file exit.txt ; rm exit.txt
+exit.txt: empty
+exit.txt: empty
+
+[OK]  echo 9 > exit.txt ; exit < exit.txt | cat ; rm exit.txt
+
+
+
+[OK]  echo | exit 99 ; echo $?
+99
+99
+
+[OK]  echo | exit 42 | exit 21 ; echo $?
+21
+21
+
+[OK]  echo | exit 999999999999999999 ; echo $?
+255
+255
+
+[OK]  echo | exit -12345 ; echo $?
+199
+199
+
+[OK]  echo | exit 0 ; echo $?
+0
+0
+
+[OK]  echo 123 | exit ; echo $?
+0
+0
+
+[OK]  echo -123 | exit ; echo $?
+0
+0
+
+[OK]  echo -123 | exit ; echo $?
+0
+0
+
+[OK]  exit 2>file
+
+
+
+[OK]  exit 123 aaa 2>file;
+
+
+
+[OK]  pwd ; cd .. | pwd
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+/mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo hello
+hello
+hello
+
+[OK]  echo hello world
+hello world
+hello world
+
+[OK]  echo hello ; echo world
+hello world
+hello world
+
+[OK]  echo hello ; echo world
+hello world
+hello world
+
+[OK]  echo 01234567890123456789 ; echo;echo;echo
+01234567890123456789
+01234567890123456789
+
+[OK]  ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls ; ls
+b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt
+b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt b a c b a a c b aaa c bb check.sh file minishell mytest.sh results.txt test1.txt
+
+[OK]  ls | wc | wc
+1 3 24
+1 3 24
+
+[OK]  ls | wc | wc ; echo test
+1 3 24 test
+1 3 24 test
+
+[OK]  ls | wc | wc ; echo test | wc
+1 3 24 1 1 5
+1 3 24 1 1 5
+
+[OK]  echo $USER " $HOME " | cat | head -n 1 | cat | cat | wc
+1 2 24
+1 2 24
+
+[OK]  cat /dev/urandom | head -c 100 | wc -c
+100
+100
+
+[OK]  >what ; echo $? ; file what; rm what
+0 what: empty
+0 what: empty
+
+[OK]  > echo ; echo $?; file echo ; rm echo
+0 echo: empty
+0 echo: empty
+
+[OK]  >> echo ; echo $? ; file echo ; rm echo
+0 echo: empty
+0 echo: empty
+
+[OK]  < echo ; echo $?
+1
+1
+
+[OK]  >a>b>c ; echo $? ; file a; file b; file c; rm a b c
+0 a: empty b: empty c: empty
+0 a: empty b: empty c: empty
+
+[OK]  >>a>>b>>c<a<b<c ; echo $? ; file a; file b; file c; rm a b c
+0 a: empty b: empty c: empty
+0 a: empty b: empty c: empty
+
+[OK]  echo>a>b>c ; <a<b<c ; rm a b c
+
+
+
+[OK]  <test1.txt
+
+
+
+[OK]  <test1.txt<test2.txt<test3.txt<test4.txt
+
+
+
+[OK]  cat < nonexistingfile
+
+
+
+[OK]  echo hello > a ; cat < nonexistingfile < a; rm a
+
+
+
+[OK]  echo > a ; cat a ; rm a
+
+
+
+[OK]  echo hello > a world ; cat a ; rm a
+hello world
+hello world
+
+[OK]  ls > a -l; cat a; rm a
+total 352 -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:12 a -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 file -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh -rwxrwxrwx 1 shojiro shojiro 92449 Mar 15 20:12 results.txt
+total 352 -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:12 a -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 file -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh -rwxrwxrwx 1 shojiro shojiro 92449 Mar 15 20:12 results.txt
+
+[OK]  > a ls -l; cat a; rm a
+total 352 -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:12 a -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 file -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh -rwxrwxrwx 1 shojiro shojiro 93559 Mar 15 20:12 results.txt
+total 352 -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:12 a -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 file -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh -rwxrwxrwx 1 shojiro shojiro 93559 Mar 15 20:12 results.txt
+
+[OK]  cat file > file | cat -e; rm file
+
+
+
+[OK]  echo non-existing file > nonexist ; cat nonexist ; rm nonexist
+non-existing file
+non-existing file
+
+[OK]  wc < test1.txt < test2.txt < test3.txt < test4.txt < test5.txt ; cat test1.txt test2.txt test3.txt test4.txt test5.txt test6.txt
+0 1 9 test1test12test123test1234test12345test123456
+0 1 9 test1test12test123test1234test12345test123456
+
+[OK]  echo aaa > test1.txt > test2.txt > test3.txt > test4.txt > test5.txt > test6.txt ; cat test1.txt test2.txt test3.txt test4.txt test5.txt test6.txt
+aaa
+aaa
+
+[OK]  rm test1.txt ; echo aaa >> test1.txt ; echo bbb >> test1.txt ; cat test1.txt
+aaa bbb
+aaa bbb
+
+[OK]  echo aaa >> test1.txt >> test2.txt >> test3.txt ; echo bbb >> test1.txt >> test2.txt >> test3.txt ; cat test1.txt test2.txt test3.txt
+test1test12test123aaa bbb
+test1test12test123aaa bbb
+
+[OK]  wc < test1.txt < test2.txt > test3.txt > test4.txt < test5.txt > test6.txt
+
+
+
+[OK]  cat > test2.txt > test3.txt > test4.txt < test1.txt
+
+
+
+[OK]  echo | cat | wc > a < test6.txt ; cat a; rm a
+0 1 10
+0 1 10
+
+[OK]  echo test666666 >> test6.txt | head -n 1 < test6.txt > test1.txt ; wc > test2.txt < test1.txt ; cat test2.txt
+1 1 21
+1 1 21
+
+[OK]  cat test1.txt | cat < test2.txt
+test12
+test12
+
+[OK]  cat < test1.txt | cat > test2.txt ; cat test2.txt
+test1
+test1
+
+[OK]  echo hello > 'world' ; cat world ; rm world
+hello
+hello
+
+[OK]  echo hello > aaa"world" > " a b c "; file aaaworld ; cat " a b c " ; rm aaaworld " a b c "
+aaaworld: empty hello
+aaaworld: empty hello
+
+[OK]  echo hello > $USER ; cat $USER ; rm $USER
+hello
+hello
+
+[OK]  echo hello > aaa$USER"$PWD" ; cat aaa$USER"$PWD" ; rm aaa$USER"$PWD"
+
+
+
+[OK]  export a=a b c ; echo hello > " $a " ; cat " $a " ; rm " $a "
+hello
+hello
+
+[OK]  echo hello > a; cat < a;chmod -r a; cat < a; rm a
+hello hello
+hello hello
+
+[OK]  echo hello > a; cat a;chmod -w a; echo >> a; cat a; rm a
+hello hello
+hello hello
+
+[OK]  echo hello'world'foo
+helloworldfoo
+helloworldfoo
+
+[OK]  echo "oh'hello"world"yeah'wow"
+oh'helloworldyeah'wow
+oh'helloworldyeah'wow
+
+[OK]  echo "oh'hello"wor""''ld"yeah'wow"
+oh'helloworldyeah'wow
+oh'helloworldyeah'wow
+
+[OK]  echo "oh'h""ello"wor""''''''ld"yeah'w''ow"
+oh'helloworldyeah'w''ow
+oh'helloworldyeah'w''ow
+
+[OK]  echo hel'lo;''wor|$'''ld yeah
+hello;wor|$ld yeah
+hello;wor|$ld yeah
+
+[OK]  echo '' | cat -e
+$
+$
+
+[OK]  echo '''''' | cat -e
+$
+$
+
+[OK]  echo '' '''' | cat -e
+$
+$
+
+[OK]  echo "" | cat -e
+$
+$
+
+[OK]  echo "" """" | cat -e
+$
+$
+
+[OK]  echo '' '' '' ''
+
+
+
+[OK]  echo " " "" "" ""
+
+
+
+[OK]  ''echo '' | cat -e
+$
+$
+
+[OK]  ''""e'c'""ho'' | cat -e
+$
+$
+
+[OK]  ''""l's''' | cat -e
+b a c$ b a a c$ b aaa c$ bb$ check.sh$ minishell$ mytest.sh$ results.txt$
+b a c$ b a a c$ b aaa c$ bb$ check.sh$ minishell$ mytest.sh$ results.txt$
+
+[OK]  ls'''''' ''""-la'' | cat -e
+total 356$ drwxrwxrwx 1 shojiro shojiro 512 Mar 15 20:12 .$ drwxrwxrwx 1 shojiro shojiro 512 Mar 15 19:41 ..$ -rwxrwxrwx 1 shojiro shojiro 78 Mar 15 20:10 .files_before$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c$ -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb$ -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh$ -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell$ -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh$ -rwxrwxrwx 1 shojiro shojiro 97416 Mar 15 20:12 results.txt$
+total 356$ drwxrwxrwx 1 shojiro shojiro 512 Mar 15 20:12 .$ drwxrwxrwx 1 shojiro shojiro 512 Mar 15 19:41 ..$ -rwxrwxrwx 1 shojiro shojiro 78 Mar 15 20:10 .files_before$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a c$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b a a c$ -rwxrwxrwx 1 shojiro shojiro 4 Mar 15 20:11 b aaa c$ -rwxrwxrwx 1 shojiro shojiro 0 Mar 15 20:11 bb$ -rwxrwxrwx 1 shojiro shojiro 40867 Mar 15 20:10 check.sh$ -rwxrwxrwx 1 shojiro shojiro 209256 Mar 15 20:10 minishell$ -rwxrwxrwx 1 shojiro shojiro 11689 Mar 15 17:16 mytest.sh$ -rwxrwxrwx 1 shojiro shojiro 97416 Mar 15 20:12 results.txt$
+
+[OK]  echo'''' '' | ''c'at' -""e
+$
+$
+
+[OK]  echo''"" '' '' | ""''cat -e
+$
+$
+
+[OK]  echo ' ' | cat -e
+$
+$
+
+[OK]  echo ' '' '' ' | cat -e
+$
+$
+
+[OK]  echo " " | cat -e
+$
+$
+
+[OK]  echo " "" "" "
+
+
+
+[OK]  echo hello ';' cat ; echo hello ";" cat
+hello ; cat hello ; cat
+hello ; cat hello ; cat
+
+[OK]  echo hello '|' cat ; echo hello "|" cat
+hello | cat hello | cat
+hello | cat hello | cat
+
+[OK]  echo hello '>' '>' ; echo hello ">" ">"
+hello > > hello > >
+hello > > hello > >
+
+[OK]  echo hello '>>' '>>' ; echo hello ">>" ">>"
+hello >> >> hello >> >>
+hello >> >> hello >> >>
+
+[OK]  echo > ">" hello ; cat ">" ; rm ">"
+hello
+hello
+
+[OK]  echo hello ' > > ' > '>' > " > >" world ; cat " > >" ; rm '>' " > >"
+hello > > world
+hello > > world
+
+[OK]  "echo hello"
+
+
+
+[OK]  'echo hello'
+
+
+
+[OK]  echo 'hello $USER %* # @ ^ &* ( @ ! ) there | cat ; wc ; {}|\\\ '
+hello $USER %* # @ ^ &* ( @ ! ) there | cat ; wc ; {}|\\\
+hello $USER %* # @ ^ &* ( @ ! ) there | cat ; wc ; {}|\\\
+
+[OK]  echo "hello USER %* #' @ ^ &* ( @ ! ) there | cat ; wc ; {}|"
+hello USER %* #' @ ^ &* ( @ ! ) there | cat ; wc ; {}|
+hello USER %* #' @ ^ &* ( @ ! ) there | cat ; wc ; {}|
+
+[OK]  echo " hello \;there\2my\0friend"
+hello \;there\2my\0friend
+hello \;there\2my\0friend
+
+[OK]  echo " hello \there\my\nfriend"
+hello \there\my\nfriend
+hello \there\my\nfriend
+
+[OK]  echo " \" lit\"erally "
+" lit"erally
+" lit"erally
+
+[OK]  echo " \$USER lit\$USERerally "
+$USER lit$USERerally
+$USER lit$USERerally
+
+[OK]  echo " \\ lit\\erally "
+\ lit\erally
+\ lit\erally
+
+[OK]  echo "\$$USER"
+$shojiro
+$shojiro
+
+[OK]  echo "$"
+$
+$
+
+[OK]  echo " $ $ $ $ $ $"
+$ $ $ $ $ $
+$ $ $ $ $ $
+
+[OK]  echo " $USER $CWD "
+shojiro
+shojiro
+
+[OK]  echo " aaa$USER bbb$CWDccc "
+aaashojiro bbb
+aaashojiro bbb
+
+[OK]  $A
+
+
+
+[OK]  $OLDPWD
+
+
+
+[OK]  echo " $UNKNOWNVARIABLE $_WHATIS_this999 $_32175891 $________"
+
+
+
+[OK]  true ; echo $? ; false ; echo $? ; cat nonexist ; echo $?
+0 1 1
+0 1 1
+
+[OK]  true ;echo $?$?$?
+000
+000
+
+[OK]  false ; echo $USER$?"$?"'$?' $ $?
+shojiro11$? $ 1
+shojiro11$? $ 1
+
+[OK]  /bin/ls | cat | wc ; echo $?
+8 15 68 0
+8 15 68 0
+
+[OK]  echo $? $? $? $? $?
+0 0 0 0 0
+0 0 0 0 0
+
+[OK]  true ; echo $? ; false ; echo $? ; true | echo $? ; false | echo $?
+0 1 0 0
+0 1 0 0
+
+[OK]  true ; echo $? | cat | false | echo $?
+0
+0
+
+[OK]  false ; echo $? > test1.txt > test2.txt ; echo $? | cat >>test2.txt ; cat test2.txt | echo $?
+0
+0
+
+[OK]  echo $""
+
+
+
+[OK]  echo $"hello"
+hello
+hello
+
+[OK]  echo $"USER$USER what..."
+USERshojiro what...
+USERshojiro what...
+
+[OK]  echo $
+$
+$
+
+[OK]  echo $ $ $ $ $ $ $
+$ $ $ $ $ $ $
+$ $ $ $ $ $ $
+
+[OK]  echo $USER $ZXY $PWD
+shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+shojiro /mnt/c/Users/shojiro/Desktop/42/minishell/git/minishell-myhelper
+
+[OK]  echo $UNKNWONVARIABLE $_WHATis_This999 $_1324810
+
+
+
+[OK]  echo $USER aaa$USER"bbb 'ccc' """"$USER "$USERddd
+shojiro aaashojirobbb 'ccc' shojiro
+shojiro aaashojirobbb 'ccc' shojiro
+
+[OK]  echo aaa$USER"$ZXY"$ZXY
+aaashojiro
+aaashojiro
+
+[OK]  export WOW='hello world' ; cat aaa$WOW ; cat "aaa$WOW" ; cat 'aaa$WOW'
+
+
+
+[OK]  echo $"$USER"
+shojiro
+shojiro
+
+[OK]  echo $"a b $USER "
+a b shojiro
+a b shojiro
+
+[OK]  export A=aaa ; echo $A ; unset A ; echo $A | cat -e
+aaa $
+aaa $
+
+[OK]  export B=bbb | echo $B | cat -e
+$
+$
+
+[OK]  echo $B | export B=bbb | cat -e
+
+
+
+[OK]  export C=ccc ; echo $C > $C ; cat $C ; rm $C
+ccc
+ccc
+
+[OK]  export ECHO='echo what > what.txt' ; $ECHO
+what > what.txt
+what > what.txt
+
+[OK]  export ECHO='echo what > what.txt' ; $ECHO > what.txt ; cat what.txt
+what > what.txt
+what > what.txt
+
+[OK]  export ECHO=echo ; export CAT=cat ; $ECHO $CAT | $CAT
+cat
+cat
+
+[OK]  export PIPE='|' ; echo $PIPE ; echo PIPE $PIPE cat
+| PIPE | cat
+| PIPE | cat
+
+[OK]  export PIPE='|' ; export GREATER='>' ; export CAT=cat ; echo $PIPE | $CAT ; echo $PIPE $GREATER wow | $CAT
+| | > wow
+| | > wow
+
+[OK]  export ECHO='echo hello world' ; $ECHO ; echo $ECHO
+hello world echo hello world
+hello world echo hello world
+
+[OK]  export ECHO="echo hello | cat | wc" ; $ECHO ; echo $ECHO
+hello | cat | wc echo hello | cat | wc
+hello | cat | wc echo hello | cat | wc
+
+[OK]  export CAT=cat ; echo hello | $CAT
+hello
+hello
+
+[OK]  export CAT='cat -e' ; echo hello | $CAT
+hello$
+hello$
+
+[OK]  export CAT='cat -e | wc' ; echo $CAT
+cat -e | wc
+cat -e | wc
+
+[OK]  export CAT='cat -e | wc' ; $CAT
+
+
+
+[OK]  echo what > what.txt ; export CAT='cat what.txt' ; $CAT ; rm what.txt
+what
+what
+
+[OK]  export ECHO='echo hello > what.txt ; cat what.txt' ; $ECHO
+hello > what.txt ; cat what.txt
+hello > what.txt ; cat what.txt
+
+[OK]  export a="aaa"; echo "$a", '$a', $a
+aaa, $a, aaa
+aaa, $a, aaa
+
+[OK]  echo "\$$a"
+$
+$
+
+[OK]  export a="echo abc > test1.txt"; $a
+abc > test1.txt
+abc > test1.txt
+
+[OK]  export A ; echo hello > $A
+
+
+
+[OK]  export A= ; echo hello > $A
+
+
+
+[OK]  export A='a b c' ; echo hello > $A
+
+
+
+[OK]  export a=" a "; export b=" bbb "; echo $a$b
+a bbb
+a bbb
+
+[OK]  export a='a' b=' b ' c='c ' d=' d' e='e e'; echo $a$a $a$b $a$c $a$d $a$e | cat -e; echo $b$a $b$b $b$c $b$d $b$e | cat -e; echo $c$a $c$b $c$c $c$d $c$e | cat -e; echo $d$a $d$b $d$c $d$d $d$e | cat -e; echo $e$a $e$b $e$c $e$d $e$e | cat -e
+aa a b ac a d ae e$ b a b b b c b d b e e$ c a c b c c c d c e e$ da d b dc d d de e$ e ea e e b e ec e e d e ee e$
+aa a b ac a d ae e$ b a b b b c b d b e e$ c a c b c c c d c e e$ da d b dc d d de e$ e ea e e b e ec e e d e ee e$
+
+[OK]  export TEST=echo ; ''$TEST 1
+1
+1
+
+[OK]  export TEST=echo ; ""''$T'ES'T 1
+
+
+
+[OK]  export ECHO=echo'"' ; $ECHO 1
+
+
+
+[OK]  export ECHO=echo"'" ; $ECHO 1
+
+
+
+[OK]  export 'ECHO=echo""' ; $ECHO 1
+
+
+
+[OK]  export "ECHO=echo''" ; $ECHO 1
+
+
+
+[OK]  export A="echo hello" ; $A
+hello
+hello
+
+[OK]  export B="echo hello > a" ; $A; file a ; rm a
+a: cannot open `a' (No such file or directory)
+a: cannot open `a' (No such file or directory)
+
+[OK]  export A=" " ; $A ; echo $A > $A ; rm $A
+
+
+
+[OK]  export PATH=' ';echo $PATH
+
+
+
+[OK]  export A=" " ;echo $A
+
+
+
+[OK]  export A='' B=" " C=" " D=" d " ; echo $A $B $C $D | cat -e ; echo $A$B''"$C"$D | cat -e
+d$ d$
+d$ d$
+
+[OK]  export A='a' B=' ' C=' c ' ; echo $A$B$A | cat -e ; echo $A$A$A $A $A | cat -e ; echo $C$B $B$C | cat -e ; echo $A$C $A$B$C
+a a$ aaa a a$ c c$ a c a c
+a a$ aaa a a$ c c$ a c a c
+
+[OK]  export A='a' B=' ' ; echo $A$B$A ; echo $A $B $A; echo $A$B$B$B$A
+a a a a a a
+a a a a a a
+
