@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: syamashi <syamashi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/24 21:18:33 by syamashi          #+#    #+#             */
-/*   Updated: 2020/06/24 22:34:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 22:10:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	char	*str;
 
+	if (!s)
+		return (NULL);
 	str = (char *)s;
 	while (*str)
 	{
