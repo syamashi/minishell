@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 02:00:28 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 02:08:31 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ void	sh_launch_child(
 	t_builtin_f	builtin_function;
 	t_exec		*exec_param;
 
-	signal(SIGINT, sh_putendl_handler());
-	signal(SIGQUIT, sh_quithandler);
 	exec_param = exlist->content;
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0);
@@ -59,6 +57,8 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	int		pipefd[2];
 
 	status = 0;
+	signal(SIGINT, sh_putendl_handler);
+	signal(SIGQUIT, sh_quithandler);
 	if (execlist->next && pipe(pipefd) < 0)
 		return (ft_perror("minishell"));
 	if ((cpid = fork()) < 0)
