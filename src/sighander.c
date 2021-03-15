@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 01:53:26 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 02:09:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 02:12:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ void	sh_quithandler(int sig)
 
 void	sh_putendl_handler(int sig)
 {
-	ft_putstr_fd("\b\b  \b\n", 2);
+	ft_putstr_fd("\n", 2);
 }
