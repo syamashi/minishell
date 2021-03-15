@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 13:08:01 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:00:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,9 @@ int				display_export(t_minishell *m_sh, t_exec *ex)
 	while (mov)
 	{
 		output = make_output(mov);
-		ft_putstr_fd(output, STDOUT);
+		ft_putstr_fd(output, ex->fd_out);
 		free(output);
-		ft_putstr_fd("\n", STDOUT);
+		ft_putstr_fd("\n", ex->fd_out);
 		mov = mov->next;
 	}
 	ft_lstclear(&env, env_free);
