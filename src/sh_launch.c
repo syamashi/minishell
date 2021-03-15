@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 13:09:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 16:09:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	sh_launch_child(
 	signal(SIGINT, SIG_DFL);
 	exec_param = exlist->content;
 	if (prev_pipe)
-		sh_dup_close(prev_pipe, 0);
+		sh_dup_close(prev_pipe, STDIN);
 //	if (exec_param->fd_in != 0)
 //		sh_dup_close(exec_param->fd_in, 0);
 	if (exlist->next)
@@ -37,6 +37,8 @@ void	sh_launch_child(
 //		sh_dup_close(exec_param->fd_out, 1);
 	if (exec_param->error_flag)
 		exit(1);
+//	if (((t_exec*)exlist->content)->backup)
+//		recover();
 	if ((builtin_function = builtin_table(exec_param)))
 	{
 //		exec_param->fd_in = 0;
@@ -79,12 +81,14 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 
 	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
+		printf("lldala\n");
 		if (((t_exec *)execlist->content)->error_flag)
 			return ((m_sh->exit_status));
 		m_sh->exit_status = builtin_function(m_sh, execlist->content);
 		return (m_sh->exit_status);
 	}
 	signal(SIGINT, SIG_IGN);
+	printf("path\n");
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	return (m_sh->exit_status);

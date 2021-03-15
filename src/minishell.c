@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 13:18:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 15:53:43 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	minishell(char **envp)
 		while (commands)
 		{
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
+			printf("ex\n");
+			exlist_debug(ex_list);
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
 			close_fd_all(&mini_sh);

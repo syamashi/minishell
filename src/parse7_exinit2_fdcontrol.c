@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 13:12:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 14:58:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,9 @@ void	fd_rdir(t_minishell *m_sh, char *path, int rint)
 		return ;
 	}
 	backup = dup(rint);
+	printf("[fd_rdir]fd:%d, rint:%d\n", fd, rint);
 	dup2(fd, rint);
-		close(fd);
+	close(fd);
 	if (!(rinfo = (t_redirect *)malloc(sizeof(t_redirect))))
 		exit(ft_error("", 1));
 	rinfo->rint = rint;

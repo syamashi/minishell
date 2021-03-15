@@ -1,1 +1,8 @@
-a
+ex
+-----exlist[0]-----
+argv  :{echo, a}
+error_flag:0
+-----exlist[1]-----
+argv  :{wc}
+error_flag:0
+      1       1       2
