@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 17:53:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:24:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	sh_launch_child(
 	{
 		exec_param->fd_in = 0;
 		exec_param->fd_out = 1;
+		exec_param->fd_err = 2;
 		exit(builtin_function(m_sh, exec_param));
 	}
 	sh_execvpes(exec_param, m_sh);

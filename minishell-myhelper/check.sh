@@ -846,6 +846,8 @@ test_pwd () {
     run_test 'echo $PWD ; echo $OLDPWD ; cd ///// ; pwd ; echo $PWD ; echo $OLDPWD'
     run_test 'echo $PWD ; echo $OLDPWD ; cd ; echo $PWD ; echo $OLDPWD'
     run_test 'echo $PWD ; echo $OLDPWD ; cd ; echo $OLDPWD'
+    run_test 'echo $PWD 1>file ; echo $OLDPWD 1>>file; cd ; echo $OLDPWD; tail file; rm file'
+
 }
 
 test_export () {
@@ -873,6 +875,9 @@ test_export () {
     run_test "export !=aaa"
     run_test "export _!=aaa"
     run_test "export _$=aaa"
+    run_test "export 2>file 123=aaa; file file; rm file"
+    run_test "export 1>file; file file"
+    run_test "export A=aaa | echo aaa 2>file | bbb 2>file2; file file; file file2; rm file file2"
 #    run_test "export #=aaa B=bbb; echo \$B"
 }
 
@@ -894,6 +899,8 @@ test_env () {
     run_test 'env | sort | grep -v SHLVL | grep -v _='
     run_test 'unset USER HOME AAA; env | sort | grep -v SHLVL | grep -v _='
     run_test "export _ABC ; env | grep _ABC ; export _DEF= ; env | grep _DEF ; export _GHI='hello there' ; env | grep _GHI"
+    run_test "env asdfasf"
+    run_test "env asdfasf >file 2>file2; file file; file file2; rm file file2"
 }
 
 test_exit () {
@@ -937,6 +944,7 @@ test_exit () {
     run_test 'exit exit'
     run_test 'exit what ; echo $?'
     run_test 'exit 00000000'
+    run_test 'exit >file 2>file 123 aaa; file file; file file2; rm file file2'
     run_test 'echo | exit > exit.txt ; file exit.txt ; rm exit.txt'
     run_test 'echo 9 > exit.txt ; exit < exit.txt | cat ; rm exit.txt '
     run_test 'echo | exit 99 ; echo $?'
