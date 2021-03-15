@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/13 12:01:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 20:56:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:32:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,20 @@ int		is_keyvalid(char *key)
 	return (1);
 }
 
-void	invalid_key(char *argv, int *is_invalid, char **key, char *command)
+int		invalid_key(char *argv, char **key, char *command, int fd)
 {
-	ft_putstr_fd(MINISHELL, 2);
-	ft_putstr_fd(command, 2);
-	ft_putstr_fd(": `", 2);
-	ft_putstr_fd(argv, 2);
-	ft_putstr_fd("': not a valid identifier", 2);
-	ft_putstr_fd("\n", 2);
-	*is_invalid = 1;
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd(command, fd);
+	ft_putstr_fd(": `", fd);
+	ft_putstr_fd(argv, fd);
+	ft_putstr_fd("': not a valid identifier", fd);
+	ft_putstr_fd("\n", fd);
 	if (key)
 	{
 		free(*key);
 		*key = NULL;
 	}
+	return (1);
 }
 
 int		sh_export(t_minishell *m_sh, t_exec *exec)
@@ -68,7 +68,7 @@ int		sh_export(t_minishell *m_sh, t_exec *exec)
 			export_envp(m_sh, key, value);
 		}
 		else
-			invalid_key(*argv, &is_invalid, &key, "export");
+			is_invalid = invalid_key(*argv, &key, "export", exec->fd_err);
 		argv++;
 	}
 	return (is_invalid);

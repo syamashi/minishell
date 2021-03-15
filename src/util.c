@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/31 16:53:33 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:29:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	simplejoin(char **output, char *add)
 
 	tmp = *output;
 	if (!(*output = ft_strjoin(*output, add)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(tmp);
 }
 
@@ -43,7 +43,7 @@ char	*simpletrim(char *output, char *trim)
 
 	tmp = output;
 	if (!(output = ft_strtrim(output, trim)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(tmp);
 	return (output);
 }

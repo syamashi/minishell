@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 17:19:14 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:23:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	avoid_check(t_list *list, t_minishell *m_sh)
 		packinfo_get(&line, &type, list);
 		list = list->next;
 		if (is_bonus(type))
-			return (m_sh->exit_status = ft_avoid_error(line, 1));
+			return (m_sh->exit_status = ft_avoid_error(line, 1, STDERR));
 	}
 	return (0);
 }

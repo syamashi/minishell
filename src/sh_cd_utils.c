@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:53:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 19:28:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*pwds_joinfree(char *pwd, char *add)
 	char	*ret;
 
 	if (!(ret = ft_strjoin(pwd, add)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(pwd);
 	return (ret);
 }

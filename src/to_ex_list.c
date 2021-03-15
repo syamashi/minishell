@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:36:03 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 01:53:27 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	tilde_join(t_list *mov, t_minishell *m_sh)
 	if (!(home_value = value_get("HOME", m_sh)))
 		if (!(home_value = ft_strdup(m_sh->home_defvalue)))
 			if (!(home_value = ft_strdup("")))
-				exit(ft_error("malloc failed", 1));
+				exit(ft_error("malloc failed", 1, STDERR));
 	tmp = line;
 	line = ft_strjoin(home_value, line + 1);
 	free(tmp);
