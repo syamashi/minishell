@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 13:16:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:45:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int		ft_avoid_error(char *str, int i)
 		ft_putstr_fd("(;Д;)oops '", STDERR);
 	ft_putstr_fd(str, STDERR);
 	ft_putstr_fd("'", STDERR);
-	ft_putstr_fd(" is not support...", STDERR);
+	ft_putstr_fd(" does not support...", STDERR);
 	ft_putstr_fd("\n", STDERR);
 	cnt++;
 	return (i);

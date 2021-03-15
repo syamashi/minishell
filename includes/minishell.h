@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 13:05:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:19:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ typedef	struct	s_exec
 {
 	char	**argv;
 	char	**envp;
+	int		fd_in;
+	int		fd_out;
+	int		fd_err;
 	bool	error_flag;
 }				t_exec;
 
