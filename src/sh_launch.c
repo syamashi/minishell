@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 17:18:02 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:46:29 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	sh_launch_child(
 	if (exec_param->fd_out != 1)
 		sh_dup_close(exec_param->fd_out, 1);
 	if (exec_param->fd_err != 2)
-		sh_dup_close(exec_param->fd_out, 2);
+		sh_dup_close(exec_param->fd_err, 2);
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
