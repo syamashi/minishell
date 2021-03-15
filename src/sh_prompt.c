@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 19:25:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:15:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ extern sig_atomic_t	g_intflag;
 
 void	sh_input_inthandler()
 {
-	ft_putstr_fd("\b\b  \b\n", 2);
+	ft_putstr_fd("\b\b  \n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
 	g_intflag = 1;
 }
@@ -118,6 +118,7 @@ char	*sh_prompt(t_minishell *m_sh)
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
 	{
+		ft_putstr_fd("  \b\b", STDERR);
 		if (g_intflag)
 			ft_lstclear(&store, free);
 		g_intflag = 0;

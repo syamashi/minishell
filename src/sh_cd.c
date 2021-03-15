@@ -6,38 +6,38 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 19:15:21 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 23:13:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-int		cd_no_args(t_minishell *m_sh)
+int		cd_no_args(t_minishell *m_sh, int fd)
 {
 	char	*home;
 	char	*path;
 
 	if (!(home = value_get("HOME", m_sh)))
-		return (ft_cd_error(NULL, 1, "HOME not set"));
+		return (ft_cd_error(NULL, 1, "HOME not set", fd));
 	if (!*home && (path = getcwd(NULL, 0)))
-		return (pwd_update(m_sh, path, false));
-	if (chdir(home) == -1)
 	{
 		free(home);
-		return (ft_cd_error(home, 1, "No such file or directory"));
+		return (pwd_update(m_sh, path, false));
 	}
+	if (chdir(home) == -1)
+		return (ft_cd_free_error(home, 1, "No such file or directory", fd));
 	ft_lstclear(&m_sh->pwds, free);
 	pwd_update(m_sh, home, false);
 	free(home);
 	return (0);
 }
 
-int		cd_no_current(t_minishell *m_sh, char *argv)
+int		cd_no_current(t_minishell *m_sh, char *argv, int fd)
 {
 	pwd_update(m_sh, argv, NOCURRENT);
-	ft_putstr_fd("cd: error retrieving current directory: ", 2);
-	ft_putstr_fd("getcwd: cannot access parent directories : ", 2);
-	ft_putstr_fd("No such file or directory\n", 2);
+	ft_putstr_fd("cd: error retrieving current directory: ", fd);
+	ft_putstr_fd("getcwd: cannot access parent directories : ", fd);
+	ft_putstr_fd("No such file or directory\n", fd);
 	return (1);
 }
 
@@ -49,7 +49,7 @@ int		cd_nx_current(t_minishell *m_sh, char *path, char *argv)
 		return (pwd_update(m_sh, path, NXCURRENT));
 }
 
-int		cd_blank_args(t_minishell *m_sh, char *path, char *argv)
+int		cd_blank_args(t_minishell *m_sh, char *path, char *argv, int fd)
 {
 	char	*input_pwd;
 
@@ -58,7 +58,7 @@ int		cd_blank_args(t_minishell *m_sh, char *path, char *argv)
 	if (chdir(input_pwd))
 	{
 		free(input_pwd);
-		return (ft_cd_error(argv, 1, "No such file or directory"));
+		return (ft_cd_error(argv, 1, "No such file or directory", fd));
 	}
 	free(input_pwd);
 	return (pwd_update(m_sh, argv, false));
@@ -73,15 +73,15 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	errno = 0;
 	argv = exec->argv + 1;
 	if (!*argv)
-		return (cd_no_args(m_sh));
+		return (cd_no_args(m_sh, exec->fd_err));
 	if (ft_strlen(*argv) > 255)
-		return (ft_cd_error(*argv, 1, "File name too long"));
+		return (ft_cd_error(*argv, 1, "File name too long", exec->fd_err));
 	if (!**argv && (path = getcwd(NULL, 0)))
-		return (cd_blank_args(m_sh, path, *argv));
+		return (cd_blank_args(m_sh, path, *argv, exec->fd_err));
 	if (chdir(*argv))
-		return (ft_cd_error(*argv, 1, "No such file or directory"));
+		return (ft_cd_error(*argv, 1, "No such file or directory", exec->fd_err));
 	if (!(path = getcwd(NULL, 0)) && (nocurrent = true))
-		return (cd_no_current(m_sh, *argv));
+		return (cd_no_current(m_sh, *argv, exec->fd_err));
 	if (nocurrent && !(nocurrent = false))
 		return (cd_nx_current(m_sh, path, *argv));
 	if (is_linkdel(m_sh, *argv))

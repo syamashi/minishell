@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 17:19:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 21:26:30 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ typedef struct s_redirect
 }				t_redirect;
 
 sig_atomic_t	g_intflag;
+
+void	sh_quithandler(int sig);
 
 void	minishell(char **envp);
 t_command	*div_commands(t_minishell *m_sh, char *line);

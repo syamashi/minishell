@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 23:13:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,32 @@ int		dir_error(char *path, int n, t_exec **ex)
 	return (n);
 }
 
-int		ft_cd_error(char *path, int n, char *serror)
+int		ft_cd_free_error(char *path, int n, char *serror, int fd)
 {
-	ft_putstr_fd(MINISHELL, 2);
-	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd("cd: ", fd);
 	if (path)
 	{
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(path, fd);
+		ft_putstr_fd(": ", fd);
+		free(path);
 	}
-	ft_putstr_fd(serror, 2);
-	ft_putstr_fd("\n", 2);
+	ft_putstr_fd(serror, fd);
+	ft_putstr_fd("\n", fd);
+	return (n);
+}
+
+int		ft_cd_error(char *path, int n, char *serror, int fd)
+{
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd("cd: ", fd);
+	if (path)
+	{
+		ft_putstr_fd(path, fd);
+		ft_putstr_fd(": ", fd);
+	}
+	ft_putstr_fd(serror, fd);
+	ft_putstr_fd("\n", fd);
 	return (n);
 }
 
