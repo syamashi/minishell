@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 21:53:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 23:04:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ int		cd_no_args(t_minishell *m_sh, int fd)
 	if (!(home = value_get("HOME", m_sh)))
 		return (ft_cd_error(NULL, 1, "HOME not set", fd));
 	if (!*home && (path = getcwd(NULL, 0)))
+	{
+		free(home);
 		return (pwd_update(m_sh, path, false));
+	}
 	if (chdir(home) == -1)
 	{
 		free(home);
