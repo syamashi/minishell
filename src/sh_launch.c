@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 17:02:43 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 17:18:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,25 @@ void	sh_launch_child(
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, exec_param->fd_err));
-	if (sh_execvpes(exec_param, m_sh) == -1)
+	if (sh_execvpes(exec_param, m_sh) == -2)
     {
 		ft_putstr_fd(MINISHELL, exec_param->fd_err);
 		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
 		ft_putstr_fd(": ", exec_param->fd_err);
 		ft_putstr_fd("command not found\n", exec_param->fd_err);
-		errno = ENOENT;
+		exit(127);
 	}
 	else if (errno)
 	{
 		int e = errno;
-		int st = stat(exec_param->argv[0], &sb);
-//		printf("st:%d\n", st);
-		if (errno)
-			ft_perror(exec_param->argv[0], exec_param->fd_err);
+		if (stat(exec_param->argv[0], &sb) == 0)
+		{
+			ft_putstr_fd(MINISHELL, exec_param->fd_err);
+			ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
+			ft_putstr_fd(": ", exec_param->fd_err);
+			ft_putstr_fd("is a directory\n", exec_param->fd_err);
+			exit(126);
+		}
 		errno = e;
 		ft_perror(exec_param->argv[0], exec_param->fd_err);
 	}
