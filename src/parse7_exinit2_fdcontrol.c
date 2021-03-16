@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 10:31:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:39:54 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
 		fd_get(ex, path, type, rint);
-		if ((*ex)->error_flag)
+		if (errno && (*ex)->error_flag)
 		{
 			fd_error(path, (*ex)->fd_err);
 			m_sh->exit_status = 1;

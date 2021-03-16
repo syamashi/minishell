@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 10:13:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:41:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 	int		errno_reserve;
 
 	if (!file)
-		return (0);
+		exit (0);
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)

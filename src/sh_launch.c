@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 10:27:30 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:42:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	sh_launch_child(
 	}
 	sh_execvpes(exec_param, m_sh);
 	if (errno)
-		ft_perror("[sh_launch_child]minishell");
+		ft_perror("minishell");
 /*    if (errno == ENOENT)
     {
 		ft_putstr_fd(MINISHELL, exec_param->fd_err);
