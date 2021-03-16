@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 14:07:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 15:09:29 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,16 +111,15 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
 //	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
 //		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
-	m_sh->exit_status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status)) // signal終了の判定
-		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
+		return (-1); //signalがとれる
 	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next && close(pipefd[1]) < 0)
 		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next)
-		sh_process_manager(m_sh, execlist->next, pipefd[0]);
-	return (0);
+		return (sh_process_manager(m_sh, execlist->next, pipefd[0]));
+	return (cpid);
 }
 
 int		sh_launch(t_minishell *m_sh, t_list *execlist)
@@ -147,8 +146,6 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 	{
 		if (wait(&status) == last_pid)
 			m_sh->exit_status = status;
-		//check segf 
-		printf("WIF:%d\n", WIFEXITED(status));
 		if (status == 2 || status == 3)
 			m_sh->exit_status += 128;
 	}
