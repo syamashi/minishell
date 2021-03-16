@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 10:42:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 11:15:47 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,18 @@ int		status_handling(int e)
 {
 	if (e == ENOENT)
 		return (127);
-	else if (errno == 20)
-		return (126);
+//	else if (errno == 20 || errno == 13)
+//		return (126);
 	else
-		return (errno);
+		return (126);
+}
+
+int		usage_dot(int ret, int fd_err)
+{
+	ft_putstr_fd(MINISHELL, fd_err);
+	ft_putstr_fd(".: filename argument required\n", fd_err);
+	ft_putstr_fd(".: usage: . filename [arguments]\n", fd_err);
+	return (ret);
 }
 
 void	sh_launch_child(
@@ -61,6 +69,10 @@ void	sh_launch_child(
 		exec_param->fd_err = 2;
 		exit(builtin_function(m_sh, exec_param));
 	}
+	if (!exec_param->argv[0])
+		exit(0);
+	if (!ft_strncmp(exec_param->argv[0], ".", 2))
+		exit(usage_dot(2, exec_param->fd_err));
 	sh_execvpes(exec_param, m_sh);
 	if (errno)
 		ft_perror("minishell");
