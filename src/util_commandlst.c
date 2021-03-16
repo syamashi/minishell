@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 21:29:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 21:33:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:36:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_command	*ft_clstnew(void *content)
 	return (list);
 }
 
-void	ft_clstdelone(t_command *lst, void (*del)(void*))
+void		ft_clstdelone(t_command *lst, void (*del)(void*))
 {
 	if (!lst || !del)
 		return ;
@@ -34,7 +34,7 @@ void	ft_clstdelone(t_command *lst, void (*del)(void*))
 	lst = NULL;
 }
 
-void	ft_clstadd_back(t_command **lst, t_command *new)
+void		ft_clstadd_back(t_command **lst, t_command *new)
 {
 	t_command	*mov;
 

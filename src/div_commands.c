@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:40:04 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/14 12:42:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:16:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-bool	is_nums(char *line)
+bool		is_nums(char *line)
 {
 	int i;
 
@@ -23,7 +23,7 @@ bool	is_nums(char *line)
 	return (line[i] ? false : true);
 }
 
-void	redirectionint_trance(t_list *store)
+void		redirectionint_trance(t_list *store)
 {
 	t_list	*mov;
 	int		type;
@@ -38,9 +38,8 @@ void	redirectionint_trance(t_list *store)
 		type = ((t_pack *)mov->content)->type;
 		if (is_dir(((t_pack*)mov->next->content)->type) && type == STR
 		&& (ptype == -1 || ptype == SPACE))
-			if (is_nums(line)){
+			if (is_nums(line))
 				((t_pack *)mov->content)->type = RINT;
-			}
 		ptype = type;
 		mov = mov->next;
 	}

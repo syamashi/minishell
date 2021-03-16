@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:32:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:32:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/sh_launch.h"
 
-static	void	prejoin(int *i, int *j, char *value, char **output)
+static void	prejoin(int *i, int *j, char *value, char **output)
 {
 	char	*add;
 	char	*tmp;
@@ -28,7 +28,7 @@ static	void	prejoin(int *i, int *j, char *value, char **output)
 	*j = *i;
 }
 
-static	char	*make_outputvalue(char *value, int fd)
+static char	*make_outputvalue(char *value, int fd)
 {
 	char	*output;
 	int		i;
@@ -55,7 +55,7 @@ static	char	*make_outputvalue(char *value, int fd)
 	return (output);
 }
 
-static	char	*make_output(t_list *env, int fd)
+static char	*make_output(t_list *env, int fd)
 {
 	char	*output;
 	char	*tmp;
@@ -76,7 +76,7 @@ static	char	*make_output(t_list *env, int fd)
 	return (output);
 }
 
-t_list	*dictlst_cpy(t_list *env_list, int fd)
+t_list		*dictlst_cpy(t_list *env_list, int fd)
 {
 	t_list	*env;
 	t_list	*new;
@@ -99,7 +99,7 @@ t_list	*dictlst_cpy(t_list *env_list, int fd)
 	return (env);
 }
 
-int				display_export(t_minishell *m_sh, t_exec *ex)
+int			display_export(t_minishell *m_sh, t_exec *ex)
 {
 	t_list	*env;
 	t_list	*mov;

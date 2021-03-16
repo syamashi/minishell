@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 23:13:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 22:24:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int		ft_cd_free_error(char *path, int n, char *serror, int fd)
 	return (n);
 }
 
-int		ft_cd_error(char *path, int n, char *serror, int fd)
+int		cd_error(char *path, int n, char *serror, int fd)
 {
 	ft_putstr_fd(MINISHELL, fd);
 	ft_putstr_fd("cd: ", fd);
@@ -53,7 +53,7 @@ int		ft_cd_error(char *path, int n, char *serror, int fd)
 void	shlvl_error(int depth)
 {
 	char	*str;
-	
+
 	if (!(str = ft_itoa(depth)))
 		exit(ft_error("malloc failed", 1, STDERR));
 	ft_putstr_fd(MINISHELL, 2);

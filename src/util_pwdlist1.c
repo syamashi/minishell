@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:50:51 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:26:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag)
 	t_list	*tmp;
 
 	work = pwdlst_init(argv, delflag);
-	if (delflag == NOCURRENT && (!*((char *)(ft_lstlast(m_sh->pwds))->content)))
+	if (delflag == NOCURRENT
+		&& (!*((char *)(ft_lstlast(m_sh->pwds))->content)))
 		lstlast_del(m_sh);
-	else if ((*argv == '/' || delflag == NXCURRENT) && !(m_sh->pwd_dslash = false))
+	else if ((*argv == '/' || delflag == NXCURRENT)
+			&& !(m_sh->pwd_dslash = false))
 		ft_lstclear(&m_sh->pwds, free);
 	if (!ft_strncmp(argv, "//", 2) && ft_strncmp(argv, "///", 3))
 		m_sh->pwd_dslash = true;
@@ -69,7 +71,8 @@ void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag)
 	{
 		if (!ft_strncmp((char *)tmp->content, "..", 3))
 			lstlast_del(m_sh);
-		else if (delflag == NOCURRENT || ft_strncmp((char *)tmp->content, ".", 2))
+		else if (delflag == NOCURRENT
+				|| ft_strncmp((char *)tmp->content, ".", 2))
 			pwdlst_add(m_sh, (char *)tmp->content);
 		tmp = tmp->next;
 	}

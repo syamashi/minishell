@@ -1,11 +1,13 @@
 NAME = minishell
 SRCDIR = ./src/
-SRCS = main.c\
-		all_free.c\
+SRCS =	all_free.c\
 		debug.c\
 		div_commands.c\
 		env_init.c\
+		env_init2_shlvl.c\
 		env_sort.c\
+		ft_execvpe.c\
+		main.c\
 		minishell.c\
 		parse1_pack.c\
 		parse1_packmeta1.c\
@@ -23,9 +25,9 @@ SRCS = main.c\
 		parse7_exinit.c\
 		parse7_exinit2_fdcontrol.c\
 		parse7_exinit3_pathmake.c\
+		parse7_exinit4_fdget.c\
 		putout_error.c\
 		putout_error2.c\
-		ft_execvpe.c\
 		sh_cd_utils.c\
 		sh_cd.c\
 		sh_cd2_linkdel.c\
@@ -39,12 +41,13 @@ SRCS = main.c\
 		sh_launch.c\
 		sh_prompt.c\
 		sh_pwd.c\
-		sighander.c\
 		sh_unset.c\
+		sighander.c\
 		to_ex_list.c\
 		util_commandlst.c\
 		util_del.c\
 		util_env.c\
+		util_env2.c\
 		util_is.c\
 		util_is2.c\
 		util_is3.c\

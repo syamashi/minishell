@@ -6,14 +6,14 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 01:47:57 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 17:49:49 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:18:05 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-static	t_list	*concatante(t_list *a, t_list *b)
+static t_list	*concatante(t_list *a, t_list *b)
 {
 	t_list *p;
 
@@ -26,13 +26,13 @@ static	t_list	*concatante(t_list *a, t_list *b)
 	return (a);
 }
 
-static	void	distribution(t_list **c, t_list **piv)
+static void		distribution(t_list **c, t_list **piv)
 {
 	(*c)->next = *piv;
 	*piv = *c;
 }
 
-static	void	def_pivots(t_list **l_pivot, t_list **e_pivot, t_list **r_pivot)
+static void		def_pivots(t_list **l_pivot, t_list **e_pivot, t_list **r_pivot)
 {
 	*l_pivot = NULL;
 	*e_pivot = NULL;

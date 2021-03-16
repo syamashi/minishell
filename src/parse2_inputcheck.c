@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:40:10 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:23:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:23:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,5 @@ int	input_check(t_list *store, t_minishell *m_sh)
 {
 	if (!store)
 		return (0);
-//	debug(store);
 	return (syntax_check(store, m_sh) || avoid_check(store, m_sh));
 }
