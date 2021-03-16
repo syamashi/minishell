@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:12:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 09:47:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ int			sh_exit(t_minishell *m_sh, t_exec *exec)
 	argv = exec->argv + 1;
 	ft_putstr_fd("exit\n", exec->fd_err);
 	if (!*argv)
-	{
-		ft_putstr_fd("exit\n", exec->fd_err);
 		exit(m_sh->exit_status);
-	}
 	if ((ret = get_exitnum(*argv)) > 255)
 		exit(ft_exit_error(*argv, 255));
 	if (*(argv + 1))

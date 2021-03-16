@@ -6,17 +6,33 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 02:10:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:42:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
+/*
+**  bash-3.2$ /bin/asdf/asdf ; echo $?
+**  bash: /bin/asdf/asdf: No such file or directory
+**  127
+**
+**  bash-3.2$ /bin/ls/asdf ; echo $?
+**  bash: /bin/ls/asdf: Not a directory
+**  126
+**
+**  ENOENT 2 No such file or directory
+**  ENOTDIR 20 Not a directory
+*/
+
 int		status_handling(int e)
 {
 	if (e == ENOENT)
 		return (127);
-	return (126);
+	else if (errno == 20)
+		return (126);
+	else
+		return (errno);
 }
 
 void	sh_launch_child(
@@ -46,7 +62,16 @@ void	sh_launch_child(
 		exit(builtin_function(m_sh, exec_param));
 	}
 	sh_execvpes(exec_param, m_sh);
-	ft_perror("minishell");
+	if (errno)
+		ft_perror("minishell");
+/*    if (errno == ENOENT)
+    {
+		ft_putstr_fd(MINISHELL, exec_param->fd_err);
+		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
+		ft_putstr_fd(": ", exec_param->fd_err);
+		ft_putstr_fd("command not found\n", exec_param->fd_err);
+    }
+	*/	
 	exit(status_handling(errno));
 }
 
@@ -85,12 +110,13 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 	{
 		if (((t_exec *)execlist->content)->error_flag)
 			return ((m_sh->exit_status));
-		m_sh->exit_status = builtin_function(m_sh, execlist->content);
-		return (m_sh->exit_status);
+		return(m_sh->exit_status = builtin_function(m_sh, execlist->content));
 	}
 //	signal(SIGINT, SIG_IGN);
-	signal(SIGINT, sh_putendl_handler);
-	signal(SIGQUIT, sh_quithandler);
+	if (signal(SIGINT, sh_putendl_handler) == SIG_ERR)
+		exit(ft_error("sigerror", 1, STDERR));
+	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
+		exit(ft_error("sigerror", 1, STDERR));
 	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

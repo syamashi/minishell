@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 10:39:54 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void	fd_rdir(t_exec **ex, char *path, int rint)
 	int	fd;
 
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+	if (errno && ((*ex)->error_flag = true))
+		return ;
 	if (rint == -2)
 	{
 		close(fd);
@@ -136,6 +138,8 @@ void	fd_rrdir(t_exec **ex, char *path, int rint)
 	int	fd;
 
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if (errno && ((*ex)->error_flag = true))
+		return ;
 	if (rint == -2)
 	{
 		close(fd);
@@ -160,7 +164,10 @@ void	fd_ldir(t_exec **ex, char *path, int rint)
 {
 	int	fd;
 
+	errno = 0;
 	fd = open(path, O_RDONLY);
+	if (errno && ((*ex)->error_flag = true))
+		return ;
 	if (rint == -2)
 	{
 		close(fd);
@@ -186,6 +193,8 @@ void	fd_get(t_exec **ex, char *path, int type, int	rint)
 		fd_rrdir(ex, path, rint);
 	if (type == LDIR)
 		fd_ldir(ex, path, rint);
+	if (errno)
+		(*ex)->error_flag = true;
 }
 
 /*void	solve_rint(int fd, char *rint, t_exec **ex, t_minishell *m_sh)
@@ -276,7 +285,7 @@ void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh)
 			if (ambiguous_error(m_sh, ((t_pack *)mov->content)->line, ex))
 				break ;
 		fd_get(ex, path, type, rint);
-		if (errno && ((*ex)->error_flag = true))
+		if (errno && (*ex)->error_flag)
 		{
 			fd_error(path, (*ex)->fd_err);
 			m_sh->exit_status = 1;
