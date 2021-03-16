@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 19:24:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 11:53:27 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int		sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minish
  * utiles
  */
 int		sh_execvpes(t_exec *s, t_minishell *m_sh);
-int		ft_perror(char *string);
-void	sh_dup_close(int old_fd, int new_fd);
+int		ft_perror(char *string, int fd_err);
+void	sh_dup_close(int old_fd, int new_fd, int fd_err);
 t_builtin_f	builtin_table(t_exec *com);
 
 int		display_export(t_minishell *m_sh, t_exec *ex);

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 11:15:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 14:06:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 	char	*sep;
 	char	buf[PATH_MAX + 1];
 	int		errno_reserve;
+	char	*tmp;
 
 	if (!ft_strncmp(file, ".", 2))
 		exit (2);
@@ -40,10 +41,13 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 		return (execve(file, argv, envp));
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
 		return (execve(file, argv, envp));
+//	printf("[env_path]:%s\n", env_path);
+	tmp = env_path;
 	sep = env_path;
 	errno_reserve = 0;
 	while (*sep)
 	{
+//		printf("[sep]:%s\n", sep);
 		if (!(sep = ft_strchr(env_path, ':')))
 			sep = ft_strchr(env_path, 0);
 		if (!make_path(buf, env_path, sep, file))
@@ -56,5 +60,6 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 		errno = errno_reserve;
 	if (file && !*file)
 		errno = ENOENT;
+	free(tmp);
 	return (-1);
 }

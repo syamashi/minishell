@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 09:56:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 12:16:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <unistd.h>
 # include <sys/wait.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 
 # define STR_OPT_LN "-n"
