@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 01:33:38 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:24:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	dir_add(t_list **mov, t_leaf **leaf)
 			exit(ft_error("malloc failed", 1, STDERR));
 		ft_lstadd_back(&(*leaf)->dir, new);
 		if (((t_pack*)((*mov)->content))->type == STR)
-			break;
+			break ;
 		*mov = (*mov)->next;
 	}
 }

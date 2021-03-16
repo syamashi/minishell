@@ -6,18 +6,42 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:16:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:44:33 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
+
+void	lstadd_str(t_list **ret, char *str)
+{
+	t_list	*new;
+	char	*add;
+
+	if (!(add = ft_strdup(str)))
+		exit(ft_error("malloc failed", 1, STDERR));
+	if (!(new = ft_lstnew(add)))
+		exit(ft_error("malloc failed", 1, STDERR));
+	ft_lstadd_back(ret, new);
+}
+
+void	lstadd_substr(t_list **ret, char *str, int start, int len)
+{
+	t_list	*new;
+	char	*add;
+
+	if (!(add = ft_substr(str, start, len)))
+		exit(ft_error("malloc failed", 1, STDERR));
+	if (!(new = ft_lstnew(add)))
+		exit(ft_error("malloc failed", 1, STDERR));
+	ft_lstadd_back(ret, new);
+}
 
 t_list	*pwdlst_nocurrent(char *str)
 {
 	t_list	*ret;
 	t_list	*new;
 	char	*add;
-	int 	i;
+	int		i;
 	int		j;
 
 	i = -1;
@@ -36,11 +60,7 @@ t_list	*pwdlst_nocurrent(char *str)
 		ft_lstadd_back(&ret, new);
 	}
 	if (i && str[i - 1] == '/')
-	{
-		if (!(add = ft_strdup("")) || !(new = ft_lstnew(add)))
-			exit(ft_error("malloc failed", 1, STDERR));
-		ft_lstadd_back(&ret, new);
-	}
+		lstadd_str(&ret, "");
 	return (ret);
 }
 
@@ -49,7 +69,7 @@ t_list	*pwdlst_solve(char *str)
 	t_list	*ret;
 	t_list	*new;
 	char	*add;
-	int 	i;
+	int		i;
 	int		j;
 
 	i = -1;
@@ -60,11 +80,7 @@ t_list	*pwdlst_solve(char *str)
 		while (str[i] && str[i] != '/')
 			i++;
 		if (i > j)
-		{
-			if (!(add = ft_substr(str, j, i - j)) || !(new = ft_lstnew(add)))
-				exit(ft_error("malloc failed", 1, STDERR));
-			ft_lstadd_back(&ret, new);
-		}
+			lstadd_substr(&ret, str, j, i - j);
 		j = i + 1;
 		if (!str[i])
 			i--;

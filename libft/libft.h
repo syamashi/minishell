@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/24 21:19:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/01/23 14:42:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 19:04:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void			ft_putstr_fd(char *s, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 
-int	ft_strcmp(const char *s1, const char *s2);
-void ft_putstr(char *str);
-void ft_putchar(char c);
-void ft_free(char *str);
-int get_next_line(int fd, char **line);
+int				ft_strcmp(const char *s1, const char *s2);
+void			ft_putstr(char *str);
+void			ft_putchar(char c);
+void			ft_free(char *str);
+int				get_next_line(int fd, char **line);
 #endif

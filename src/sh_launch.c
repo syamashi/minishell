@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 17:36:08 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 22:23:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,23 @@ int		usage_dot(int ret, int fd_err)
 	return (ret);
 }
 
+void	execvp_error(char *path, char *str, int ret)
+{
+	ft_putstr_fd(MINISHELL, STDERR);
+	ft_putstr_fd(path, STDERR);
+	ft_putstr_fd(": ", STDERR);
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd("\n", STDERR);
+	exit(ret);
+}
+
 void	sh_launch_child(
 	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
 {
 	t_builtin_f		builtin_function;
 	t_exec			*exec_param;
-	struct	stat	sb;
+	struct stat		sb;
+	int				errno_recieve;
 
 	exec_param = exlist->content;
 	if (prev_pipe)
@@ -70,30 +81,19 @@ void	sh_launch_child(
 		exec_param->fd_err = 2;
 		exit(builtin_function(m_sh, exec_param));
 	}
+	// NULLのとき落ちる
 	if (!exec_param->argv[0])
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, STDERR));
 	if (sh_execvpes(exec_param, m_sh) == -2)
-    {
-		ft_putstr_fd(MINISHELL, STDERR);
-		ft_putstr_fd(exec_param->argv[0], STDERR);
-		ft_putstr_fd(": ", STDERR);
-		ft_putstr_fd("command not found\n", STDERR);
-		exit(127);
-	}
+		execvp_error(exec_param->argv[0], "command not found", 127);
 	else if (errno)
 	{
-		int e = errno;
+		errno_recieve = errno;
 		if (stat(exec_param->argv[0], &sb) == 0)
-		{
-			ft_putstr_fd(MINISHELL, STDERR);
-			ft_putstr_fd(exec_param->argv[0], STDERR);
-			ft_putstr_fd(": ", STDERR);
-			ft_putstr_fd("is a directory\n", STDERR);
-			exit(126);
-		}
-		errno = e;
+			execvp_error(exec_param->argv[0], "is a directory", 126);
+		errno = errno_recieve;
 		ft_perror(exec_param->argv[0], STDERR);
 	}
 	exit(status_handling(errno));

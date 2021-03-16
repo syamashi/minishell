@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 23:12:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 22:25:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,93 +37,96 @@
 # define RINT 18
 # define DUMMY 129
 
-void	pack_free(void *ptr);
-void	packs_free(t_list **packs);
-void	env_free(void *ptr);
-void	all_free(char **line, t_list **store, t_list **ast, t_list **exlist);
-void	ast_free(t_list **ast);
+void		pack_free(void *ptr);
+void		packs_free(t_list **packs);
+void		env_free(void *ptr);
+void		all_free(char **line, t_list **store,
+			t_list **ast, t_list **exlist);
+void		ast_free(t_list **ast);
 
-int		env_init(char **envp, t_minishell *m_sh);
-t_list	*ft_strtoken(char *line);
-void	store_div(t_command **store);
-void	env_expand(t_list **packs, t_minishell *m_sh, int pathflag);
-void	packs_trim(t_list **packs);
-void	null_del(t_list **packs);
-void	new_pack(t_pack **pack);
-void	pack_join(t_pack **pack, char *str, int len);
-void	pack_add(t_pack **pack, t_list **list, int type);
-void	token_pipe(t_pack **pack, t_list **list, t_token *t);
-void	token_and(t_pack **pack, t_list **list, t_token *t);
-void	token_redirect_l(t_pack **pack, t_list **list, t_token *t);
-void	token_redirect_r(t_pack **pack, t_list **list, t_token *t);
-void	token_escape(t_pack **pack, t_list **list, t_token *t);
-void	token_squote(t_pack **pack, t_list **list, t_token *t);
-void	token_dquote(t_pack **pack, t_list **list, t_token *t);
-void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
-int		divide_semicolon(t_list **lines, char *line);
-int		solve_exit(t_list *semi, t_list **packs, t_list **env);
-int		get_exec(t_list **store, t_list **packs);
-void	def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
-t_list	*packed(char *line);
+int			env_init(char **envp, t_minishell *m_sh);
+void		env_shlvl_init(t_minishell *m_sh);
+t_list		*ft_strtoken(char *line);
+void		store_div(t_command **store);
+void		env_expand(t_list **packs, t_minishell *m_sh, int pathflag);
+void		packs_trim(t_list **packs);
+void		null_del(t_list **packs);
+void		new_pack(t_pack **pack);
+void		pack_join(t_pack **pack, char *str, int len);
+void		pack_add(t_pack **pack, t_list **list, int type);
+void		token_pipe(t_pack **pack, t_list **list, t_token *t);
+void		token_and(t_pack **pack, t_list **list, t_token *t);
+void		token_redirect_l(t_pack **pack, t_list **list, t_token *t);
+void		token_redirect_r(t_pack **pack, t_list **list, t_token *t);
+void		token_escape(t_pack **pack, t_list **list, t_token *t);
+void		token_squote(t_pack **pack, t_list **list, t_token *t);
+void		token_dquote(t_pack **pack, t_list **list, t_token *t);
+void		def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
+int			divide_semicolon(t_list **lines, char *line);
+int			solve_exit(t_list *semi, t_list **packs, t_list **env);
+int			get_exec(t_list **store, t_list **packs);
+void		def_strtoken(t_token *t, t_list **list, char **line, t_pack **pack);
+t_list		*packed(char *line);
 
-int		syntax_check(t_list *list, t_minishell *m_sh);
-int		input_check(t_list *store, t_minishell *m_sh);
-void	token_semi(t_pack **pack, t_list **list, t_token *t);
-void	token_doll(t_pack **pack, t_list **list, t_token *t);
-void	packs_trim(t_list **packs);
-void	exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh);
-void	ast_init(t_list **ast, t_list **packs);
-void	quote_del(t_list **packs);
-void	strs_join(t_list **packs);
+int			syntax_check(t_list *list, t_minishell *m_sh);
+int			input_check(t_list *store, t_minishell *m_sh);
+void		token_semi(t_pack **pack, t_list **list, t_token *t);
+void		token_doll(t_pack **pack, t_list **list, t_token *t);
+void		packs_trim(t_list **packs);
+void		exlist_init(t_list *ast, t_list **exlist, t_minishell *m_sh);
+void		ast_init(t_list **ast, t_list **packs);
+void		quote_del(t_list **packs);
+void		strs_join(t_list **packs);
 
-void	pack_stradd(t_pack **pack, t_list **list, t_token *t);
-void	pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
-t_list	*pack_end(t_pack **pack, t_list **list);
+void		pack_stradd(t_pack **pack, t_list **list, t_token *t);
+void		pack_metaadd(t_pack **pack, t_list **list, char *str, int type);
+t_list		*pack_end(t_pack **pack, t_list **list);
 
-void	env_solve(char **line, t_minishell *m_sh, t_list *mov);
-void	repack(t_list **prev, t_list **mov, t_list **packs);
-void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov);
+void		env_solve(char **line, t_minishell *m_sh, t_list *mov);
+void		repack(t_list **prev, t_list **mov, t_list **packs);
+void		env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov);
 
-void	pack_del(t_list **prev, t_list **mov, t_list **packs);
+void		pack_del(t_list **prev, t_list **mov, t_list **packs);
 
-void	fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh);
-void	fdin_set(t_exec **ex, const int n, char *path);
-void	fdout_set(t_exec **ex, const int n, char *path);
-void	quoteflag_get(int type, int *quote_flag);
-char	*path_make(char *src, t_minishell *m_sh);
+void		fd_controller(t_exec **ex, t_list *dir, t_minishell *m_sh);
+void		fd_get(t_exec **ex, char *path, int type, int rint);
+void		quoteflag_get(int type, int *quote_flag);
+char		*path_make(char *src, t_minishell *m_sh);
 
-bool	is_space(char c);
-bool	is_meta(char c);
-bool	is_keyend(char c);
-bool	is_envend(char c);
-bool	is_envmeta(char c);
-bool	is_dir(int n);
-bool	is_quote(int n);
-bool	is_dir(int n);
-bool	is_metatype(int n);
-bool	is_bonus(int n);
-bool	isnot_cmd(const int type);
-bool	is_cmd(int type);
-bool	is_cmdstr(int type, int *pre_type, int *quote_flag);
-bool	is_esc(char c);
+bool		is_space(char c);
+bool		is_meta(char c);
+bool		is_keyend(char c);
+bool		is_envend(char c);
+bool		is_envmeta(char c);
+bool		is_dir(int n);
+bool		is_quote(int n);
+bool		is_dir(int n);
+bool		is_metatype(int n);
+bool		is_bonus(int n);
+bool		isnot_cmd(const int type);
+bool		is_cmd(int type);
+bool		is_cmdstr(int type, int *pre_type, int *quote_flag);
+bool		is_esc(char c);
+int			is_strsjoin(int type);
 
-void	packinfo_get(char **line, int *type, const t_list *mov);
-void	simplejoin(char **output, char *add);
-char	*simpletrim(char *output, char *trim);
+void		packinfo_get(char **line, int *type, const t_list *mov);
+void		simplejoin(char **output, char *add);
+char		*simpletrim(char *output, char *trim);
 
 t_command	*ft_clstnew(void *content);
-void	ft_clstdelone(t_command *lst, void (*del)(void*));
-void	ft_clstadd_back(t_command **lst, t_command *new);
+void		ft_clstdelone(t_command *lst, void (*del)(void*));
+void		ft_clstadd_back(t_command **lst, t_command *new);
 
-bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex);
-int		ft_syntax_error(char *str, int i);
-int		ft_avoid_error(char *str, int i, int fd);
-int		ft_exit_error(char *str, int i);
-int		ft_error(char *str, int i, int fd);
-void	fd_error(char *str, int fd);
-int		dir_error(char *path, int n, t_exec **ex);
-int		ft_cd_error(char *path, int n, char *serror, int fd);
-int		ft_cd_free_error(char *path, int n, char *serror, int fd);
-void	shlvl_error(int depth);
-t_list	*quick_sort_list(t_list *c);
+bool		ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex);
+int			ft_syntax_error(char *str, int i);
+int			ft_avoid_error(char *str, int i, int fd);
+int			ft_exit_error(char *str, int i);
+int			ft_error(char *str, int i, int fd);
+void		fd_error(char *str, int fd);
+int			dir_error(char *path, int n, t_exec **ex);
+int			cd_error(char *path, int n, char *serror, int fd);
+int			ft_cd_free_error(char *path, int n, char *serror, int fd);
+void		shlvl_error(int depth);
+t_list		*quick_sort_list(t_list *c);
+
 #endif

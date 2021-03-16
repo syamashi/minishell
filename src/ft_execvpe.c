@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 17:21:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:18:55 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 	return (0);
 }
 
-int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minishell *m_sh)
+int			sh_execvpe(const char *file, char *const *argv
+						, char *const *envp, t_minishell *m_sh)
 {
 	char	*env_path;
 	char	*sep;
@@ -36,7 +37,7 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 	char	*tmp;
 
 	if (!ft_strncmp(file, ".", 2))
-		exit (2);
+		exit(2);
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
@@ -46,7 +47,6 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 	errno_reserve = 0;
 	while (*sep)
 	{
-//		printf("[sep]:%s\n", sep);
 		if (!(sep = ft_strchr(env_path, ':')))
 			sep = ft_strchr(env_path, 0);
 		if (!make_path(buf, env_path, sep, file))

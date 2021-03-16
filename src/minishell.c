@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/15 21:24:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:23:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 #include "../includes/debug.h"
 
 /*
- * void	minishell(char **envp);
- *
- * # list types
- * t_list<t_list<t_pack>>	commands, tmp;
- *   intermediate products of command
- * t_list<t_exec>			ex_list;
- *
- * all error should be handled in each function called this function
- * 	execpt parse error in div_commands
- */
+**  void	minishell(char **envp);
+**
+**  # list types
+**  t_list<t_list<t_pack>>	commands, tmp;
+**   intermediate products of command
+**  t_list<t_exec>			ex_list;
+**
+**  all error should be handled in each function called this function
+** 	execpt parse error in div_commands
+*/
 
 bool	and_orflag(t_minishell mini_sh, int type)
 {
@@ -40,7 +40,7 @@ bool	and_orflag(t_minishell mini_sh, int type)
 void	sh_init(t_minishell *m_sh, char **envp)
 {
 	char	*strpwd;
-	
+
 	m_sh->env_list = NULL;
 	m_sh->env_oldpwd = NULL;
 	m_sh->env_pwd = NULL;
@@ -66,22 +66,6 @@ void	close_fd_all(t_minishell *m_sh, t_list *ex_list)
 		close(((t_exec*)ex_list->content)->fd_out);
 	if (((t_exec*)ex_list->content)->fd_err != 2)
 		close(((t_exec*)ex_list->content)->fd_err);
-/*
-	t_list		*rtmp;
-	t_redirect	*rd;
-
-
-	while (m_sh->fd_backup){
-		rd = (m_sh->fd_backup)->content;
-		dup2(rd->backup, rd->rint);
-//		printf("backup(%d, %d)\n", rd->backup, rd->rint);
-		close(rd->backup);
-		rtmp = m_sh->fd_backup->next;
-//		printf("rtmp:%p, size:%d\n", rtmp, ft_lstsize(m_sh->fd_backup));
-		ft_lstdelone(m_sh->fd_backup, free);
-		m_sh->fd_backup = rtmp;
-	}
-*/
 }
 
 void	minishell(char **envp)
@@ -102,7 +86,6 @@ void	minishell(char **envp)
 		while (commands)
 		{
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
-//			exlist_debug(ex_list);
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
 			close_fd_all(&mini_sh, ex_list);

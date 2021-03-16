@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 01:54:21 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:23:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	check_commentout(char **line)
 		(!i || (*line)[i - 1] == ' ' || (*line)[i - 1] == '\t'))
 		{
 			(*line)[i] = '\0';
-			break;
+			break ;
 		}
 	}
 }
@@ -72,6 +72,21 @@ char	*line_validcheck(char **line)
 	return (*line);
 }
 
+void	prompt_sigdel(t_list **store, char *line, t_minishell *m_sh)
+{
+	ft_putstr_fd("  \b\b", STDERR);
+	if (g_intflag)
+		ft_lstclear(store, free);
+	g_intflag = 0;
+	if (!(*store) && !ft_strcmp(line, ""))
+	{
+		free(line);
+		ft_putstr_fd("exit\n", STDERR);
+		exit(m_sh->exit_status);
+	}
+	ft_lstadd_back(store, ft_lstnew(line));
+}
+
 char	*sh_prompt(t_minishell *m_sh)
 {
 	char	*line;
@@ -85,30 +100,13 @@ char	*sh_prompt(t_minishell *m_sh)
 		exit(ft_error("sigerror", 1, STDERR));
 	ft_putstr_fd(PROMPT_NAME, 2);
 	while ((ret = get_next_line(0, &line)) == 0)
-	{
-		ft_putstr_fd("  \b\b", STDERR);
-		if (g_intflag)
-			ft_lstclear(&store, free);
-		g_intflag = 0;
-		if (!store && !ft_strcmp(line, ""))
-		{
-			free(line);
-			ft_putstr_fd("exit\n", 2);
-			exit(m_sh->exit_status);
-		}
-		ft_lstadd_back(&store, ft_lstnew(line));
-	}
+		prompt_sigdel(&store, line, m_sh);
 	if (g_intflag && !(g_intflag = 0))
 		m_sh->exit_status = 1;
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		exit(ft_error("sigerror", 1, STDERR));
-	//if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
-	//	exit(ft_error("sigerror", 1, STDERR));
-	//if (g_intflag)
-	//	ft_lstclear(&store, free);
-	//g_intflag = 0;
-	//if (ret < 0)
-		//sh_error();
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+		exit(ft_error("sigerror", 1, STDERR));
 	ft_lstadd_back(&store, ft_lstnew(line));
 	line = ft_lstjoin(store);
 	ft_lstclear(&store, free);
