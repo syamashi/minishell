@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 11:51:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 17:36:56 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int			ft_perror(char *string, int fd_err)
 
 void		sh_dup_close(int old_fd, int new_fd, int fd_err)
 {
+//	printf("[sh_dup_close] old:%d, new:%d, fd_err:%d\n", old_fd, new_fd, fd_err);
 	if (dup2(old_fd, new_fd) < 0)
 	{
 		ft_perror("", fd_err);

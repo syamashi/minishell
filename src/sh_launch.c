@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 17:18:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 17:36:08 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int		status_handling(int e)
 
 int		usage_dot(int ret, int fd_err)
 {
-	ft_putstr_fd(MINISHELL, fd_err);
-	ft_putstr_fd(".: filename argument required\n", fd_err);
-	ft_putstr_fd(".: usage: . filename [arguments]\n", fd_err);
+	ft_putstr_fd(MINISHELL, STDERR);
+	ft_putstr_fd(".: filename argument required\n", STDERR);
+	ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR);
 	return (ret);
 }
 
@@ -73,13 +73,13 @@ void	sh_launch_child(
 	if (!exec_param->argv[0])
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
-		exit(usage_dot(2, exec_param->fd_err));
+		exit(usage_dot(2, STDERR));
 	if (sh_execvpes(exec_param, m_sh) == -2)
     {
-		ft_putstr_fd(MINISHELL, exec_param->fd_err);
-		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
-		ft_putstr_fd(": ", exec_param->fd_err);
-		ft_putstr_fd("command not found\n", exec_param->fd_err);
+		ft_putstr_fd(MINISHELL, STDERR);
+		ft_putstr_fd(exec_param->argv[0], STDERR);
+		ft_putstr_fd(": ", STDERR);
+		ft_putstr_fd("command not found\n", STDERR);
 		exit(127);
 	}
 	else if (errno)
@@ -87,14 +87,14 @@ void	sh_launch_child(
 		int e = errno;
 		if (stat(exec_param->argv[0], &sb) == 0)
 		{
-			ft_putstr_fd(MINISHELL, exec_param->fd_err);
-			ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
-			ft_putstr_fd(": ", exec_param->fd_err);
-			ft_putstr_fd("is a directory\n", exec_param->fd_err);
+			ft_putstr_fd(MINISHELL, STDERR);
+			ft_putstr_fd(exec_param->argv[0], STDERR);
+			ft_putstr_fd(": ", STDERR);
+			ft_putstr_fd("is a directory\n", STDERR);
 			exit(126);
 		}
 		errno = e;
-		ft_perror(exec_param->argv[0], exec_param->fd_err);
+		ft_perror(exec_param->argv[0], STDERR);
 	}
 	exit(status_handling(errno));
 }
@@ -107,20 +107,20 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 
 	status = 0;
 	if (execlist->next && pipe(pipefd) < 0)
-		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+		return (ft_perror("", STDERR));
 	if ((cpid = fork()) < 0)
-		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+		return (ft_perror("", STDERR));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
 	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
-		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+		return (ft_perror("", STDERR));
 	m_sh->exit_status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status)) // signal終了の判定
 		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
 	if (prev_pipe && close(prev_pipe) < 0)
-		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+		return (ft_perror("", STDERR));
 	if (execlist->next && close(pipefd[1]) < 0)
-		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+		return (ft_perror("", STDERR));
 	if (execlist->next)
 		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	return (0);
