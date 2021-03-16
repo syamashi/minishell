@@ -268,6 +268,8 @@ test_all () {
     # command found but not executable should exit with status 126
     run_test "echo '#!/bin/bash' > a ; echo 'echo hello'>>a ; ./a; echo \$?;chmod +x a; ./a; echo \$? ; rm a"
 
+    # usage
+    run_test "."
 
     ### Absolute path
     run_test '/bin/ls ; echo $?'
