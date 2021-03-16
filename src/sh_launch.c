@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 15:51:50 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 17:02:43 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	sh_launch_child(
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, exec_param->fd_err));
 	if (sh_execvpes(exec_param, m_sh) == -1)
-	{
+    {
 		ft_putstr_fd(MINISHELL, exec_param->fd_err);
 		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
 		ft_putstr_fd(": ", exec_param->fd_err);
@@ -86,7 +86,7 @@ void	sh_launch_child(
 	{
 		int e = errno;
 		int st = stat(exec_param->argv[0], &sb);
-		printf("st:%d\n", st);
+//		printf("st:%d\n", st);
 		if (errno)
 			ft_perror(exec_param->argv[0], exec_param->fd_err);
 		errno = e;
@@ -106,26 +106,25 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if ((cpid = fork()) < 0)
 		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
-//	printf("cpid:%d\n", cpid);
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
-//	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
-//		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
-//	if (WIFSIGNALED(status)) // signal終了の判定
-//		m_sh->exit_status = WTERMSIG(status) + 128; //signalがとれる	if (prev_pipe && close(prev_pipe) < 0)
+	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
+	m_sh->exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status)) // signal終了の判定
+		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
+	if (prev_pipe && close(prev_pipe) < 0)
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next && close(pipefd[1]) < 0)
 		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next)
-		return (sh_process_manager(m_sh, execlist->next, pipefd[0]));
-	return (cpid);
+		sh_process_manager(m_sh, execlist->next, pipefd[0]);
+	return (0);
 }
 
 int		sh_launch(t_minishell *m_sh, t_list *execlist)
 {
 	t_builtin_f	builtin_function;
-	int			pipe_cnt;
-	int			status;
-	int			last_pid;
 
 	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
 	{
@@ -138,23 +137,8 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 		exit(ft_error("sigerror", 1, STDERR));
 	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1, STDERR));
-	last_pid = sh_process_manager(m_sh, execlist, 0);
-//	printf("last_pid:%d\n", last_pid);
-	pipe_cnt = -1;
-	while(++pipe_cnt < ft_lstsize(execlist) && last_pid != -1)
-	{
-//		printf("ret:%d, status:%d\n", ret, status/256);
-		if (wait(&status) == last_pid)
-			m_sh->exit_status = status/256;
-		if (WIFSIGNALED(status))
-		{ // signal終了の判定
-			m_sh->exit_status = 128 + WTERMSIG(status);
-			break;
-		}
-	}
+	sh_process_manager(m_sh, execlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	if (last_pid == -1)
-		return (m_sh->exit_status = 1);
 	return (m_sh->exit_status);
 }
