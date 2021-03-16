@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 11:15:47 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 17:18:20 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,20 +46,21 @@ int		usage_dot(int ret, int fd_err)
 void	sh_launch_child(
 	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
 {
-	t_builtin_f	builtin_function;
-	t_exec		*exec_param;
+	t_builtin_f		builtin_function;
+	t_exec			*exec_param;
+	struct	stat	sb;
 
 	exec_param = exlist->content;
 	if (prev_pipe)
-		sh_dup_close(prev_pipe, 0);
+		sh_dup_close(prev_pipe, 0, exec_param->fd_err);
 	if (exec_param->fd_in != 0)
-		sh_dup_close(exec_param->fd_in, 0);
+		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err);
 	if (exlist->next)
-		sh_dup_close(pipefd[1], 1);
+		sh_dup_close(pipefd[1], 1, exec_param->fd_err);
 	if (exec_param->fd_out != 1)
-		sh_dup_close(exec_param->fd_out, 1);
+		sh_dup_close(exec_param->fd_out, 1, exec_param->fd_err);
 	if (exec_param->fd_err != 2)
-		sh_dup_close(exec_param->fd_err, 2);
+		sh_dup_close(exec_param->fd_err, 2, exec_param->fd_err);
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
@@ -73,17 +74,28 @@ void	sh_launch_child(
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, exec_param->fd_err));
-	sh_execvpes(exec_param, m_sh);
-	if (errno)
-		ft_perror("minishell");
-/*    if (errno == ENOENT)
+	if (sh_execvpes(exec_param, m_sh) == -2)
     {
 		ft_putstr_fd(MINISHELL, exec_param->fd_err);
 		ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
 		ft_putstr_fd(": ", exec_param->fd_err);
 		ft_putstr_fd("command not found\n", exec_param->fd_err);
-    }
-	*/	
+		exit(127);
+	}
+	else if (errno)
+	{
+		int e = errno;
+		if (stat(exec_param->argv[0], &sb) == 0)
+		{
+			ft_putstr_fd(MINISHELL, exec_param->fd_err);
+			ft_putstr_fd(exec_param->argv[0], exec_param->fd_err);
+			ft_putstr_fd(": ", exec_param->fd_err);
+			ft_putstr_fd("is a directory\n", exec_param->fd_err);
+			exit(126);
+		}
+		errno = e;
+		ft_perror(exec_param->argv[0], exec_param->fd_err);
+	}
 	exit(status_handling(errno));
 }
 
@@ -95,20 +107,20 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 
 	status = 0;
 	if (execlist->next && pipe(pipefd) < 0)
-		return (ft_perror("minishell"));
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if ((cpid = fork()) < 0)
-		return (ft_perror("minishell"));
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
 	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
-		return (ft_perror("minishell"));
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	m_sh->exit_status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status)) // signal終了の判定
-		m_sh->exit_status = WTERMSIG(status) + 128; //signalがとれる
+		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
 	if (prev_pipe && close(prev_pipe) < 0)
-		return (ft_perror("minishell"));
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next && close(pipefd[1]) < 0)
-		return (ft_perror("minishell"));
+		return (ft_perror("", ((t_exec *)execlist->content)->fd_err));
 	if (execlist->next)
 		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	return (0);
