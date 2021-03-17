@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 14:37:22 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:13:53 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	sh_launch_child(
 	int				errno_recieve;
 
 	exec_param = exlist->content;
+
 	if (prev_pipe)
 		sh_dup_close(prev_pipe, 0, exec_param->fd_err); // prec0dup created, prec0, close
 	if (exec_param->fd_in != 0)
@@ -72,7 +73,10 @@ void	sh_launch_child(
 		sh_dup_close(exec_param->fd_out, 1, exec_param->fd_err);
 	if (exec_param->fd_err != 2)
 		sh_dup_close(exec_param->fd_err, 2, exec_param->fd_err);
-	close(pipefd[0]); //***
+
+
+	if (exlist->next)
+		close(pipefd[0]); //***
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
@@ -121,12 +125,16 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 		return (ft_perror("", STDERR));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
-	if (execlist->next && close(pipefd[1]) < 0) //p1 close
-		return (ft_perror("", STDERR));
+
+
 	if (prev_pipe && close(prev_pipe) < 0) //prep0 close
 		return (ft_perror("", STDERR));
+	if (execlist->next && close(pipefd[1]) < 0) //p1 close
+		return (ft_perror("", STDERR));
+
 	if (execlist->next)
 		sh_process_manager(m_sh, execlist->next, pipefd[0]); //p0 to be close
+
 	if (waitpid(-1, &status, 0) < 0)
 		return (ft_perror("", STDERR));
 	m_sh->exit_status = WEXITSTATUS(status);
