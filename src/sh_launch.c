@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 10:38:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 11:33:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	sh_launch_child(
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, STDERR));
-	if (sh_execvpes(exec_param, m_sh) == -2)
+	if (!(*exec_param->argv[0]) || sh_execvpes(exec_param, m_sh) == -2)
 		execvp_error(exec_param->argv[0], "command not found", 127);
 	else if (errno)
 	{
