@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 18:26:37 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:44:41 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static	int	make_path(char *buf, const char *path, const char *sep,
 		const char *file)
 {
-	size_t	filelen;
-	struct stat sb;
+	size_t		filelen;
+	struct stat	sb;
 
 	filelen = ft_strlen(file);
 	if (filelen + (sep - path) + 1 > PATH_MAX)
@@ -36,7 +36,7 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 	return (0);
 }
 
-void	internal_error(const char *path, char *str, int ret)
+void		internal_error(const char *path, char *str, int ret)
 {
 	ft_putstr_fd(MINISHELL, STDERR);
 	ft_putstr_fd((char *)path, STDERR);
@@ -69,23 +69,27 @@ void		error_branch(int mode, const char *file)
 	internal_error(file, "command not found", 127);
 }
 
-void			search_and_exec(const char *file, char *const *argv
+void		simple_case(const char *file, char *const *argv
 						, char *const *envp, t_minishell *m_sh)
 {
-	char	*env_path;
-	char	*sep;
-	char	buf[PATH_MAX + 1];
-	int		errno_reserve;
-	char	*tmp;
-	struct stat	sb;
-
 	if (!*file)
 		error_branch(0, file);
 	if (ft_strchr(file, '/'))
 		error_branch(execve(file, argv, envp), file);
+}
+
+void		search_and_exec(const char *file, char *const *argv
+						, char *const *envp, t_minishell *m_sh)
+{
+	char		*env_path;
+	char		*sep;
+	char		buf[PATH_MAX + 1];
+	int			errno_reserve;
+	struct stat	sb;
+
+	simple_case(file, argv, envp, m_sh);
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
 		error_branch(execve(file, argv, envp), file);
-	tmp = env_path;
 	sep = env_path;
 	errno_reserve = ENOENT;
 	while (*sep)
@@ -100,7 +104,6 @@ void			search_and_exec(const char *file, char *const *argv
 			errno_reserve = EISDIR;
 		env_path = sep + 1;
 	}
-	free(tmp);
 	errno = errno_reserve;
 	error_branch(0, file);
 }

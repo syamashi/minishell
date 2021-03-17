@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 18:28:35 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:53:07 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,13 @@ int		usage_dot(int ret, int fd_err)
 	return (ret);
 }
 
-void	exec_command(t_minishell *m_sh, t_exec *exec_param)
+void	launch_builtin(t_minishell *m_sh, t_exec *exec_param,
+		t_builtin_f builtin_function)
 {
-	search_and_exec(exec_param->argv[0], exec_param->argv, exec_param->envp, m_sh);
+	exec_param->fd_in = 0;
+	exec_param->fd_out = 1;
+	exec_param->fd_err = 2;
+	exit(builtin_function(m_sh, exec_param));
 }
 
 void	sh_launch_child(
@@ -43,40 +47,29 @@ void	sh_launch_child(
 {
 	t_builtin_f		builtin_function;
 	t_exec			*exec_param;
-//	int				errno_recieve;
 
 	exec_param = exlist->content;
-
 	if (prev_pipe)
-		sh_dup_close(prev_pipe, 0, exec_param->fd_err); // prec0dup created, prec0, close
+		sh_dup_close(prev_pipe, 0, exec_param->fd_err);
 	if (exec_param->fd_in != 0)
-		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err); // fdin
+		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err);
 	if (exlist->next)
 		sh_dup_close(pipefd[1], 1, exec_param->fd_err);
 	if (exec_param->fd_out != 1)
 		sh_dup_close(exec_param->fd_out, 1, exec_param->fd_err);
 	if (exec_param->fd_err != 2)
 		sh_dup_close(exec_param->fd_err, 2, exec_param->fd_err);
-
-
 	if (exlist->next)
-		close(pipefd[0]); //***
+		close(pipefd[0]);
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
-	{
-		exec_param->fd_in = 0;
-		exec_param->fd_out = 1;
-		exec_param->fd_err = 2;
-		exit(builtin_function(m_sh, exec_param));
-	}
-	// NULLのとき落ちる
+		launch_builtin(m_sh, exec_param, builtin_function);
 	if (!exec_param->argv[0])
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, STDERR));
 	exec_command(m_sh, exec_param);
-	//exit(status_handling(errno));
 }
 
 int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
@@ -86,47 +79,42 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	int		pipefd[2];
 
 	status = 0;
-	if (execlist->next && pipe(pipefd) < 0)  // fd + 2 = 3
+	if (execlist->next && pipe(pipefd) < 0)
 		return (ft_perror("", STDERR));
-	if ((cpid = fork()) < 0) // fd * 2 = 4 {p0, p1, c0, c1, prep0, prec0}
+	if ((cpid = fork()) < 0)
 		return (ft_perror("", STDERR));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
-
-
-	if (prev_pipe && close(prev_pipe) < 0) //prep0 close
+	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("", STDERR));
-	if (execlist->next && close(pipefd[1]) < 0) //p1 close
+	if (execlist->next && close(pipefd[1]) < 0)
 		return (ft_perror("", STDERR));
-
 	if (execlist->next)
-		sh_process_manager(m_sh, execlist->next, pipefd[0]); //p0 to be close
-
+		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	if (waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("", STDERR));
 	if (!execlist->next)
 		m_sh->exit_status = WEXITSTATUS(status);
-	if (!execlist->next && WIFSIGNALED(status)) // signal終了の判定
-		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
+	if (!execlist->next && WIFSIGNALED(status))
+		return (m_sh->exit_status = WTERMSIG(status) + 128);
 	return (0);
 }
 
-int		sh_launch(t_minishell *m_sh, t_list *execlist)
+int		sh_launch(t_minishell *m_sh, t_list *exlist)
 {
 	t_builtin_f	builtin_function;
 
-	if (!execlist->next && (builtin_function = builtin_table(execlist->content)))
+	if (!exlist->next && (builtin_function = builtin_table(exlist->content)))
 	{
-		if (((t_exec *)execlist->content)->error_flag)
+		if (((t_exec *)exlist->content)->error_flag)
 			return ((m_sh->exit_status));
-		return(m_sh->exit_status = builtin_function(m_sh, execlist->content));
+		return (m_sh->exit_status = builtin_function(m_sh, exlist->content));
 	}
-//	signal(SIGINT, SIG_IGN);
 	if (signal(SIGINT, sh_putendl_handler) == SIG_ERR)
 		exit(ft_error("sigerror", 1, STDERR));
 	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1, STDERR));
-	sh_process_manager(m_sh, execlist, 0);
+	sh_process_manager(m_sh, exlist, 0);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	return (m_sh->exit_status);

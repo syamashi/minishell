@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/08 16:48:27 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 21:23:09 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:58:25 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	check_commentout(char **line)
 			quote_flag ^= 1;
 		if ((*line)[i] == '"')
 			quote_flag ^= 2;
-		if (!quote_flag && (*line)[i] == '#' && 
+		if (!quote_flag && (*line)[i] == '#' &&
 		(!i || (*line)[i - 1] == ' ' || (*line)[i - 1] == '\t'))
 		{
 			(*line)[i] = '\0';
