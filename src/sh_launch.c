@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 22:23:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 09:13:52 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,18 +112,18 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 		return (ft_perror("", STDERR));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
-	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
-		return (ft_perror("", STDERR));
-	m_sh->exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status)) // signal終了の判定
-		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
+//	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
+//		return (ft_perror("", STDERR));
+//	m_sh->exit_status = WEXITSTATUS(status);
+//	if (WIFSIGNALED(status)) // signal終了の判定
+//		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
 	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("", STDERR));
 	if (execlist->next && close(pipefd[1]) < 0)
 		return (ft_perror("", STDERR));
 	if (execlist->next)
-		sh_process_manager(m_sh, execlist->next, pipefd[0]);
-	return (0);
+		return (sh_process_manager(m_sh, execlist->next, pipefd[0]));
+	return (cpid);
 }
 
 int		sh_launch(t_minishell *m_sh, t_list *execlist)
@@ -141,7 +141,26 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 		exit(ft_error("sigerror", 1, STDERR));
 	if (signal(SIGQUIT, sh_quithandler) == SIG_ERR)
 		exit(ft_error("sigerror", 1, STDERR));
-	sh_process_manager(m_sh, execlist, 0);
+//	sh_process_manager(m_sh, execlist, 0);
+	int last_cpid = sh_process_manager(m_sh, execlist, 0);
+	int	exsize = ft_lstsize(execlist);
+	int status = 0;
+
+	printf("last_cpid:%d, exsize:%d\n", last_cpid, exsize);
+	while (exsize-- >= 0)
+	{
+		int status_pid = wait(&status);
+		printf("status_pid:%d\n", status_pid);
+		if (status_pid == last_cpid)
+		{
+			m_sh->exit_status = WEXITSTATUS(status);
+			printf("WEXITSTATUS:%d\n", m_sh->exit_status);
+			if (WIFSIGNALED(status)) // signal終了の判定
+				m_sh->exit_status = WTERMSIG(status) + 128; //signalがとれる
+			printf("WTREMSIG:%d\n\n", m_sh->exit_status);
+			break;
+		}
+	}
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	return (m_sh->exit_status);
