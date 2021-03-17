@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 11:33:17 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 14:37:22 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,16 @@ void	sh_launch_child(
 
 	exec_param = exlist->content;
 	if (prev_pipe)
-		sh_dup_close(prev_pipe, 0, exec_param->fd_err);
+		sh_dup_close(prev_pipe, 0, exec_param->fd_err); // prec0dup created, prec0, close
 	if (exec_param->fd_in != 0)
-		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err);
+		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err); // fdin
 	if (exlist->next)
 		sh_dup_close(pipefd[1], 1, exec_param->fd_err);
 	if (exec_param->fd_out != 1)
 		sh_dup_close(exec_param->fd_out, 1, exec_param->fd_err);
 	if (exec_param->fd_err != 2)
 		sh_dup_close(exec_param->fd_err, 2, exec_param->fd_err);
+	close(pipefd[0]); //***
 	if (exec_param->error_flag)
 		exit(1);
 	if ((builtin_function = builtin_table(exec_param)))
@@ -101,6 +102,9 @@ void	sh_launch_child(
 		errno = errno_recieve;
 		ft_perror(exec_param->argv[0], STDERR);
 	}
+	close(0);
+	close(1);
+	close(2);
 	exit(status_handling(errno));
 }
 
@@ -111,23 +115,23 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	int		pipefd[2];
 
 	status = 0;
-	if (execlist->next && pipe(pipefd) < 0)
+	if (execlist->next && pipe(pipefd) < 0)  // fd + 2 = 3
 		return (ft_perror("", STDERR));
-	if ((cpid = fork()) < 0)
+	if ((cpid = fork()) < 0) // fd * 2 = 4 {p0, p1, c0, c1, prep0, prec0}
 		return (ft_perror("", STDERR));
 	if (cpid == 0)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
-	if (!execlist->next && waitpid(cpid, &status, 0) < 0)
+	if (execlist->next && close(pipefd[1]) < 0) //p1 close
+		return (ft_perror("", STDERR));
+	if (prev_pipe && close(prev_pipe) < 0) //prep0 close
+		return (ft_perror("", STDERR));
+	if (execlist->next)
+		sh_process_manager(m_sh, execlist->next, pipefd[0]); //p0 to be close
+	if (waitpid(-1, &status, 0) < 0)
 		return (ft_perror("", STDERR));
 	m_sh->exit_status = WEXITSTATUS(status);
 	if (WIFSIGNALED(status)) // signal終了の判定
 		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
-	if (prev_pipe && close(prev_pipe) < 0)
-		return (ft_perror("", STDERR));
-	if (execlist->next && close(pipefd[1]) < 0)
-		return (ft_perror("", STDERR));
-	if (execlist->next)
-		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	return (0);
 }
 
