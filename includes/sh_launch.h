@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 22:29:45 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:54:04 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,19 @@
 # include "../includes/parse.h"
 
 # define PATH_MAX 255
-# define F_ECHO_OPT_N (1 << 0)
+# define F_ECHO_OPT_N 1
 
 typedef int		(*t_builtin_f)(t_minishell *, t_exec *);
 
 int				sh_launch(t_minishell *m_sh, t_list *execlist);
-int				sh_execvpe(const char *file, char *const *argv,
+void			search_and_exec(const char *file, char *const *argv,
 				char *const *envp, t_minishell *m_sh);
 
 /*
 **  utiles
 */
 
-int				sh_execvpes(t_exec *s, t_minishell *m_sh);
+void			exec_command(t_minishell *m_sh, t_exec *exec_param);
 int				ft_perror(char *string, int fd_err);
 void			sh_dup_close(int old_fd, int new_fd, int fd_err);
 t_builtin_f		builtin_table(t_exec *com);
