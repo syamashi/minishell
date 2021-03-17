@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 22:23:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 11:33:17 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,13 +86,18 @@ void	sh_launch_child(
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, STDERR));
-	if (sh_execvpes(exec_param, m_sh) == -2)
+	if (!(*exec_param->argv[0]) || sh_execvpes(exec_param, m_sh) == -2)
 		execvp_error(exec_param->argv[0], "command not found", 127);
 	else if (errno)
 	{
 		errno_recieve = errno;
 		if (stat(exec_param->argv[0], &sb) == 0)
-			execvp_error(exec_param->argv[0], "is a directory", 126);
+		{
+			if (!(sb.st_mode & S_IRUSR) || !(sb.st_mode & S_IXUSR))
+				execvp_error(exec_param->argv[0], "Permission denied", 126);
+			else
+				execvp_error(exec_param->argv[0], "is a directory", 126);
+		}
 		errno = errno_recieve;
 		ft_perror(exec_param->argv[0], STDERR);
 	}

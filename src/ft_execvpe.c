@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 20:18:55 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 11:26:37 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ int			sh_execvpe(const char *file, char *const *argv
 		env_path = sep + 1;
 	}
 	if (errno_reserve)
+	{
 		errno = errno_reserve;
+		return (-1);
+	}
 	free(tmp);
 	return (-2);
 }
