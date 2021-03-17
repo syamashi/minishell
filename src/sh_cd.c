@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 22:32:15 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 22:25:07 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		cd_no_args(t_minishell *m_sh, int fd)
 		return (pwd_update(m_sh, path, false));
 	}
 	if (chdir(home) == -1)
-		return (ft_cd_free_error(home, 1, "No such file or directory", fd));
+		return (ft_cd_free_error(home, 127, "No such file or directory", fd));
 	ft_lstclear(&m_sh->pwds, free);
 	pwd_update(m_sh, home, false);
 	free(home);
@@ -38,7 +38,7 @@ int		cd_no_current(t_minishell *m_sh, char *argv, int fd)
 	ft_putstr_fd("cd: error retrieving current directory: ", fd);
 	ft_putstr_fd("getcwd: cannot access parent directories : ", fd);
 	ft_putstr_fd("No such file or directory\n", fd);
-	return (1);
+	return (0);
 }
 
 int		cd_nx_current(t_minishell *m_sh, char *path, char *argv)
