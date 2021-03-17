@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 22:24:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:55:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	shlvl_error(int depth)
 
 	if (!(str = ft_itoa(depth)))
 		exit(ft_error("malloc failed", 1, STDERR));
-	ft_putstr_fd(MINISHELL, 2);
-	ft_putstr_fd("warning: shell level (", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd(") too high, resetting to 1\n", 2);
+	ft_putstr_fd(MINISHELL, STDERR);
+	ft_putstr_fd("warning: shell level (", STDERR);
+	ft_putstr_fd(str, STDERR);
+	ft_putstr_fd(") too high, resetting to 1\n", STDERR);
 	free(str);
 }

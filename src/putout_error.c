@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 19:30:11 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:50:38 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ int		ft_avoid_error(char *str, int i, int fd)
 
 	ft_putstr_fd(MINISHELL, fd);
 	if (cnt % 3 == 0)
-		ft_putstr_fd("(*д*)oops '", fd);
+		ft_putstr_fd("(*A*)oops '", fd);
 	if (cnt % 3 == 1)
-		ft_putstr_fd("(-д-)oops '", fd);
+		ft_putstr_fd("(-A-)oops '", fd);
 	if (cnt % 3 == 2)
-		ft_putstr_fd("(;Д;)oops '", fd);
+		ft_putstr_fd("(;A;)oops '", fd);
 	ft_putstr_fd(str, fd);
 	ft_putstr_fd("'", fd);
 	ft_putstr_fd(" does not support...", fd);
@@ -50,13 +50,13 @@ int		ft_avoid_error(char *str, int i, int fd)
 	return (i);
 }
 
-int		ft_exit_error(char *str, int i)
+int		ft_exit_error(char *str, int i, int fd)
 {
-	ft_putstr_fd(MINISHELL, STDERR);
-	ft_putstr_fd("exit: ", STDERR);
-	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd(": numeric argument required", STDERR);
-	ft_putstr_fd("\n", STDERR);
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd("exit: ", fd);
+	ft_putstr_fd(str, fd);
+	ft_putstr_fd(": numeric argument required", fd);
+	ft_putstr_fd("\n", fd);
 	return (i);
 }
 
