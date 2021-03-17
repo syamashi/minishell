@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 19:50:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 20:08:37 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int			sh_exit(t_minishell *m_sh, t_exec *exec)
 	int		ret;
 
 	argv = exec->argv + 1;
+	m_sh->exit_flag = true;
 	ft_putstr_fd("exit\n", exec->fd_err);
 	if (!*argv)
 		exit(m_sh->exit_status);

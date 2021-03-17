@@ -983,6 +983,7 @@ test_exit () {
     run_test 'echo -123 | exit ; echo $?'
     run_test 'exit 2>file'
     run_test 'exit 123 aaa 2>file;'
+    run_test 'exit 1 2 3 ; echo non; aaa'
 }
 
 startup $@

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 19:21:45 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 20:08:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct	s_minishell
 	char	*env_pwd;
 	char	*env_oldpwd;
 	t_list	*fd_backup;
+	bool	exit_flag;
 }				t_minishell;
 
 typedef struct	s_command
