@@ -63,9 +63,9 @@ LIBDIR = ./libft/
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 
-all : $(NAME)
+all : $(OBJDIR) $(NAME)
 
-dir_obj :
+$(OBJDIR) :
 	mkdir -p obj
 
 $(OBJDIR)%.o : $(SRCDIR)%.c
