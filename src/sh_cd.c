@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 22:49:56 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 22:59:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int		cd_blank_args(t_minishell *m_sh, char *path, char *argv, int fd)
 	if (chdir(input_pwd))
 	{
 		free(input_pwd);
-		return (cd_error(argv, 127, MYENOENT, fd));
+		return (cd_error(argv, 1, MYENOENT, fd));
 	}
 	free(input_pwd);
 	return (pwd_update(m_sh, argv, false));
