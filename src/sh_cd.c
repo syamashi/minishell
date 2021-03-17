@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 22:39:39 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 22:49:56 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		cd_no_args(t_minishell *m_sh, int fd)
 		return (pwd_update(m_sh, path, false));
 	}
 	if (chdir(home) == -1)
-		return (ft_cd_free_error(home, 127, "No such file or directory", fd));
+		return (ft_cd_free_error(home, 127, MYENOENT, fd));
 	ft_lstclear(&m_sh->pwds, free);
 	pwd_update(m_sh, home, false);
 	free(home);
@@ -58,7 +58,7 @@ int		cd_blank_args(t_minishell *m_sh, char *path, char *argv, int fd)
 	if (chdir(input_pwd))
 	{
 		free(input_pwd);
-		return (cd_error(argv, 1, "No such file or directory", fd));
+		return (cd_error(argv, 127, MYENOENT, fd));
 	}
 	free(input_pwd);
 	return (pwd_update(m_sh, argv, false));
@@ -79,8 +79,7 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	if (!**argv && (path = getcwd(NULL, 0)))
 		return (cd_blank_args(m_sh, path, *argv, exec->fd_err));
 	if (chdir(*argv))
-		return (cd_error(*argv, 127,
-		"No such file or directory", exec->fd_err));
+		return (cd_error(*argv, 127, MYENOENT, exec->fd_err));
 	path = getcwd(NULL, 0);
 	if (!path && (nocurrent = true))
 		return (cd_no_current(m_sh, *argv, exec->fd_err));

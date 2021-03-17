@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 19:33:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 22:48:45 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 # define PATH_MAX 255
 # define F_ECHO_OPT_N 1
+# define MYENOENT "No such file or directory"
 
 typedef int		(*t_builtin_f)(t_minishell *, t_exec *);
 
