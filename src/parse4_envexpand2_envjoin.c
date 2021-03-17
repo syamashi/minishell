@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:42:59 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:28:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 {
 	char	*key;
-	char	*tmp;
-	int		len;
 
 	++t->i;
 	t->j = t->i;

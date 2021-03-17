@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 20:23:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:28:05 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	free(strpwd);
 }
 
-void	close_fd_all(t_minishell *m_sh, t_list *ex_list)
+void	close_fd_all(t_list *ex_list)
 {
 	if (((t_exec*)ex_list->content)->fd_in != 0)
 		close(((t_exec*)ex_list->content)->fd_in);
@@ -88,7 +88,7 @@ void	minishell(char **envp)
 			ex_list = to_ex_list(&mini_sh, (t_list **)&(commands->content));
 			if (and_orflag(mini_sh, commands->and_or))
 				sh_launch(&mini_sh, ex_list);
-			close_fd_all(&mini_sh, ex_list);
+			close_fd_all(ex_list);
 			ft_lstclear(&ex_list, del_t_exec);
 			tmp = commands->next;
 			ft_clstdelone(commands, del_command);

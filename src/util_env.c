@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:27:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:34:09 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ bool	pwdshell_exist(char *key, t_minishell *m_sh)
 
 char	*pwdshell_dup(char *key, t_minishell *m_sh)
 {
-	char	*str;
-
 	if (!ft_strncmp(key, "PWD", 4))
 		return (ft_strdup(m_sh->env_pwd));
 	if (!ft_strncmp(key, "OLDPWD", 7))

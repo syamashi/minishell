@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 11:53:01 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 10:40:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:30:11 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ int		ft_exit_error(char *str, int i)
 
 void	fd_error(char *str, int fd)
 {
-	ft_putstr_fd(MINISHELL, STDERR);
-	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd(": ", STDERR);
-	ft_putstr_fd(strerror(errno), STDERR);
-	ft_putstr_fd("\n", STDERR);
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd(str, fd);
+	ft_putstr_fd(": ", fd);
+	ft_putstr_fd(strerror(errno), fd);
+	ft_putstr_fd("\n", fd);
 }

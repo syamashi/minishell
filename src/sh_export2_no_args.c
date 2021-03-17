@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 20:32:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:30:50 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static char	*make_outputvalue(char *value, int fd)
 static char	*make_output(t_list *env, int fd)
 {
 	char	*output;
-	char	*tmp;
 	char	*key;
 	char	*value;
 

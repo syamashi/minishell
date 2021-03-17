@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sighander.c                                        :+:      :+:    :+:   */
+/*   sighandler.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 01:53:26 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 02:12:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:22:53 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern sig_atomic_t	g_intflag;
 
-void	sh_input_inthandler(int sig)
+void	sh_input_inthandler()
 {
 	ft_putstr_fd("\b\b  \b\n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
@@ -25,7 +25,7 @@ void	sh_input_inthandler(int sig)
 **  GNL, ^\ not display
 */
 
-void	sh_input_quithandler(int sig)
+void	sh_input_quithandler()
 {
 	ft_putstr_fd("\b\b  \b\b", 2);
 }
@@ -48,7 +48,7 @@ void	sh_quithandler(int sig)
 **  cat ctrl+C
 */
 
-void	sh_putendl_handler(int sig)
+void	sh_putendl_handler()
 {
 	ft_putstr_fd("\n", 2);
 }

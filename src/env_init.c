@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:26:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:25:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../includes/parse.h"
 #include "../includes/sh_launch.h"
 
-static void	init_map(t_dict **map, t_list **env, char **envp)
+static void	init_map(t_dict **map, char **envp)
 {
 	int i;
 	int j;
@@ -68,7 +68,7 @@ int			env_init(char **envp, t_minishell *m_sh)
 	{
 		if (!(map = (t_dict *)malloc(sizeof(t_dict))))
 			exit(ft_error("malloc failed", 1, STDERR));
-		init_map(&map, &m_sh->env_list, envp);
+		init_map(&map, envp);
 		if (!(new = ft_lstnew(map)))
 			exit(ft_error("malloc failed", 1, STDERR));
 		ft_lstadd_back(&m_sh->env_list, new);

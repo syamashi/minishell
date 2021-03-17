@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:29:16 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 20:20:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:27:40 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		main(int argc, char **argv, char **envp)
 {
-	if (argc == 1)
+	if (argc == 1 && argv)
 		minishell(envp);
 	else
 	{

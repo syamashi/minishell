@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 18:53:07 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:33:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 
 int		usage_dot(int ret, int fd_err)
 {
-	ft_putstr_fd(MINISHELL, STDERR);
-	ft_putstr_fd(".: filename argument required\n", STDERR);
-	ft_putstr_fd(".: usage: . filename [arguments]\n", STDERR);
+	ft_putstr_fd(MINISHELL, fd_err);
+	ft_putstr_fd(".: filename argument required\n", fd_err);
+	ft_putstr_fd(".: usage: . filename [arguments]\n", fd_err);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/03 19:42:58 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:22:51 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:28:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void	store_div(t_command **store)
 	t_command	*top;
 	t_list		*packs;
 	t_list		*prev;
-	char		*line;
 	int			type;
 
 	top = *store;
@@ -54,7 +53,6 @@ void	store_div(t_command **store)
 	prev = NULL;
 	while (packs)
 	{
-		line = ((t_pack *)packs->content)->line;
 		type = ((t_pack *)packs->content)->type;
 		if (type == SCOLON || type == DPIPE || type == DAND)
 			scolon_del(&packs, &top, &prev, type);

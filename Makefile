@@ -1,7 +1,6 @@
 NAME = minishell
 SRCDIR = ./src/
 SRCNAMES = all_free.c\
-		debug.c\
 		div_commands.c\
 		env_init.c\
 		env_init2_shlvl.c\
@@ -42,7 +41,7 @@ SRCNAMES = all_free.c\
 		sh_prompt.c\
 		sh_pwd.c\
 		sh_unset.c\
-		sighander.c\
+		sighandler.c\
 		to_ex_list.c\
 		util_commandlst.c\
 		util_del.c\
@@ -62,7 +61,7 @@ OBJS = $(SRCNAMES:%.c=$(OBJDIR)%.o)
 LIBDIR = ./libft/
 
 CC = gcc
-CFLAGS = -g -O0
+CFLAGS = -Wall -Werror -Wextra
 
 all : $(NAME)
 
@@ -73,6 +72,7 @@ $(OBJDIR)%.o : $(SRCDIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME) : $(OBJS)
+	make -C $(LIBDIR)
 	$(CC) $(CFLAGS) -I./includes -L $(LIBDIR) -o $@ $^ -lft
 
 clean :

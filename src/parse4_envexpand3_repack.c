@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:31:02 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/12 18:40:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:29:06 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ t_list	*space_strtoken(char *line)
 void	repack(t_list **prev, t_list **mov, t_list **packs)
 {
 	t_list	*new;
-	t_list	*tmp;
 	t_list	*newlast;
 	char	*line;
 

@@ -6,21 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:32:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:31:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
-
-void	envlst_addback(t_list **env, t_list *new)
-{
-	t_list	*mov;
-	t_list	*prev;
-
-	mov = *env;
-	prev = NULL;
-	ft_lstadd_back(env, new);
-}
 
 void	value_update(t_list *env, char *value, char *key)
 {
@@ -57,7 +47,7 @@ void	dict_addback(t_minishell *m_sh, char *key, char *value)
 	dict->value = value;
 	if (!(new = ft_lstnew(dict)))
 		exit(ft_error("malloc failed", 1, STDERR));
-	envlst_addback(&m_sh->env_list, new);
+	ft_lstadd_back(&m_sh->env_list, new);
 }
 
 void	export_envp(t_minishell *m_sh, char *key, char *value)

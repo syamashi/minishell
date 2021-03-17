@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:55:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:29:16 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,6 @@ void	null_del(t_list **packs)
 
 void	packs_trim(t_list **packs)
 {
-	int		type;
-	int		nexttype;
-	t_list	*mov;
-
 	null_del(packs);
 	quote_del(packs);
 	strs_join(packs);

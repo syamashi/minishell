@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 18:44:41 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:26:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ void		error_branch(int mode, const char *file)
 	internal_error(file, "command not found", 127);
 }
 
-void		simple_case(const char *file, char *const *argv
-						, char *const *envp, t_minishell *m_sh)
+void		simple_case(const char *file, char *const *argv, char *const *envp)
 {
 	if (!*file)
 		error_branch(0, file);
@@ -87,7 +86,7 @@ void		search_and_exec(const char *file, char *const *argv
 	int			errno_reserve;
 	struct stat	sb;
 
-	simple_case(file, argv, envp, m_sh);
+	simple_case(file, argv, envp);
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
 		error_branch(execve(file, argv, envp), file);
 	sep = env_path;

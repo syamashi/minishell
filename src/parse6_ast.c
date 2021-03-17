@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/06 01:33:38 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 20:24:18 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:29:29 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ void	str_add(t_list **mov, t_leaf **leaf)
 
 void	ast_init(t_list **ast, t_list **packs)
 {
-	t_list	*new;
-	t_list	*pipe;
 	t_leaf	*leaf;
 	t_list	*mov;
 	int		type;

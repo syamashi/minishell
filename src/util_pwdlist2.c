@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:16:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:44:33 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:34:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ t_list	*pwdlst_nocurrent(char *str)
 	t_list	*new;
 	char	*add;
 	int		i;
-	int		j;
 
 	i = -1;
-	j = 0;
 	ret = NULL;
 	while (str[++i])
 	{
@@ -67,8 +65,6 @@ t_list	*pwdlst_nocurrent(char *str)
 t_list	*pwdlst_solve(char *str)
 {
 	t_list	*ret;
-	t_list	*new;
-	char	*add;
 	int		i;
 	int		j;
 

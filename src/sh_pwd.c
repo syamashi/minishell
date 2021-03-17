@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/15 15:22:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 17:59:16 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:33:49 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int		sh_pwd(t_minishell *m_sh, t_exec *exec)
 {
 	char	*pwd;
-	char	*buf;
 
 	pwd = pwds_str(m_sh);
 	ft_putendl_fd(pwd, exec->fd_out);

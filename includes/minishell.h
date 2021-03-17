@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 22:30:32 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:21:45 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,10 @@ typedef struct	s_redirect
 
 sig_atomic_t	g_intflag;
 
-void			sh_input_inthandler(int sig);
-void			sh_input_quithandler(int sig);
+void			sh_input_inthandler();
+void			sh_input_quithandler();
 void			sh_quithandler(int sig);
-void			sh_putendl_handler(int sig);
+void			sh_putendl_handler();
 
 void			minishell(char **envp);
 t_command		*div_commands(t_minishell *m_sh, char *line);

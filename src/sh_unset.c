@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:16 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/15 19:26:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:34:01 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	unset_envp(t_minishell *m_sh, char *key)
 	char	*dkey;
 	t_list	*mov;
 	t_list	*prev;
-	t_list	*tmp;
 
 	mov = m_sh->env_list;
 	prev = NULL;
@@ -71,7 +70,6 @@ void	unset_envp(t_minishell *m_sh, char *key)
 int		sh_unset(t_minishell *m_sh, t_exec *exec)
 {
 	char	**key;
-	int		i;
 	int		is_invalid;
 
 	key = exec->argv + 1;
