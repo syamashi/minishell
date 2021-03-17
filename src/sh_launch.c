@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 10:00:00 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 10:22:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void	sh_launch_child(
 int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 {
 	pid_t	cpid;
-	int		status;
+//	int		status;
 	int		pipefd[2];
 
 	status = 0;
