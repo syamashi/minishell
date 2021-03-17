@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 09:13:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 10:00:00 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,18 @@ void	sh_launch_child(
 	{
 		errno_recieve = errno;
 		if (stat(exec_param->argv[0], &sb) == 0)
+		{
+			printf("all?:");
+			int tmp = sb.st_mode;
+			printf("%d", tmp % 8);
+			while (tmp/=8)
+				printf("%d", tmp % 8);
+			printf("\n400?:%d\n", S_IRUSR);
+			printf("100?:%d\n" , S_IXUSR);
+			printf("\n400?:%d\n", (sb.st_mode & S_IRUSR));
+			printf("100?:%d\n" ,(sb.st_mode & S_IXUSR));
 			execvp_error(exec_param->argv[0], "is a directory", 126);
+		}
 		errno = errno_recieve;
 		ft_perror(exec_param->argv[0], STDERR);
 	}
