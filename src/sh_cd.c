@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 22:30:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 22:39:39 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 	if (!**argv && (path = getcwd(NULL, 0)))
 		return (cd_blank_args(m_sh, path, *argv, exec->fd_err));
 	if (chdir(*argv))
-		return (cd_error(*argv, 127, "No such file or directory", exec->fd_err));
+		return (cd_error(*argv, 127,
+		"No such file or directory", exec->fd_err));
 	path = getcwd(NULL, 0);
 	if (!path && (nocurrent = true))
 		return (cd_no_current(m_sh, *argv, exec->fd_err));
