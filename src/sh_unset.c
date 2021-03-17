@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 15:47:16 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 01:59:41 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/15 19:26:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int		sh_unset(t_minishell *m_sh, t_exec *exec)
 		if (is_keyvalid(*key))
 			unset_envp(m_sh, *key);
 		else
-			invalid_key(*key, &is_invalid, NULL);
+			is_invalid = invalid_key(*key, NULL, "unset", exec->fd_err);
 		key++;
 	}
 	return (is_invalid);

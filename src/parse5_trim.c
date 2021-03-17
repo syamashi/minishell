@@ -6,21 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 16:57:59 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 20:40:01 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:55:35 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-int		is_strsjoin(int type)
-{
-	return (type == STR ||
-			type == SSTR ||
-			type == ESC ||
-			type == SQUOTE ||
-			type == DQUOTE);
-}
 
 void	pack_marge(
 	t_list **prev, t_list **mov, t_list **packs, const int pre_type)
@@ -40,7 +31,7 @@ void	pack_marge(
 		pack_join(&pack, "\\", 1);
 	pack_join(&pack, line, ft_strlen(line));
 	if (!(new = ft_lstnew(pack)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	new->next = (*mov)->next->next;
 	if (*prev)
 		(*prev)->next = new;
@@ -102,6 +93,7 @@ void	space_del(t_list **packs)
 **	types = {STR, DIRS, SPACE, QUOTES, PIPE, SSTR}
 **  after DIRS, NOT del QUOTES
 */
+
 void	null_del(t_list **packs)
 {
 	t_list	*mov;

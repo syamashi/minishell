@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 14:38:25 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 02:40:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:42:59 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	env_retadd(t_minishell *m_sh, char **new)
 	char	*tmp;
 
 	if (!(value = ft_itoa(m_sh->exit_status)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(tmp);
 	tmp = NULL;
 	free(value);
@@ -39,9 +39,9 @@ void	env_retadd(t_minishell *m_sh, char **new)
 **  [][ 0] <- nextnextline = null
 **  ["][ 8]
 **
-**  "$ $" = $ $ 
-**  "$" = $ 
-**  ["][ 8] 
+**  "$ $" = $ $
+**  "$" = $
+**  ["][ 8]
 **  [][ 0]
 **  [$ $ $ $][ 0] <- now
 **  ["][ 8] <- nexttype = quote
@@ -57,7 +57,7 @@ void	empty_key(char **new, t_list *mov)
 		return ;
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, "$")))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(tmp);
 	tmp = NULL;
 }
@@ -74,7 +74,7 @@ void	env_add(t_minishell *m_sh, char *key, char **new, t_list *mov)
 	value = value_get(key, m_sh);
 	tmp = *new;
 	if (!(*new = ft_strjoin(*new, value)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	free(value);
 	free(tmp);
 }
@@ -90,10 +90,10 @@ void	env_join(char **new, t_token *t, t_minishell *m_sh, t_list *mov)
 	if (t->line[t->i] == '?')
 		t->i++;
 	else
-		while (!is_keyend(t->line[t->i]))
+		while (!is_envend(t->line[t->i]))
 			(t->i)++;
 	if (!(key = ft_substr(t->line, t->j, t->i - t->j)))
-		exit(ft_error("malloc failed", 1));
+		exit(ft_error("malloc failed", 1, STDERR));
 	if (!ft_strncmp(key, "?", 2))
 		env_retadd(m_sh, new);
 	else

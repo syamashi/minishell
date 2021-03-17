@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/13 15:04:42 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 11:26:37 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,22 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 	return (0);
 }
 
-int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minishell *m_sh)
+int			sh_execvpe(const char *file, char *const *argv
+						, char *const *envp, t_minishell *m_sh)
 {
 	char	*env_path;
 	char	*sep;
 	char	buf[PATH_MAX + 1];
 	int		errno_reserve;
+	char	*tmp;
 
+	if (!ft_strncmp(file, ".", 2))
+		exit(2);
 	if (ft_strchr(file, '/'))
 		return (execve(file, argv, envp));
 	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
 		return (execve(file, argv, envp));
+	tmp = env_path;
 	sep = env_path;
 	errno_reserve = 0;
 	while (*sep)
@@ -51,8 +56,10 @@ int			sh_execvpe(const char *file, char *const *argv, char *const *envp, t_minis
 		env_path = sep + 1;
 	}
 	if (errno_reserve)
+	{
 		errno = errno_reserve;
-	if (!*file)
-		errno = ENOENT;
-	return (-1);
+		return (-1);
+	}
+	free(tmp);
+	return (-2);
 }

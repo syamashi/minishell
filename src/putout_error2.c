@@ -6,42 +6,57 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:19:53 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/12 16:32:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 22:24:26 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
 
-int		dir_error(char *path, int n)
+int		dir_error(char *path, int n, t_exec **ex)
 {
-	ft_putstr_fd(BASH, 2);
-	ft_putstr_fd(path, 2);
-	ft_putstr_fd(": ambiguous redirect\n", 2);
+	ft_putstr_fd(MINISHELL, (*ex)->fd_err);
+	ft_putstr_fd(path, (*ex)->fd_err);
+	ft_putstr_fd(": ambiguous redirect\n", (*ex)->fd_err);
 	return (n);
 }
 
-int		ft_cd_error(char *path, int n, char *serror)
+int		ft_cd_free_error(char *path, int n, char *serror, int fd)
 {
-	ft_putstr_fd(BASH, 2);
-	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd("cd: ", fd);
 	if (path)
 	{
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(path, fd);
+		ft_putstr_fd(": ", fd);
+		free(path);
 	}
-	ft_putstr_fd(serror, 2);
-	ft_putstr_fd("\n", 2);
+	ft_putstr_fd(serror, fd);
+	ft_putstr_fd("\n", fd);
+	return (n);
+}
+
+int		cd_error(char *path, int n, char *serror, int fd)
+{
+	ft_putstr_fd(MINISHELL, fd);
+	ft_putstr_fd("cd: ", fd);
+	if (path)
+	{
+		ft_putstr_fd(path, fd);
+		ft_putstr_fd(": ", fd);
+	}
+	ft_putstr_fd(serror, fd);
+	ft_putstr_fd("\n", fd);
 	return (n);
 }
 
 void	shlvl_error(int depth)
 {
 	char	*str;
-	
+
 	if (!(str = ft_itoa(depth)))
-		exit(ft_error("malloc failed", 1));
-	ft_putstr_fd(BASH, 2);
+		exit(ft_error("malloc failed", 1, STDERR));
+	ft_putstr_fd(MINISHELL, 2);
 	ft_putstr_fd("warning: shell level (", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(") too high, resetting to 1\n", 2);

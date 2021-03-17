@@ -6,22 +6,21 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/17 17:10:26 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:14:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void pack_free(void *ptr)
+void	pack_free(void *ptr)
 {
-//	printf("[packfree] %s\n", ((t_pack*)ptr)->line);
 	free(((t_pack*)ptr)->line);
 	((t_pack*)ptr)->line = NULL;
 	free(ptr);
 	ptr = NULL;
 }
 
-void packs_free(t_list **packs)
+void	packs_free(t_list **packs)
 {
 	t_list *mov;
 
@@ -33,7 +32,7 @@ void packs_free(t_list **packs)
 	}
 }
 
-void env_free(void *ptr)
+void	env_free(void *ptr)
 {
 	free(((t_dict *)ptr)->key);
 	((t_dict *)ptr)->key = NULL;
@@ -47,7 +46,7 @@ void	store_free(t_list **store)
 {
 	t_list	*packs;
 	t_list	*tmp;
-	
+
 	while (*store)
 	{
 		packs = (*store)->content;
@@ -62,7 +61,7 @@ void	ast_free(t_list **ast)
 {
 	t_list	*packs;
 	t_list	*tmp;
-	
+
 	while (*ast)
 	{
 		tmp = (*ast)->next;

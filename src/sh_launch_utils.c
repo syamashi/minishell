@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/02/19 16:54:20 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:23:37 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,29 @@ int			sh_execvpes(t_exec *s, t_minishell *m_sh)
 	//execvp(s->argv[0], s->argv);
 }
 
-int			ft_perror(char *string)
+int			ft_perror(char *string, int fd_err)
 {
 	int	a_errno = errno;
 
-	ft_putstr_fd(string, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(strerror(a_errno), 2);
-	ft_putstr_fd("\n", 2);
+	ft_putstr_fd(MINISHELL, fd_err);
+	ft_putstr_fd(string, fd_err);
+	ft_putstr_fd(": ", fd_err);
+	ft_putstr_fd(strerror(a_errno), fd_err);
+	ft_putstr_fd("\n", fd_err);
 	return (-1);
 }
 
-void		sh_dup_close(int old_fd, int new_fd)
+void		sh_dup_close(int old_fd, int new_fd, int fd_err)
 {
+//	printf("[sh_dup_close] old:%d, new:%d, fd_err:%d\n", old_fd, new_fd, fd_err);
 	if (dup2(old_fd, new_fd) < 0)
 	{
-		ft_perror("minishell");
+		ft_perror("", fd_err);
 		exit(1);
 	}
 	if (close(old_fd) < 0)
 	{
-		ft_perror("minishell");
+		ft_perror("", fd_err);
 		exit(1);
 	}
 }

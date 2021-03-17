@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_exit.c                                          :+:      :+:    :+:   */
+/*   env_init2_shlvl.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 09:47:17 by syamashi         ###   ########.fr       */
+/*   Created: 2021/03/16 21:25:27 by syamashi          #+#    #+#             */
+/*   Updated: 2021/03/16 21:25:48 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/minishell.h"
+#include "../includes/parse.h"
 #include "../includes/sh_launch.h"
 
-static	int	get_exitnum(const char *nptr)
+int			shlvl_atoi(const char *nptr)
 {
 	char		*str;
 	int			n;
@@ -27,32 +29,41 @@ static	int	get_exitnum(const char *nptr)
 	if (*str == '+' || *str == '-')
 		str++;
 	m = 0;
-	if (!*str)
-		return (4242);
 	while (ft_isdigit(*str))
 	{
 		num = (*str++ - '0');
 		if ((m >= 922337203685477580 && num > 7) || m >= 922337203685477581)
-			return (4242);
+			return (0);
 		if ((m <= -922337203685477580 && num > 8) || m <= -922337203685477581)
-			return (4242);
+			return (0);
 		m = m * 10 + n * num;
 	}
-	return (*str ? 4242 : ((m % 256) + 256) % 256);
+	return (*str ? 0 : m);
 }
 
-int			sh_exit(t_minishell *m_sh, t_exec *exec)
+void		env_shlvl_init(t_minishell *m_sh)
 {
-	char	**argv;
-	int		ret;
+	char	*key;
+	char	*value;
+	int		depth;
 
-	argv = exec->argv + 1;
-	ft_putstr_fd("exit\n", exec->fd_err);
-	if (!*argv)
-		exit(m_sh->exit_status);
-	if ((ret = get_exitnum(*argv)) > 255)
-		exit(ft_exit_error(*argv, 255));
-	if (*(argv + 1))
-		return (ft_error("exit: too many arguments", 1, exec->fd_err));
-	exit(ret);
+	if (!(key = ft_strdup("SHLVL")))
+		exit(ft_error("malloc failed", 1, STDERR));
+	if (!(value = value_get(key, m_sh)))
+		depth = 0;
+	else
+		depth = shlvl_atoi(value);
+	free(value);
+	depth++;
+	if (depth > 1000)
+		shlvl_error(depth);
+	depth = (depth < 0) ? 0 : depth;
+	depth = (depth > 1000) ? 1 : depth;
+	if (depth == 1000)
+		value = ft_strdup("");
+	else
+		value = ft_itoa(depth);
+	if (!value)
+		exit(ft_error("malloc failed", 1, STDERR));
+	export_envp(m_sh, key, value);
 }

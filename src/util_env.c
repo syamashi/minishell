@@ -6,34 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:48:45 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/13 02:38:34 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 21:27:05 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-/*
-** $abc
-** start read "abc"
-*/
-
-char	*key_get(char *line)
-{
-	int i;
-
-	i = 0;
-	while (!is_keyend(line[i]))
-		i++;
-	if (i && line[i] == '=' && line[i - 1] == '+')
-		i--;
-	return (ft_substr(line, 0, i));
-}
-
-/*
-**  $option is not supported.
-**  $$ = $null + $null
-*/
 
 bool	pwdshell_exist(char *key, t_minishell *m_sh)
 {
@@ -47,7 +25,7 @@ bool	pwdshell_exist(char *key, t_minishell *m_sh)
 char	*pwdshell_dup(char *key, t_minishell *m_sh)
 {
 	char	*str;
-	
+
 	if (!ft_strncmp(key, "PWD", 4))
 		return (ft_strdup(m_sh->env_pwd));
 	if (!ft_strncmp(key, "OLDPWD", 7))
@@ -83,20 +61,6 @@ char	*value_get(char *key, t_minishell *m_sh)
 	return (NULL);
 }
 
-bool	key_find(char *key, t_minishell *m_sh)
-{
-	t_list	*mov;
-
-	mov = m_sh->env_list;
-	while (mov)
-	{
-		if (!ft_strcmp(key, ((t_dict*)mov->content)->key))
-			return (true);
-		mov = mov->next;
-	}
-	return (false);
-}
-
 char	*value_add(t_minishell *m_sh, char *key, char *value)
 {
 	char	*add;
@@ -107,7 +71,7 @@ char	*value_add(t_minishell *m_sh, char *key, char *value)
 	{
 		tmp = value;
 		if (!(value = ft_strjoin(add, value)))
-			exit(ft_error("malloc failed", 1));
+			exit(ft_error("malloc failed", 1, STDERR));
 		free(tmp);
 		tmp = NULL;
 	}

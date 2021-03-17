@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 12:35:36 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/12 19:01:24 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 22:14:58 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,18 @@ bool	if_opt_n(int flag)
 }
 
 /*
- * int parse_flag(char *str);
- * arg
- *  - str : string to parse
- * return value
- *  - 0 : if str is NOT flag
- *  - else : parsed flag bit
- */
+** int parse_flag(char *str);
+** arg
+**	- str : string to parse
+** return value
+**	- 0 : if str is NOT flag
+**	- else : parsed flag bit
+*/
 
 int		parse_flag(char *str)
 {
 	int		flag;
+
 	flag = 0;
 	if (*str++ != '-')
 		return (0);

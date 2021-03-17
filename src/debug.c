@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:40:05 by syamashi          #+#    #+#             */
-/*   Updated: 2021/02/13 01:41:15 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/16 20:14:45 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,9 @@ void	exlist_debug(t_list *exlist)
 			if (ex->argv[j+1])	printf(", ");
 		}
 		printf("}\n");
-/*		printf("envp[]:");
-		j = -1;
-		while (ex->envp[++j])
-		{
-			printf("[%s]",ex->envp[j]);
-			if (ex->envp[j+1])	printf(",");
-		}
-		printf("\n");
-*/		printf("fd_in :%d\n", ex->fd_in);
+		printf("fd_in :%d\n", ex->fd_in);
 		printf("fd_out:%d\n", ex->fd_out);
+		printf("fd_err:%d\n", ex->fd_err);
 		printf("error_flag:%d\n", ex->error_flag);
 		top = top->next;
 		top_cnt++;
@@ -55,6 +48,7 @@ void	ast_debug(t_list *ast)
 	char	*line;
 	int		type;
 	int ast_cnt = 0;
+	
 	while (ast)
 	{
 		printf("-----ast[%d]-----\n", ast_cnt++);
@@ -62,7 +56,6 @@ void	ast_debug(t_list *ast)
 		dir = ((t_leaf*)ast->content)->dir;
 		int str_cnt = 0;
 		int dir_cnt = 0;
-//	printf("strsize:%d, dirsize:%d\n", ft_lstsize(str), ft_lstsize(dir));
 		while (str)
 		{
 			printf("str[%d]:", str_cnt);

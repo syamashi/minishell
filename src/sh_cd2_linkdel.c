@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   sh_cd2_linkdel.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/03 20:06:15 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 19:05:26 by syamashi         ###   ########.fr       */
+/*   Created: 2021/03/14 10:58:37 by syamashi          #+#    #+#             */
+/*   Updated: 2021/03/15 21:48:07 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "string.h"
+#include "../includes/sh_launch.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+bool	is_linkdel(t_minishell *m_sh, char *argv)
 {
-	int i;
+	t_minishell	sh;
+	char		*dir;
 
-	i = -1;
-	while (s1[++i])
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-	return (s1[i] - s2[i]);
+	if (*argv == '/')
+		return (false);
+	sh.pwd_dslash = false;
+	sh.pwds = NULL;
+	pwdlst_cpy(&sh, m_sh);
+	pwdlst_update(&sh, argv, false);
+	dir = pwds_str(&sh);
+	ft_lstclear(&sh.pwds, free);
+	if (chdir(dir))
+	{
+		free(dir);
+		return (true);
+	}
+	free(dir);
+	return (false);
 }
