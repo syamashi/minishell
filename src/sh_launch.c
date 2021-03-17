@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 14:55:22 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 15:05:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,15 @@ void	sh_launch_child(
 		errno_recieve = errno;
 		if (stat(exec_param->argv[0], &sb) == 0)
 		{
-			printf("all?:");
+//			printf("all?:");
 			int tmp = sb.st_mode;
-			printf("%d", tmp % 8);
-			while (tmp/=8)
-				printf("%d", tmp % 8);
-			printf("\n400?:%d\n", S_IRUSR);
-			printf("100?:%d\n" , S_IXUSR);
-			printf("\n400?:%d\n", (sb.st_mode & S_IRUSR));
-			printf("100?:%d\n" ,(sb.st_mode & S_IXUSR));
+//			printf("%d", tmp % 8);
+//			while (tmp/=8)
+//				printf("%d", tmp % 8);
+//			printf("\n400?:%d\n", S_IRUSR);
+//			printf("100?:%d\n" , S_IXUSR);
+//			printf("\n400?:%d\n", (sb.st_mode & S_IRUSR));
+//			printf("100?:%d\n" ,(sb.st_mode & S_IXUSR));
 			execvp_error(exec_param->argv[0], "is a directory", 126);
 		}
 		errno = errno_recieve;
@@ -163,18 +163,18 @@ int		sh_launch(t_minishell *m_sh, t_list *execlist)
 	int	exsize = ft_lstsize(execlist);
 	int status = 0;
 
-	printf("last_cpid:%d, exsize:%d\n", last_cpid, exsize);
+//	printf("last_cpid:%d, exsize:%d\n", last_cpid, exsize);
 	while (exsize-- >= 0)
 	{
 		int status_pid = wait(&status);
-		printf("status_pid:%d\n", status_pid);
+//		printf("status_pid:%d\n", status_pid);
 		if (status_pid == last_cpid)
 		{
 			m_sh->exit_status = WEXITSTATUS(status);
-			printf("WEXITSTATUS:%d\n", m_sh->exit_status);
+//			printf("WEXITSTATUS:%d\n", m_sh->exit_status);
 			if (WIFSIGNALED(status)) // signal終了の判定
 				m_sh->exit_status = WTERMSIG(status) + 128; //signalがとれる
-			printf("WTREMSIG:%d\n\n", m_sh->exit_status);
+//			printf("WTREMSIG:%d\n\n", m_sh->exit_status);
 			break;
 		}
 	}
