@@ -6,23 +6,12 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 21:58:44 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 22:17:12 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:44:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include "../includes/parse.h"
-
-/*
-**  ex [2>file]
-**
-**  int fd = open();
-**  int backup = dup(rint);
-**  dup2(fd, rint);
-**  close(fd)
-**  ---backup---
-**  dup2(backup, rint);
-*/
 
 void	fd_rdir(t_exec **ex, char *path, int rint)
 {
@@ -96,14 +85,6 @@ void	fd_ldir(t_exec **ex, char *path, int rint)
 		close((*ex)->fd_in);
 	(*ex)->fd_in = fd;
 }
-
-/*
-**	fd_get
-**
-**	> : RDIR open(WRONLY) and set fd1 fd2
-**  >> : RRDIR
-**  < : LDIR
-*/
 
 void	fd_get(t_exec **ex, char *path, int type, int rint)
 {

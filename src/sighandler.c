@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 01:53:26 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 19:22:53 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:40:34 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 extern sig_atomic_t	g_intflag;
 
-void	sh_input_inthandler()
+void	sh_input_inthandler(void)
 {
 	ft_putstr_fd("\b\b  \b\n", 2);
 	ft_putstr_fd(PROMPT_NAME, 2);
@@ -25,7 +25,7 @@ void	sh_input_inthandler()
 **  GNL, ^\ not display
 */
 
-void	sh_input_quithandler()
+void	sh_input_quithandler(void)
 {
 	ft_putstr_fd("\b\b  \b\b", 2);
 }
@@ -48,7 +48,7 @@ void	sh_quithandler(int sig)
 **  cat ctrl+C
 */
 
-void	sh_putendl_handler()
+void	sh_putendl_handler(void)
 {
 	ft_putstr_fd("\n", 2);
 }

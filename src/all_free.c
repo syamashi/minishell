@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 18:16:12 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 20:14:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:46:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,6 @@ void	pack_free(void *ptr)
 	ptr = NULL;
 }
 
-void	packs_free(t_list **packs)
-{
-	t_list *mov;
-
-	while (*packs)
-	{
-		mov = (*packs)->next;
-		ft_lstclear((t_list**)&((*packs)->content), pack_free);
-		*packs = mov;
-	}
-}
-
 void	env_free(void *ptr)
 {
 	free(((t_dict *)ptr)->key);
@@ -40,21 +28,6 @@ void	env_free(void *ptr)
 	((t_dict *)ptr)->value = NULL;
 	free(ptr);
 	ptr = NULL;
-}
-
-void	store_free(t_list **store)
-{
-	t_list	*packs;
-	t_list	*tmp;
-
-	while (*store)
-	{
-		packs = (*store)->content;
-		tmp = (*store)->next;
-		ft_lstclear(&packs, pack_free);
-		free(*store);
-		*store = tmp;
-	}
 }
 
 void	ast_free(t_list **ast)
@@ -73,28 +46,4 @@ void	ast_free(t_list **ast)
 		*ast = NULL;
 		*ast = tmp;
 	}
-}
-
-void	ex_free(void *ptr)
-{
-	t_exec	*ex;
-	int		i;
-
-	i = -1;
-	ex = (t_exec *)ptr;
-	while (ex->argv[++i])
-	{
-		free(ex->argv[i]);
-		ex->argv[i] = NULL;
-	}
-	i = -1;
-	while (ex->envp[++i])
-	{
-		free(ex->envp[i]);
-		ex->envp[i] = NULL;
-	}
-	free(ex->argv);
-	free(ex->envp);
-	free(ptr);
-	ptr = NULL;
 }

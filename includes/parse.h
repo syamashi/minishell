@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/10 15:39:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 22:25:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 19:45:14 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@
 # define DUMMY 129
 
 void		pack_free(void *ptr);
-void		packs_free(t_list **packs);
 void		env_free(void *ptr);
 void		all_free(char **line, t_list **store,
 			t_list **ast, t_list **exlist);
