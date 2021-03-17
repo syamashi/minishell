@@ -6,17 +6,19 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 21:23:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 17:24:41 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-int			sh_execvpes(t_exec *s, t_minishell *m_sh)
+/*
+void		sh_execvpes(t_exec *s, t_minishell *m_sh)
 {
 	return (sh_execvpe(s->argv[0], s->argv, s->envp, m_sh));
 	//execvp(s->argv[0], s->argv);
 }
+*/
 
 int			ft_perror(char *string, int fd_err)
 {

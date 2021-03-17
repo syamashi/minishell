@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 15:13:53 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:28:35 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@
 **  ENOTDIR 20 Not a directory
 */
 
-int		status_handling(int e)
-{
-	if (e == ENOENT)
-		return (127);
-//	else if (errno == 20 || errno == 13)
-//		return (126);
-	else
-		return (126);
-}
-
 int		usage_dot(int ret, int fd_err)
 {
 	ft_putstr_fd(MINISHELL, STDERR);
@@ -43,14 +33,9 @@ int		usage_dot(int ret, int fd_err)
 	return (ret);
 }
 
-void	execvp_error(char *path, char *str, int ret)
+void	exec_command(t_minishell *m_sh, t_exec *exec_param)
 {
-	ft_putstr_fd(MINISHELL, STDERR);
-	ft_putstr_fd(path, STDERR);
-	ft_putstr_fd(": ", STDERR);
-	ft_putstr_fd(str, STDERR);
-	ft_putstr_fd("\n", STDERR);
-	exit(ret);
+	search_and_exec(exec_param->argv[0], exec_param->argv, exec_param->envp, m_sh);
 }
 
 void	sh_launch_child(
@@ -58,8 +43,7 @@ void	sh_launch_child(
 {
 	t_builtin_f		builtin_function;
 	t_exec			*exec_param;
-	struct stat		sb;
-	int				errno_recieve;
+//	int				errno_recieve;
 
 	exec_param = exlist->content;
 
@@ -91,25 +75,8 @@ void	sh_launch_child(
 		exit(0);
 	if (!ft_strncmp(exec_param->argv[0], ".", 2))
 		exit(usage_dot(2, STDERR));
-	if (!(*exec_param->argv[0]) || sh_execvpes(exec_param, m_sh) == -2)
-		execvp_error(exec_param->argv[0], "command not found", 127);
-	else if (errno)
-	{
-		errno_recieve = errno;
-		if (stat(exec_param->argv[0], &sb) == 0)
-		{
-			if (!(sb.st_mode & S_IRUSR) || !(sb.st_mode & S_IXUSR))
-				execvp_error(exec_param->argv[0], "Permission denied", 126);
-			else
-				execvp_error(exec_param->argv[0], "is a directory", 126);
-		}
-		errno = errno_recieve;
-		ft_perror(exec_param->argv[0], STDERR);
-	}
-	close(0);
-	close(1);
-	close(2);
-	exit(status_handling(errno));
+	exec_command(m_sh, exec_param);
+	//exit(status_handling(errno));
 }
 
 int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
@@ -135,10 +102,11 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 	if (execlist->next)
 		sh_process_manager(m_sh, execlist->next, pipefd[0]); //p0 to be close
 
-	if (waitpid(-1, &status, 0) < 0)
+	if (waitpid(cpid, &status, 0) < 0)
 		return (ft_perror("", STDERR));
-	m_sh->exit_status = WEXITSTATUS(status);
-	if (WIFSIGNALED(status)) // signal終了の判定
+	if (!execlist->next)
+		m_sh->exit_status = WEXITSTATUS(status);
+	if (!execlist->next && WIFSIGNALED(status)) // signal終了の判定
 		return (m_sh->exit_status = WTERMSIG(status) + 128); //signalがとれる
 	return (0);
 }
