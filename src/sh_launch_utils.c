@@ -6,33 +6,33 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/16 21:23:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/17 18:57:41 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-int			sh_execvpes(t_exec *s, t_minishell *m_sh)
+void		exec_command(t_minishell *m_sh, t_exec *exec_param)
 {
-	return (sh_execvpe(s->argv[0], s->argv, s->envp, m_sh));
-	//execvp(s->argv[0], s->argv);
+	search_and_exec(exec_param->argv[0],
+			exec_param->argv, exec_param->envp, m_sh);
 }
 
 int			ft_perror(char *string, int fd_err)
 {
-	int	a_errno = errno;
+	int		errno_reserve;
 
+	errno_reserve = errno;
 	ft_putstr_fd(MINISHELL, fd_err);
 	ft_putstr_fd(string, fd_err);
 	ft_putstr_fd(": ", fd_err);
-	ft_putstr_fd(strerror(a_errno), fd_err);
+	ft_putstr_fd(strerror(errno_reserve), fd_err);
 	ft_putstr_fd("\n", fd_err);
 	return (-1);
 }
 
 void		sh_dup_close(int old_fd, int new_fd, int fd_err)
 {
-//	printf("[sh_dup_close] old:%d, new:%d, fd_err:%d\n", old_fd, new_fd, fd_err);
 	if (dup2(old_fd, new_fd) < 0)
 	{
 		ft_perror("", fd_err);
