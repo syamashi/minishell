@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/09 16:28:47 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 20:08:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:56:41 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void			sh_quithandler(int sig);
 void			sh_putendl_handler();
 
 void			minishell(char **envp);
+void			env_oldpwd_init(t_minishell *m_sh);
+void			env_pwd_init(t_minishell *m_sh);
 t_command		*div_commands(t_minishell *m_sh, char *line);
 char			*sh_prompt(t_minishell *m_sh);
 t_list			*to_ex_list(t_minishell *m_sh, t_list **pack_list);

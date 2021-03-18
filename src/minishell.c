@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 20:11:05 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:52:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,15 @@ void	sh_init(t_minishell *m_sh, char **envp)
 	m_sh->pwd_dslash = false;
 	m_sh->pwds = NULL;
 	env_init(envp, m_sh);
+	env_pwd_init(m_sh);
 	if (!(m_sh->home_defvalue = value_get("HOME", m_sh)))
 		if (!(m_sh->home_defvalue = ft_strdup("")))
 			exit(ft_error("malloc failed", 1, STDERR));
 	if (!(strpwd = value_get("PWD", m_sh)))
 		exit(ft_error("malloc failed", 1, STDERR));
 	m_sh->pwds = pwdlst_init(strpwd, 0);
+	env_oldpwd_init(m_sh);
+	env_shlvl_init(m_sh);	
 	free(strpwd);
 }
 
