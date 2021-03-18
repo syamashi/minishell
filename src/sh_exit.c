@@ -6,11 +6,17 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 20:08:37 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:32:01 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
+
+void	skip_space(char **str)
+{
+	while (is_space(**str))
+		(*str)++;
+}
 
 static	int	get_exitnum(const char *nptr)
 {
@@ -20,9 +26,7 @@ static	int	get_exitnum(const char *nptr)
 	long long	m;
 
 	str = (char *)nptr;
-	while (*str == ' ' || *str == '\t' ||
-	*str == '\n' || *str == '\v' || *str == '\f' || *str == '\r')
-		str++;
+	skip_space(&str);
 	n = (*str == '-') ? -1 : 1;
 	if (*str == '+' || *str == '-')
 		str++;
@@ -38,6 +42,7 @@ static	int	get_exitnum(const char *nptr)
 			return (4242);
 		m = m * 10 + n * num;
 	}
+	skip_space(&str);
 	return (*str ? 4242 : ((m % 256) + 256) % 256);
 }
 
@@ -51,6 +56,8 @@ int			sh_exit(t_minishell *m_sh, t_exec *exec)
 	ft_putstr_fd("exit\n", exec->fd_err);
 	if (!*argv)
 		exit(m_sh->exit_status);
+	if (!(ft_strncmp(*argv, "--", 3)))
+		argv++;
 	if ((ret = get_exitnum(*argv)) > 255)
 		exit(ft_exit_error(*argv, 255, exec->fd_err));
 	if (*(argv + 1))
