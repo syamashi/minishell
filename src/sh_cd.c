@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 16:42:25 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:52:40 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ int		cd_blank_args(t_minishell *m_sh, char *path, char *argv, int fd)
 	return (pwd_update(m_sh, argv, false));
 }
 
+char	*free_and_homeset(char *argv, t_minishell *m_sh)
+{
+	free(argv);
+	return (value_get("HOME", m_sh));
+}
+
 int		sh_cd(t_minishell *m_sh, t_exec *exec)
 {
 	char			**argv;
@@ -52,7 +58,8 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 
 	errno = 0;
 	argv = exec->argv + 1;
-	if (!*argv && !(*argv = value_get("HOME", m_sh)))
+	if (!*argv && (argv = exec->argv))
+		if (!(*argv = free_and_homeset(*argv, m_sh)))
 			return (cd_error(NULL, 1, "HOME not set", exec->fd_err));
 	if (ft_strlen(*argv) > 255)
 		return (cd_error(*argv, 1, "File name too long", exec->fd_err));
