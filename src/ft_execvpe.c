@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 19:26:03 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 13:16:40 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,13 @@ static	int	make_path(char *buf, const char *path, const char *sep,
 		const char *file)
 {
 	size_t		filelen;
-	struct stat	sb;
 
 	filelen = ft_strlen(file);
 	if (filelen + (sep - path) + 1 > PATH_MAX)
 		return (-1);
 	ft_memcpy(buf, path, sep - path);
 	if (sep - path)
-	{
-		ft_memcpy(buf + (sep - path), 0, 1);
-		if (!stat(buf, &sb) && !S_ISDIR(sb.st_mode))
-		{
-			errno = ENOTDIR;
-			return (-1);
-		}
 		ft_memcpy(buf + (sep - path), "/", 1);
-	}
 	ft_memcpy(buf + (sep - path) + (sep - path > 0 ? 1 : 0), file, filelen + 1);
 	return (0);
 }
@@ -97,7 +88,7 @@ void		search_and_exec(const char *file, char *const *argv
 			sep = ft_strchr(env_path, 0);
 		if (!make_path(buf, env_path, sep, file) && !stat(buf, &sb))
 			execve(buf, argv, envp);
-		if (errno == EACCES || errno == ENOEXEC || errno == ENOTDIR)
+		if (errno == EACCES || errno == ENOEXEC)
 			errno_reserve = errno;
 		if (errno == EACCES && S_ISDIR(sb.st_mode))
 			errno_reserve = EISDIR;
