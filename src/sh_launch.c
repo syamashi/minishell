@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/01 14:45:21 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 13:33:15 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:05:42 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,22 @@ void	launch_builtin(t_minishell *m_sh, t_exec *exec_param,
 }
 
 void	sh_launch_child(
-	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe)
+	t_minishell *m_sh, t_list *exlist, int *pipefd, int prev_pipe[2])
 {
 	t_builtin_f		builtin_function;
 	t_exec			*exec_param;
 
 	exec_param = exlist->content;
-	if (prev_pipe)
-		sh_dup_close(prev_pipe, 0, exec_param->fd_err);
+	if (prev_pipe[0])
+		sh_dup_close(prev_pipe[0], 0, exec_param->fd_err);
+	if (prev_pipe[1] && (close(prev_pipe[1])) < 0)
+		exit(1);
 	if (exec_param->fd_in != 0)
 		sh_dup_close(exec_param->fd_in, 0, exec_param->fd_err);
 	if (exlist->next)
 		sh_dup_close(pipefd[1], 1, exec_param->fd_err);
+	if (exlist->next && (close(pipefd[0]) < 0))
+		exit(1);
 	if (exec_param->fd_out != 1)
 		sh_dup_close(exec_param->fd_out, 1, exec_param->fd_err);
 	if (exec_param->fd_err != 2)
@@ -72,7 +76,7 @@ void	sh_launch_child(
 	exec_command(m_sh, exec_param);
 }
 
-int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
+int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe[2])
 {
 	pid_t	cpid;
 	int		status;
@@ -87,8 +91,10 @@ int		sh_process_manager(t_minishell *m_sh, t_list *execlist, int prev_pipe)
 		sh_launch_child(m_sh, execlist, pipefd, prev_pipe);
 	if (prev_pipe && close(prev_pipe) < 0)
 		return (ft_perror("", STDERR));
-	if (execlist->next && close(pipefd[1]) < 0)
+	if (prev_pipe && (close(prev_pipe[1]) < 0)) // つなげ終わったパイプはとじる
 		return (ft_perror("", STDERR));
+//	if (execlist->next && close(pipefd[1]) < 0)
+//		return (ft_perror("", STDERR));
 	if (execlist->next)
 		sh_process_manager(m_sh, execlist->next, pipefd[0]);
 	if (waitpid(cpid, &status, 0) < 0)
