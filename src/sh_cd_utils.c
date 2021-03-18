@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:53:52 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 12:18:40 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:30:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ int		pwd_update(t_minishell *m_sh, char *argv, int delflag)
 	errno = 0;
 	free(m_sh->env_pwd);
 	m_sh->env_pwd = NULL;
-	if (key_find("PWD", m_sh))
-		export_envp(m_sh, ft_strdup("PWD"), pwdval);
-	else
-		m_sh->env_pwd = pwdval;
+	export_envp(m_sh, ft_strdup("PWD"), pwdval);
 	return (0);
 }
