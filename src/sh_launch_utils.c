@@ -6,17 +6,31 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 13:34:26 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:49:11 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
+
+bool		if_executable(int mode)
+{
+	if (!(mode & S_IRUSR))
+		return (false);
+	if ((mode & S_IRWXU) == S_IRWXU)
+		return (true);
+	if ((mode & S_IRWXG) == S_IRWXG)
+		return (true);
+	if ((mode & S_IRWXO) == S_IRWXO)
+		return (true);
+	return (false);
+}
 
 void		exec_command(t_minishell *m_sh, t_exec *exec_param)
 {
 	char	*env_path;
 
 	env_path = value_get("PATH", m_sh);
+	simple_case(exec_param->argv[0], exec_param->argv, exec_param->envp);
 	search_and_exec(env_path, exec_param->argv, exec_param->envp);
 	free(env_path);
 }
