@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 13:16:40 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/18 13:33:48 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,25 +68,24 @@ void		simple_case(const char *file, char *const *argv, char *const *envp)
 		error_branch(execve(file, argv, envp), file);
 }
 
-void		search_and_exec(const char *file, char *const *argv
-						, char *const *envp, t_minishell *m_sh)
+void		search_and_exec(char *env_path, char *const *argv
+						, char *const *envp)
 {
-	char		*env_path;
 	char		*sep;
 	char		buf[PATH_MAX + 1];
 	int			errno_reserve;
 	struct stat	sb;
 
-	simple_case(file, argv, envp);
-	if (!(env_path = value_get("PATH", m_sh)) || !*env_path)
-		error_branch(execve(file, argv, envp), file);
+	simple_case(argv[0], argv, envp);
+	if (!env_path || !*env_path)
+		error_branch(execve(argv[0], argv, envp), argv[0]);
 	sep = env_path;
 	errno_reserve = ENOENT;
 	while (*sep)
 	{
 		if (!(sep = ft_strchr(env_path, ':')))
 			sep = ft_strchr(env_path, 0);
-		if (!make_path(buf, env_path, sep, file) && !stat(buf, &sb))
+		if (!make_path(buf, env_path, sep, argv[0]) && !stat(buf, &sb))
 			execve(buf, argv, envp);
 		if (errno == EACCES || errno == ENOEXEC)
 			errno_reserve = errno;
@@ -95,5 +94,5 @@ void		search_and_exec(const char *file, char *const *argv
 		env_path = sep + 1;
 	}
 	errno = errno_reserve;
-	error_branch(0, file);
+	error_branch(0, argv[0]);
 }

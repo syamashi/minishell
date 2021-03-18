@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 19:31:58 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 13:34:26 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void		exec_command(t_minishell *m_sh, t_exec *exec_param)
 {
-	search_and_exec(exec_param->argv[0],
-			exec_param->argv, exec_param->envp, m_sh);
+	char	*env_path;
+
+	env_path = value_get("PATH", m_sh);
+	search_and_exec(env_path, exec_param->argv, exec_param->envp);
+	free(env_path);
 }
 
 int			ft_perror(char *string, int fd_err)

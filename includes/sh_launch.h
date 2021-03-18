@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/17 22:48:45 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 13:34:10 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 typedef int		(*t_builtin_f)(t_minishell *, t_exec *);
 
 int				sh_launch(t_minishell *m_sh, t_list *execlist);
-void			search_and_exec(const char *file, char *const *argv,
-				char *const *envp, t_minishell *m_sh);
+void			search_and_exec(char *env_path, char *const *argv,
+				char *const *envp);
 
 /*
 **  utiles
