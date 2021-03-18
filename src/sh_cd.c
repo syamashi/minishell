@@ -6,31 +6,11 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:23:23 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 15:16:01 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:42:25 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
-
-int		cd_no_args(t_minishell *m_sh, int fd)
-{
-	char	*home;
-	char	*path;
-
-	if (!(home = value_get("HOME", m_sh)))
-		return (cd_error(NULL, 1, "HOME not set", fd));
-	if (!*home && (path = getcwd(NULL, 0)))
-	{
-		free(home);
-		return (pwd_update(m_sh, path, false));
-	}
-	if (chdir(home) == -1)
-		return (ft_cd_free_error(home, 1, strerror(errno), fd));
-	ft_lstclear(&m_sh->pwds, free);
-	pwd_update(m_sh, home, false);
-	free(home);
-	return (0);
-}
 
 int		cd_no_current(t_minishell *m_sh, char *argv, int fd)
 {
@@ -72,8 +52,8 @@ int		sh_cd(t_minishell *m_sh, t_exec *exec)
 
 	errno = 0;
 	argv = exec->argv + 1;
-	if (!*argv)
-		return (cd_no_args(m_sh, exec->fd_err));
+	if (!*argv && !(*argv = value_get("HOME", m_sh)))
+			return (cd_error(NULL, 1, "HOME not set", exec->fd_err));
 	if (ft_strlen(*argv) > 255)
 		return (cd_error(*argv, 1, "File name too long", exec->fd_err));
 	if (!**argv && (path = getcwd(NULL, 0)))
