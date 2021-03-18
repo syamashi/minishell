@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 16:19:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:24:03 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void		env_oldpwd_init(t_minishell *m_sh)
 	if (!(key = ft_strdup("OLDPWD")))
 		exit(ft_error("malloc failed", 1, STDERR));
 	value = NULL;
+	unset_envp(m_sh, "OLDPWD");
 	export_envp(m_sh, key, value);
 }
 

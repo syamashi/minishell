@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 13:34:10 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:23:18 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int				is_keyvalid(char *key);
 int				invalid_key(char *argv, char **key, char *command, int fd);
 
 char			*value_get(char *key, t_minishell *m_sh);
-
+void			unset_envp(t_minishell *m_sh, char *key);
 void			lstlast_del(t_minishell *m_sh);
 void			pwdlst_cpy(t_minishell *sh, t_minishell *m_sh);
 void			pwdlst_update(t_minishell *m_sh, char *argv, int delflag);
