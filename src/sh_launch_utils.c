@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:59 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 18:15:48 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:19:15 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ bool		if_executable(int mode)
 {
 	if (!(mode & S_IRUSR))
 		return (false);
-	if ((mode & S_IRWXU) == (S_IRUSR | S_IXUSR))
+	if ((mode & (S_IRUSR | S_IXUSR)) == (S_IRUSR | S_IXUSR))
 		return (true);
-	if ((mode & S_IRWXG) == (S_IRGRP | S_IXGRP))
+	if ((mode & (S_IRGRP | S_IXGRP)) == (S_IRGRP | S_IXGRP))
 		return (true);
-	if ((mode & S_IRWXO) == (S_IROTH | S_IXOTH))
+	if ((mode & (S_IROTH | S_IXOTH)) == (S_IROTH | S_IXOTH))
 		return (true);
 	return (false);
 }
