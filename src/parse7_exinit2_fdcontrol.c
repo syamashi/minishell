@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 23:19:40 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:00:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ bool	ambiguous_error(t_minishell *m_sh, char *str, t_exec **ex)
 int		rint_atoi(const char *nptr)
 {
 	char		*str;
-	int			n;
-	int			num;
+	long long	n;
+	long long	num;
 	long long	m;
 
 	str = (char *)nptr;
@@ -52,6 +52,8 @@ int		rint_atoi(const char *nptr)
 			return (-1);
 		m = m * 10 + n * num;
 	}
+	if (m > 2147483647)
+		return (-1);
 	return (m);
 }
 
@@ -92,7 +94,7 @@ void	rint_error(char *rint, int rint_num, t_minishell *m_sh, int fd)
 
 int		get_rint(t_pack *pack, t_exec **ex, t_minishell *m_sh)
 {
-	int		rint;
+	long long	rint;
 
 	if (pack->type != RINT)
 		return (-1);

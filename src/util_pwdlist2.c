@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 12:16:20 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 19:34:57 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:56:46 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,9 @@ t_list	*pwdlst_nocurrent(char *str)
 	ret = NULL;
 	while (str[++i])
 	{
-		if (str[i] == '.')
+		if (!(ft_strncmp(str + i, "..", 2)) && ++i)
+			add = ft_strdup("..");
+		else if (str[i] == '.')
 			add = ft_strdup(".");
 		else if (i == 0 || str[i - 1] == '/')
 			add = ft_strdup("");
