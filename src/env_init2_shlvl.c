@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 21:25:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 16:07:04 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:46:54 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int			shlvl_atoi(const char *nptr)
 {
 	char		*str;
 	long long	n;
-	long long	num;
+	long long 	num;
 	long long	m;
 
 	str = (char *)nptr;
-	while (is_space(*str))
+	while (*str == ' ' || *str == '\t' ||
+	*str == '\n' || *str == '\v' || *str == '\f' || *str == '\r')
 		str++;
 	n = (*str == '-') ? -1 : 1;
 	if (*str == '+' || *str == '-')
