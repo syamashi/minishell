@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/30 17:48:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 15:51:42 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:02:36 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int			env_init(char **envp, t_minishell *m_sh)
 {
 	t_dict	*map;
 	t_list	*new;
+	char	*key;
 
 	map = NULL;
 	new = NULL;
@@ -74,5 +75,11 @@ int			env_init(char **envp, t_minishell *m_sh)
 		ft_lstadd_back(&m_sh->env_list, new);
 		envp++;
 	}
+	env_pwd_init(m_sh);
+	env_oldpwd_init(m_sh);
+	if (!(key = ft_strdup("OLDPWD")))
+		exit(ft_error("malloc failed", 1, STDERR));
+	export_envp(m_sh, key, NULL);
+	env_shlvl_init(m_sh);
 	return (0);
 }
