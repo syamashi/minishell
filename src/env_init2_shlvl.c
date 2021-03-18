@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/16 21:25:27 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 17:46:54 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:00:19 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int			shlvl_atoi(const char *nptr)
 {
 	char		*str;
 	long long	n;
-	long long 	num;
+	long long	num;
 	long long	m;
 
 	str = (char *)nptr;
