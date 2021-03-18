@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/02 15:02:28 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 16:23:18 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 18:07:43 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ void			search_and_exec(char *env_path, char *const *argv,
 **  utiles
 */
 
+void			simple_case(const char *file, char *const *argv,
+				char *const *envp);
+bool			if_executable(int mode);
 void			exec_command(t_minishell *m_sh, t_exec *exec_param);
 int				ft_perror(char *string, int fd_err);
 void			sh_dup_close(int old_fd, int new_fd, int fd_err);

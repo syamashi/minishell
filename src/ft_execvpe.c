@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/27 11:37:14 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 13:33:48 by ewatanab         ###   ########.fr       */
+/*   Updated: 2021/03/18 15:49:15 by ewatanab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,17 @@ void		error_branch(int mode, const char *file)
 
 void		simple_case(const char *file, char *const *argv, char *const *envp)
 {
+	struct stat	sb;
+
 	if (!*file)
 		error_branch(0, file);
 	if (ft_strchr(file, '/'))
-		error_branch(execve(file, argv, envp), file);
+	{
+		execve(file, argv, envp);
+		if (errno == ENOEXEC && !stat(file, &sb) && !if_executable(sb.st_mode))
+			errno = EACCES;
+		error_branch(-1, file);
+	}
 }
 
 void		search_and_exec(char *env_path, char *const *argv
@@ -76,7 +83,6 @@ void		search_and_exec(char *env_path, char *const *argv
 	int			errno_reserve;
 	struct stat	sb;
 
-	simple_case(argv[0], argv, envp);
 	if (!env_path || !*env_path)
 		error_branch(execve(argv[0], argv, envp), argv[0]);
 	sep = env_path;
@@ -91,6 +97,8 @@ void		search_and_exec(char *env_path, char *const *argv
 			errno_reserve = errno;
 		if (errno == EACCES && S_ISDIR(sb.st_mode))
 			errno_reserve = EISDIR;
+		if (errno == ENOEXEC && !if_executable(sb.st_mode))
+			errno_reserve = EACCES;
 		env_path = sep + 1;
 	}
 	errno = errno_reserve;
