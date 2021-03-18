@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:41:55 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 15:41:20 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:00:32 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		rint_atoi(const char *nptr)
 {
 	char		*str;
 	long long	n;
-	long long 	num;
+	long long	num;
 	long long	m;
 
 	str = (char *)nptr;

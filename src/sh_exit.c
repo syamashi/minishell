@@ -6,13 +6,13 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/17 18:28:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/18 15:33:19 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:00:23 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/sh_launch.h"
 
-void	skip_space(char **str)
+void		skip_space(char **str)
 {
 	while (is_space(**str))
 		(*str)++;

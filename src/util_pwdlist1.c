@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/14 10:50:51 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/16 21:26:35 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:57:44 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	pwdlst_update(t_minishell *m_sh, char *argv, int delflag)
 	tmp = work;
 	while (tmp)
 	{
-		if (!ft_strncmp((char *)tmp->content, "..", 3))
+		if (delflag != NOCURRENT && !ft_strncmp((char *)tmp->content, "..", 3))
 			lstlast_del(m_sh);
 		else if (delflag == NOCURRENT
 				|| ft_strncmp((char *)tmp->content, ".", 2))
