@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/14 17:12:47 by syamashi          #+#    #+#             */
-/*   Updated: 2021/03/17 19:31:46 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 17:23:57 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	pwdshell_export(char *key, char *value, t_minishell *m_sh)
 	if (!(ft_strncmp(key, "PWD", 4)))
 	{
 		free(m_sh->env_pwd);
-		m_sh->env_pwd = ft_strdup(value);
+		if (value)
+			m_sh->env_pwd = ft_strdup(value);
+		else
+			m_sh->env_pwd = getcwd(NULL, 0);
 	}
 	if (!(ft_strncmp(key, "OLDPWD", 7)))
 	{
