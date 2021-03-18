@@ -6,7 +6,7 @@
 /*   By: syamashi <syamashi@student.42.tokyo>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/11 12:47:17 by ewatanab          #+#    #+#             */
-/*   Updated: 2021/03/18 15:59:52 by syamashi         ###   ########.fr       */
+/*   Updated: 2021/03/18 16:19:04 by syamashi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,8 @@ void	minishell(char **envp)
 	{
 		if (!(line = sh_prompt(&mini_sh)))
 			continue ;
+		char *test = value_get("OLDPWD", &mini_sh);
+		printf("%s\n", test);
 		commands = div_commands(&mini_sh, line);
 		free(line);
 		while (commands)
